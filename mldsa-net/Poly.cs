@@ -22,10 +22,25 @@ public abstract partial class DilithiumBase {
 		}
 	}
 
-	public struct poly {
+	public class poly {
+		private int n;
+
 		public poly(int N) {
+			n = N;
+
 			coeffs = new int[N];
 		}
+
+		public poly Clone() {
+			poly clone;
+
+			clone = new poly(n);
+			for (int i = 0; i < n; i++) {
+				clone.coeffs[i] = coeffs[i];
+			}
+			return clone;
+		}
+
 		public int[] coeffs;
 	}
 
@@ -401,7 +416,6 @@ public abstract partial class DilithiumBase {
 	*              - const uint8_t mu[]: byte array containing seed of length CTILDEBYTES
 	**************************************************/
 	private void poly_challenge(poly c, byte[] seed) {
-		Debug.Assert(seed.Length == CTildeBytes);
 		uint b, pos;
 		byte[] buf;
 		ulong signs;

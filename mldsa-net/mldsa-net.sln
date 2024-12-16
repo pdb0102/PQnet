@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mldsa-net", "mldsa-net.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "..\TestApp\TestApp.csproj", "{B6790AEA-DDB1-4DFC-ACA7-DB17496F88D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mldsa-net.test", "..\mldsa-net.test\mldsa-net.test.csproj", "{42E3ED2E-542E-44B9-B619-9604730BDEA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{B6790AEA-DDB1-4DFC-ACA7-DB17496F88D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6790AEA-DDB1-4DFC-ACA7-DB17496F88D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6790AEA-DDB1-4DFC-ACA7-DB17496F88D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E3ED2E-542E-44B9-B619-9604730BDEA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E3ED2E-542E-44B9-B619-9604730BDEA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E3ED2E-542E-44B9-B619-9604730BDEA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E3ED2E-542E-44B9-B619-9604730BDEA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

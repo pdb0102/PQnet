@@ -13,11 +13,11 @@ public abstract partial class DilithiumBase {
 	/// For finite field element a with -2^{31}Q <= a <= Q*2^31, compute r \equiv a*2^{-32} (mod Q) such that -Q < r < Q.
 	/// </remarks>
 	public int montgomery_reduce(long a) {
-		long t;
+		int t;
 
-		t = (long)(int)a * QINV;
-		t = (a - (t * Q)) >> 32;
-		return (int)t;
+		t = (int)a * QINV;
+		t = (int)((a - ((long)t * Q)) >> 32);
+		return t;
 	}
 
 	/// <summary>

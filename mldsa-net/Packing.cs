@@ -11,8 +11,6 @@ public abstract partial class DilithiumBase {
 	*              - const polyveck *t1: pointer to vector t1
 	**************************************************/
 	private void pack_pk(byte[] pk, byte[] rho, polyveck t1) {
-		int pk_offset;
-
 		for (int i = 0; i < SeedBytes; i++) {
 			pk[i] = rho[i];
 		}
@@ -63,17 +61,17 @@ public abstract partial class DilithiumBase {
 		sk_offset = 0;
 
 		for (i = 0; i < SeedBytes; i++) {
-			sk[i] = rho[i];
+			sk[sk_offset + i] = rho[i];
 		}
 		sk_offset += SeedBytes;
 
 		for (i = 0; i < SeedBytes; i++) {
-			sk[i] = key[i];
+			sk[sk_offset + i] = key[i];
 		}
 		sk_offset += SeedBytes;
 
 		for (i = 0; i < TrBytes; i++) {
-			sk[i] = tr[i];
+			sk[sk_offset + i] = tr[i];
 		}
 		sk_offset += TrBytes;
 
@@ -111,17 +109,17 @@ public abstract partial class DilithiumBase {
 		sk_offset = 0;
 
 		for (int i = 0; i < SeedBytes; i++) {
-			rho[i] = sk[i];
+			rho[i] = sk[sk_offset + i];
 		}
 		sk_offset += SeedBytes;
 
 		for (int i = 0; i < SeedBytes; i++) {
-			key[i] = sk[i];
+			key[i] = sk[sk_offset + i];
 		}
 		sk_offset += SeedBytes;
 
 		for (int i = 0; i < TrBytes; i++) {
-			tr[i] = sk[i];
+			tr[i] = sk[sk_offset + i];
 		}
 		sk_offset += TrBytes;
 

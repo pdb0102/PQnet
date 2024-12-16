@@ -2,23 +2,73 @@
 
 namespace mldsa_net;
 public abstract partial class DilithiumBase {
-	private struct polyveck {
+	private class polyveck {
+		private int k;
+		private int n;
+
+		private polyveck(int K) {
+			k = K;
+			vec = new poly[k];
+		}
+
 		public polyveck(int K, int N) {
+			k = K;
+			n = N;
+
 			vec = new poly[K];
 			for (int i = 0; i < K; i++) {
 				vec[i] = new poly(N);
 			}
 		}
+
+		public polyveck Clone() {
+			polyveck clone;
+
+			clone = new polyveck(k);
+			clone.k = k;
+			clone.n = n;
+			for (int i = 0; i < k; i++) {
+				clone.vec[i] = vec[i].Clone();
+			}
+			return clone;
+
+		}
+
 		public poly[] vec;
 	}
 
-	private struct polyvecl {
+	private class polyvecl {
+		private int l;
+		private int n;
+
+		private polyvecl(int L) {
+			l = L;
+			vec = new poly[L];
+		}
+
 		public polyvecl(int L, int N) {
+			l = L;
+			n = N;
+
 			vec = new poly[L];
 			for (int i = 0; i < L; i++) {
 				vec[i] = new poly(N);
 			}
 		}
+
+		public polyvecl Clone() {
+			polyvecl clone;
+
+			clone = new polyvecl(l);
+			clone.l = l;
+			clone.n = n;
+			for (int i = 0; i < l; i++) {
+				clone.vec[i] = vec[i].Clone();
+			}
+			return clone;
+
+		}
+
 		public poly[] vec;
 	}
 

@@ -388,7 +388,7 @@ public abstract partial class DilithiumBase {
 
 		while (pos + inlen >= r) {
 			for (i = pos; i < r; i++) {
-				s[i / 8] ^= (ulong)(in_buf[in_buf_pos++] << (8 * (i % 8)));
+				s[i / 8] ^= (ulong)in_buf[in_buf_pos++] << (8 * (i % 8));
 			}
 
 			inlen -= r - pos;
@@ -397,7 +397,7 @@ public abstract partial class DilithiumBase {
 		}
 
 		for (i = pos; i < pos + inlen; i++)
-			s[i / 8] ^= (ulong)(in_buf[in_buf_pos++] << (8 * (i % 8)));
+			s[i / 8] ^= (ulong)in_buf[in_buf_pos++] << (8 * (i % 8));
 
 		return i;
 	}
