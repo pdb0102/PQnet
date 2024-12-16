@@ -1,0 +1,16 @@
+# Visual Studio files
+*.vcxproj.user
+*.sdf
+*.opensdf
+*.csproj.user
+*.suo
+*.vshost.exe
+*.wixproj.user
+*.userprefs
+*.aps
+.vs/
+.vscode/
+[Dd]ebug/
+[Rr]elease/
+[Oo]bj/
+[Bb]in/
