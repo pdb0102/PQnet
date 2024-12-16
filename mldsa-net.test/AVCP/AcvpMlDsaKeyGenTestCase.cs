@@ -62,7 +62,7 @@ public class AcvpMlDsaKeyGenTestCase {
 	[IgnoreDataMember]
 	public byte[] SecretKeyBytes {
 		get {
-			if (PublicKey == null) {
+			if (SecretKey == null) {
 				return null;
 			}
 			return Utilities.HexToBytes(SecretKey, out _);

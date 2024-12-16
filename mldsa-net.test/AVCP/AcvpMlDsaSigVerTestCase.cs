@@ -19,8 +19,40 @@ public class AcvpMlDsaSigVerTestCase {
 	public string Message { get; set; }
 
 	/// <summary>
+	/// <see cref="Message"/> as a byte array
+	/// </summary>
+	[IgnoreDataMember]
+	public byte[] MessageBytes {
+		get {
+			if (Message == null) {
+				return null;
+			}
+			return Utilities.HexToBytes(Message, out _);
+		}
+	}
+
+	/// <summary>
 	/// The signature to verify
 	/// </summary>
 	[DataMember(Name = "signature")]
 	public string Signature { get; set; }
+
+	/// <summary>
+	/// <see cref="Random"/> as a byte array
+	/// </summary>
+	[IgnoreDataMember]
+	public byte[] SignatureBytes {
+		get {
+			if (Signature == null) {
+				return null;
+			}
+			return Utilities.HexToBytes(Signature, out _);
+		}
+	}
+
+	/// <summary>
+	/// Gets whether the test is expected to pass
+	/// </summary>
+	[DataMember(Name = "testPassed")]
+	public bool TestPassed { get; set; }
 }

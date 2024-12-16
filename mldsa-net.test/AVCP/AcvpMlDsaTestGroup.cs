@@ -25,6 +25,31 @@ public class AcvpMlDsaTestGroup<T> {
 	public string ParameterSet { get; set; }
 
 	/// <summary>
+	/// Gets if the signature is deterministic
+	/// </summary>
+	[DataMember(Name = "deterministic")]
+	public bool Deterministic { get; set; }
+
+	/// <summary>
+	/// The public key
+	/// </summary>
+	[DataMember(Name = "pk")]
+	public string PublicKey { get; set; }
+
+	/// <summary>
+	/// <see cref="PublicKey"/> as a byte array
+	/// </summary>
+	[IgnoreDataMember]
+	public byte[] PublicKeyBytes {
+		get {
+			if (PublicKey == null) {
+				return null;
+			}
+			return Utilities.HexToBytes(PublicKey, out _);
+		}
+	}
+
+	/// <summary>
 	/// List of individual test vector JSON objects 
 	/// </summary>
 	[DataMember(Name = "tests")]

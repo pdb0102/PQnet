@@ -105,7 +105,7 @@ public abstract partial class DilithiumBase {
 	*
 	* Returns 0 (success)
 	**************************************************/
-	private int crypto_sign_signature_internal(out byte[] sig, byte[] m, byte[] pre, byte[] rnd, byte[] sk) {
+	public int crypto_sign_signature_internal(out byte[] sig, byte[] m, byte[] pre, byte[] rnd, byte[] sk) {
 		uint n;
 		byte[] seedbuf;
 		byte[] rho;

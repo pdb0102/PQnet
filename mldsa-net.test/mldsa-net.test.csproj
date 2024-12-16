@@ -10,8 +10,11 @@
 
   <ItemGroup>
     <None Remove="Vectors\ML-DSA\keyGen\expectedResults.json" />
-    <None Remove="Vectors\ML-DSA\keyGen\internalProjection.json" />
     <None Remove="Vectors\ML-DSA\keyGen\prompt.json" />
+    <None Remove="Vectors\ML-DSA\sigGen\expectedResults.json" />
+    <None Remove="Vectors\ML-DSA\sigGen\prompt.json" />
+    <None Remove="Vectors\ML-DSA\sigVer\expectedResults.json" />
+    <None Remove="Vectors\ML-DSA\sigVer\prompt.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,8 +24,11 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Vectors\ML-DSA\keyGen\expectedResults.json" />
-    <EmbeddedResource Include="Vectors\ML-DSA\keyGen\internalProjection.json" />
     <EmbeddedResource Include="Vectors\ML-DSA\keyGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigVer\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigVer\prompt.json" />
   </ItemGroup>
 
   <ItemGroup>

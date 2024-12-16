@@ -7,13 +7,24 @@ public sealed class MlDsa {
 	[TestMethod]
 	public void TestAvcpKeyGen() {
 		AcvpMlDsaTestVectors<AcvpMlDsaKeyGenTestCase> test_vectors;
+		DilithiumBase dilithium;
+		Dilithium2 dilithium2;
+		Dilithium3 dilithium3;
+		Dilithium5 dilithium5;
 		byte[] pk;
 		byte[] sk;
 
+		dilithium2 = new Dilithium2();
+		dilithium3 = new Dilithium3();
+		dilithium5 = new Dilithium5();
 
-		test_vectors = AcvpMldsa.LoadkeyGenVectors("keyGen.prompt.json", "keyGen.expectedResults.json");
+		test_vectors = AcvpMldsa.LoadKeyGenVectors("keyGen.prompt.json", "keyGen.expectedResults.json");
 
 		for (int i = 0; i < test_vectors.TestGroups.Count; i++) {
+			AcvpMlDsaTestGroup<AcvpMlDsaKeyGenTestCase> test_group;
+
+			test_group = test_vectors.TestGroups[i];
+
 			for (int j = 0; j < test_vectors.TestGroups[i].Tests.Count; j++) {
 				AcvpMlDsaKeyGenTestCase test_case;
 
@@ -22,29 +33,120 @@ public sealed class MlDsa {
 				// Perform the test
 				switch (test_vectors.TestGroups[i].ParameterSet) {
 					case "ML-DSA-44":
-						Dilithium2 dilithium2;
-
-						dilithium2 = new Dilithium2();
-						dilithium2.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
+						dilithium = dilithium2;
 						break;
 					case "ML-DSA-65":
-						Dilithium3 dilithium3;
-
-						dilithium3 = new Dilithium3();
-						dilithium3.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
+						dilithium = dilithium3;
 						break;
 					case "ML-DSA-87":
-						Dilithium5 dilithium5;
-
-						dilithium5 = new Dilithium5();
-						dilithium5.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
+						dilithium = dilithium5;
 						break;
 					default:
 						throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
 				}
 
-				CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_vectors.TestGroups[i].TgId}, TestCase {test_case.TcId}: Public key mismatch");
-				CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_vectors.TestGroups[i].TgId}, TestCase {test_case.TcId}: Secret key mismatch");
+				dilithium.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
+				CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Public key mismatch");
+				CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Secret key mismatch");
+			}
+		}
+	}
+
+	[TestMethod]
+	public void TestAvcpSigGen() {
+		AcvpMlDsaTestVectors<AcvpMlDsaSigGenTestCase> test_vectors;
+		DilithiumBase dilithium;
+		Dilithium2 dilithium2;
+		Dilithium3 dilithium3;
+		Dilithium5 dilithium5;
+		byte[] sig;
+		byte[] null_rnd;
+
+		dilithium2 = new Dilithium2();
+		dilithium3 = new Dilithium3();
+		dilithium5 = new Dilithium5();
+
+		null_rnd = new byte[32];
+
+		test_vectors = AcvpMldsa.LoadSigGenVectors("sigGen.prompt.json", "sigGen.expectedResults.json");
+
+		for (int i = 0; i < test_vectors.TestGroups.Count; i++) {
+			AcvpMlDsaTestGroup<AcvpMlDsaSigGenTestCase> test_group;
+
+			test_group = test_vectors.TestGroups[i];
+
+			for (int j = 0; j < test_vectors.TestGroups[i].Tests.Count; j++) {
+				AcvpMlDsaSigGenTestCase test_case;
+
+				test_case = test_vectors.TestGroups[i].Tests[j];
+
+				// Perform the test
+				switch (test_vectors.TestGroups[i].ParameterSet) {
+					case "ML-DSA-44":
+						dilithium = dilithium2;
+						break;
+					case "ML-DSA-65":
+						dilithium = dilithium3;
+						break;
+					case "ML-DSA-87":
+						dilithium = dilithium5;
+						break;
+					default:
+						throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
+				}
+
+				dilithium.crypto_sign_signature_internal(out sig, test_case.MessageBytes, Array.Empty<byte>(), test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
+				CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature mismatch");
+			}
+		}
+	}
+
+	[TestMethod]
+	public void TestAvcpSigVer() {
+		AcvpMlDsaTestVectors<AcvpMlDsaSigVerTestCase> test_vectors;
+		DilithiumBase dilithium;
+		Dilithium2 dilithium2;
+		Dilithium3 dilithium3;
+		Dilithium5 dilithium5;
+		byte[] sig;
+		byte[] null_rnd;
+		int ret;
+
+		dilithium2 = new Dilithium2();
+		dilithium3 = new Dilithium3();
+		dilithium5 = new Dilithium5();
+
+		null_rnd = new byte[32];
+
+
+		test_vectors = AcvpMldsa.LoadSigVerVectors("sigVer.prompt.json", "sigVer.expectedResults.json");
+
+		for (int i = 0; i < test_vectors.TestGroups.Count; i++) {
+			AcvpMlDsaTestGroup<AcvpMlDsaSigVerTestCase> test_group;
+
+			test_group = test_vectors.TestGroups[i];
+
+			for (int j = 0; j < test_vectors.TestGroups[i].Tests.Count; j++) {
+				AcvpMlDsaSigVerTestCase test_case;
+
+				test_case = test_vectors.TestGroups[i].Tests[j];
+
+				// Perform the test
+				switch (test_vectors.TestGroups[i].ParameterSet) {
+					case "ML-DSA-44":
+						dilithium = dilithium2;
+						break;
+					case "ML-DSA-65":
+						dilithium = dilithium3;
+						break;
+					case "ML-DSA-87":
+						dilithium = dilithium5;
+						break;
+					default:
+						throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
+				}
+				ret = dilithium.crypto_sign_verify(test_case.SignatureBytes, test_case.MessageBytes, Array.Empty<byte>(), test_group.PublicKeyBytes);
+				Assert.AreEqual(test_case.TestPassed, ret == 0, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature verification mismatch");
 			}
 		}
 	}
