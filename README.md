@@ -1,2 +1,6 @@
-# mldsa-net
-ML-DSA (FIPS 204) in C#
+# PQNet
+Managed implementation of Post-Quantum algorithms
+
+ML-DSA initial port done
+
+
