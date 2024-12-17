@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mldsa-net\mldsa-net.csproj" />
+    <ProjectReference Include="..\mldsa\mldsa.csproj" />
   </ItemGroup>
 
   <ItemGroup>

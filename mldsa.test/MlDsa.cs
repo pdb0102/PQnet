@@ -1,4 +1,6 @@
-﻿using mldsa_net.test.AVCP;
+﻿using System.Text;
+
+using mldsa_net.test.AVCP;
 
 namespace mldsa_net.test;
 
@@ -145,6 +147,36 @@ public sealed class MlDsa {
 					default:
 						throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
 				}
+				StringBuilder sb;
+
+				sb = new StringBuilder();
+				sb.Append($"uint8_t m[{test_case.MessageBytes.Length}] = {{");
+				for (int x = 0; x < test_case.MessageBytes.Length; x++) {
+					sb.Append("0x");
+					sb.Append(test_case.MessageBytes[x].ToString("X2"));
+					sb.Append(", ");
+				}
+				sb.Length -= 2;
+				sb.AppendLine();
+
+				sb.Append($"uint8_t pk[{test_group.PublicKeyBytes.Length}] = {{");
+				for (int x = 0; x < test_group.PublicKeyBytes.Length; x++) {
+					sb.Append("0x");
+					sb.Append(test_group.PublicKeyBytes[x].ToString("X2"));
+					sb.Append(", ");
+				}
+				sb.Length -= 2;
+				sb.AppendLine();
+
+				sb.Append($"uint8_t sig[{test_case.SignatureBytes.Length}] = {{");
+				for (int x = 0; x < test_case.SignatureBytes.Length; x++) {
+					sb.Append("0x");
+					sb.Append(test_case.SignatureBytes[x].ToString("X2"));
+					sb.Append(", ");
+				}
+				sb.Length -= 2;
+				sb.AppendLine();
+
 				ret = dilithium.crypto_sign_verify(test_case.SignatureBytes, test_case.MessageBytes, Array.Empty<byte>(), test_group.PublicKeyBytes);
 				Assert.AreEqual(test_case.TestPassed, ret == 0, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature verification mismatch");
 			}
