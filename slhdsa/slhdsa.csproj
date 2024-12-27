@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Sha256.cs" />
+    <Compile Remove="Sha2Hash.cs" />
+    <Compile Remove="Sha512.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Sha256.cs" />
+    <None Include="Sha2Hash.cs" />
+    <None Include="Sha512.cs" />
+  </ItemGroup>
+
+</Project>

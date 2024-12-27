@@ -1,0 +1,832 @@
+{
+  "vsId": 0,
+  "algorithm": "cSHAKE-128",
+  "revision": "1.0",
+  "isSample": true,
+  "testGroups": [
+    {
+      "tgId": 1,
+      "testType": "AFT",
+      "hexCustomization": false,
+      "tests": [
+        {
+          "tcId": 1,
+          "msg": "00",
+          "len": 6,
+          "functionName": "",
+          "customization": "CbN]8%#{A!?v:]kjg9GVP.3AA/*+oa8u[$:0]B}@l=mpxN>[T:]@L 35O-;*zw,`hH:7CZ-D:(j4?BHqoLTU$vH[o&`O'tEs1.(O4(9x-8'E5~u-dI:MBT[q ^G=z[>Eav#2;x^h3[Ikp$Fp0Rk]YvP[P5OT_z}Oy",
+          "outLen": 282
+        },
+        {
+          "tcId": 2,
+          "msg": "BF486D8C1278",
+          "len": 45,
+          "functionName": "",
+          "customization": "4;B[+rP}+%o[$32B<KyRA1n|C&6UK3~O*-]oC5qfYmj*w}rv9MxsU$W$KD8%]zRv%@RuTB}'Y3xSEd&E3?<|9+x&SYC}|m*_:s%VJ{BvOr:C+%]g?qq>_T]yGLBz} *l*99Q_Ny6{EMFoUyO{[_+zk e7+/}YGwNh",
+          "outLen": 275
+        },
+        {
+          "tcId": 3,
+          "msg": "61C330091CF5D4146280D7C6142A8DC76B19C866AD1A8AF3FE98B020592F41B09A2C",
+          "len": 271,
+          "functionName": "",
+          "customization": "V5$RO!_jWYc{MY-KWaC=E|b{rfl; e` Nq3<{YFXoj1o(mzd];M&A$(XR'`h5DjrxcLZFoN|:jLYkrt&j(]e7Z^KiXiuy]DK =uD@?>lkPjUULm_2Y|-g%[>%!ql'X#]E!YN{PdKioyeo(u=k+c?_7dzaW?>MPf2N",
+          "outLen": 273
+        },
+        {
+          "tcId": 4,
+          "msg": "F506",
+          "len": 15,
+          "functionName": "",
+          "customization": "2;Q>l+ev-#Izn>T[Fihv,(g>xUQ,)vFf!n@l+63*<$.Zd`w@kV|umQg+S3D7XYn5[cy |gP1U^Z)x,Y8]1?PxPwO(69vp{Pa5w~!fwC$'l?0u_1GX,XG:=;+jJxfNY?X.xr ,WQem<J-1gXG%p=dC)Fv[s6<}[SKL",
+          "outLen": 313
+        },
+        {
+          "tcId": 5,
+          "msg": "EA18",
+          "len": 16,
+          "functionName": "",
+          "customization": "fmkctMwhBB[<Kta&RJ5r5ToA9N9~Y-,kin8y]xB}kviaDk_kPI^{o#N1|JIF5x.67pR]]fGX)6'=j.{MnLN1M0zf@'|3OzirhSJS9#.i#&rXz1FnM{WgI|g'tk=Ui5*-L4T6cH4k?d.H<Bk/`.dRC#HklD_LeV~mz",
+          "outLen": 295
+        },
+        {
+          "tcId": 6,
+          "msg": "957BD2A46D1759EA62C11B4FCFF441EAB4A2F92A7D0CCCC22E48452BD14DD5D0B6031C08",
+          "len": 285,
+          "functionName": "ParallelHash",
+          "customization": "}BX<H@7yH,8LjAQ[#f#]jY<pI^!>cZocT`oDfSTR3Dc3eO>H}]=eqhLD&gqj?w6l;Tw+Q.uN2OIFv)+y?X@&>+pk3K>}bi4:.uw0W4vpgnRB>'L{[",
+          "outLen": 285
+        },
+        {
+          "tcId": 7,
+          "msg": "757D9C00",
+          "len": 25,
+          "functionName": "KMAC",
+          "customization": "GW!E'|NCL21^~}c`8M&[!b/(4SE|7OSi)07mlk`4olU`N-/j@e0Ht'XdHx2RWP,|^FUngusKlql5-NW(DZ]Q?,t!VQErY-Z>`",
+          "outLen": 328
+        },
+        {
+          "tcId": 8,
+          "msg": "0EC0",
+          "len": 10,
+          "functionName": "TupleHash",
+          "customization": "|k0;!YrY}r/y#pPa^<Y6%RzD8A5g1h}_Ke[[tT<+PMH%My3JLyt/rO|Iok$_E+I5sON=5tl* OdV+vu=.i:6rolzh2k)P[eE%30|Ku6W.k/BjE?xtfPZp3B%cRS$)c",
+          "outLen": 341
+        },
+        {
+          "tcId": 9,
+          "msg": "2D26297590BA6C9940A7B2224B64FF7F08DBC7950765FE029F07BDF63170592D2A191300",
+          "len": 281,
+          "functionName": "TupleHash",
+          "customization": "LnF:>Y'JqG:`Z.9 r{*] QgD^>d]vw9b~^Y=y_E)&@N,",
+          "outLen": 345
+        },
+        {
+          "tcId": 10,
+          "msg": "913F94A8",
+          "len": 30,
+          "functionName": "KMAC",
+          "customization": "v(IzZ )pzVSh(%suAEqP!u6!VaXoFxxg){7h3txR#3}hb3@4xHeX]jb!pHCyG9I#]l`+m+bLL>MmvM>D@Du}3@*=:6vjP},iiz+uR5Fme9-><s*B+~X#BK",
+          "outLen": 265
+        },
+        {
+          "tcId": 11,
+          "msg": "50",
+          "len": 4,
+          "functionName": "",
+          "customization": " IC/KtS82Ztp:({p_uCP;M7Vbi./|RAUccl,bCKM#|.|1r.7@yI2*2qR3lKafD;^9>.V;p.;IuM>@9FoZun#*0LPq:wu",
+          "outLen": 317
+        },
+        {
+          "tcId": 12,
+          "msg": "DEA3AE8E6120",
+          "len": 44,
+          "functionName": "ParallelHash",
+          "customization": "/c)/,U?Uf!]D(%`4a3).E:<X}9@)ba=]vz8Ga,|D+49|uAno@vp4b/esFO0q56s&d",
+          "outLen": 307
+        },
+        {
+          "tcId": 13,
+          "msg": "191320DDA4C8",
+          "len": 46,
+          "functionName": "",
+          "customization": "$/ZYqwrjlQuj|[-La,Mw/3BD|-#u'vr9kD~-McVVX|'9oMX",
+          "outLen": 336
+        },
+        {
+          "tcId": 14,
+          "msg": "623E909617CE2B97326B18EE4B6CB3B62572A811D09D496E122765F20BD3AC25106A20D364F100",
+          "len": 305,
+          "functionName": "",
+          "customization": "vGX#uFU7{B:n1]!SxV=N ZY?5K.)XtaD{498 _H;",
+          "outLen": 261
+        },
+        {
+          "tcId": 15,
+          "msg": "7FC180",
+          "len": 18,
+          "functionName": "TupleHash",
+          "customization": "x4;&!E^N];z*|ejh1",
+          "outLen": 298
+        },
+        {
+          "tcId": 16,
+          "msg": "895C",
+          "len": 14,
+          "functionName": "TupleHash",
+          "customization": "iS:!#8`RrC4_O2ZCR-j?MTvul)Cs02:4*>(x4JI1^i_2JTP8}gt!MM#5[C5xskCa*~T1+a0)cY`dtdJ7W+uG<8f[<",
+          "outLen": 284
+        },
+        {
+          "tcId": 17,
+          "msg": "6B60",
+          "len": 11,
+          "functionName": "KMAC",
+          "customization": ")V?#JqcZ#:DWxA+/{sY]RQS86P q`6MSSKOP%W2`ZOqg3yK",
+          "outLen": 340
+        },
+        {
+          "tcId": 18,
+          "msg": "AD6B178143FD40A72308C6AA25691FD2839B2E481C2FC39031756D9A769D1518F661D496E0",
+          "len": 291,
+          "functionName": "TupleHash",
+          "customization": "tOo '(9|f?%c$%l LT&kgFOy-b/mYXAjlRr!{a2Cz",
+          "outLen": 260
+        },
+        {
+          "tcId": 19,
+          "msg": "9CDDCD6A4026BEEB1830914436C4BF722EAC33A1FCF3F107CB262CB7D8748C62D480",
+          "len": 267,
+          "functionName": "ParallelHash",
+          "customization": "+{[aPxCIcJG7~[q/lXn!b",
+          "outLen": 337
+        },
+        {
+          "tcId": 20,
+          "msg": "4EE968",
+          "len": 22,
+          "functionName": "",
+          "customization": "7/)JZOJ=];q,pRQ,Af4N7NT&wgueEjTE|2&^?y^Ea{CisV(L]7ype-@gX",
+          "outLen": 335
+        },
+        {
+          "tcId": 21,
+          "msg": "C0",
+          "len": 3,
+          "functionName": "TupleHash",
+          "customization": "",
+          "outLen": 290
+        },
+        {
+          "tcId": 22,
+          "msg": "D7571E6C8DD0E07317E1BAE184F42CC8B98C0C1A0D9FBF9D7F776ECEE57096E03D0F3F164AD3",
+          "len": 304,
+          "functionName": "",
+          "customization": "8KK7_ YqRs{HQ5LRz'ngO4W<]/Oc2:aq{X+nZHg+27IW1~mFj9&Bzw6%r/YOPu`92*Kx+^wQ>dU8i ",
+          "outLen": 301
+        },
+        {
+          "tcId": 23,
+          "msg": "09BC3E0E3FE1935C13A855C2F3562513ED7495C829D8F555EB28E570261392E5F0",
+          "len": 260,
+          "functionName": "ParallelHash",
+          "customization": "E0CIt~<r26+dw~]U2:]c^/Hy?Z0.C1DF_w}*YDfcqY<|-'aSG`,-Q2t6gH+:n.N pc%~ R{lRyq$qJm9xZfc&8tM$gB1:Lsd+;-",
+          "outLen": 292
+        },
+        {
+          "tcId": 24,
+          "msg": "B3E6F35100",
+          "len": 33,
+          "functionName": "",
+          "customization": "@A@j3Dt2A9Q>p^6Rr2XB4*F$)H.$j8uW",
+          "outLen": 266
+        },
+        {
+          "tcId": 25,
+          "msg": "CA88F708FA",
+          "len": 40,
+          "functionName": "KMAC",
+          "customization": "`kiEF`&I))7]yq0?*sKa q)[jP`4R=)lV_9tyvT$kAbH$)1}p].bbeomb.",
+          "outLen": 312
+        },
+        {
+          "tcId": 26,
+          "msg": "CBC8E0",
+          "len": 20,
+          "functionName": "",
+          "customization": "29cZQ$E+TQvj9z4B+4?YB,$|[N5dlh(]G2X`O`R|~Ry+D0p#PH^|Kiw'6e}$n`>kJ9C(ASqJ`BYo1wXK]24C*+1]9RIjaO.?4/`,lia{U4<*0)u=-RE]Kya?(fmn*",
+          "outLen": 308
+        },
+        {
+          "tcId": 27,
+          "msg": "",
+          "len": 0,
+          "functionName": "KMAC",
+          "customization": "`P;u|*`jK@5~e$6UxvbE8)Bo*~.Dfs/zdX>&@m*Nbns<H}5r<kIDze&W.Kk}{;$W1:;,d16+m4cH4'F+i:)zIj }Revt!",
+          "outLen": 272
+        },
+        {
+          "tcId": 28,
+          "msg": "EE8DF56FB8606C696E9D5B3B56FEA61FD04F37B605A32E9A505897A279C6FC6919F6F0",
+          "len": 277,
+          "functionName": "",
+          "customization": "Fjk|%P%GHH~iIQgv?&Zmp240]h! l=l/m",
+          "outLen": 338
+        },
+        {
+          "tcId": 29,
+          "msg": "C950",
+          "len": 13,
+          "functionName": "TupleHash",
+          "customization": "vQBC;]+>",
+          "outLen": 262
+        },
+        {
+          "tcId": 30,
+          "msg": "42C942F582B814EB84334F56AA742732074C083EF0EF2A053A9313A7694CEE002500",
+          "len": 265,
+          "functionName": "KMAC",
+          "customization": "vsb#(D;",
+          "outLen": 256
+        },
+        {
+          "tcId": 31,
+          "msg": "5FCE9720",
+          "len": 27,
+          "functionName": "KMAC",
+          "customization": "FZ&oU8S)q[e w8D`/o]pSS+%y?7{G9l>(",
+          "outLen": 305
+        },
+        {
+          "tcId": 32,
+          "msg": "FB052C1F7EE3E3FB28C0602941AE605DA5AFF0A90551C61B61ED39882DC6DE523F7CE2E0",
+          "len": 283,
+          "functionName": "",
+          "customization": "c-+_W-tBgp}*z8gFRvQ<cz!u?x_^pS^3x:=,FP)1f@a2VIgAEk{,Fq[g+4?^L6Q42j0`z[ !m@UC:o?u2=9",
+          "outLen": 303
+        },
+        {
+          "tcId": 33,
+          "msg": "23",
+          "len": 8,
+          "functionName": "",
+          "customization": "Xzo",
+          "outLen": 334
+        },
+        {
+          "tcId": 34,
+          "msg": "B191C70E654528B0425662A6AF9A9833A424F81C0C2170F71252E4853F09649F34E6440C",
+          "len": 286,
+          "functionName": "ParallelHash",
+          "customization": "HVN2m@v@RY^Ph}Jfq}#?~,Ay0`HGd(wdh)r6iY]wU>S(7A4E=lG1~BA<5S#-vOZJaxh_,5|7A*iaW:bnK#*w`gdEfU 5WO!&",
+          "outLen": 306
+        },
+        {
+          "tcId": 35,
+          "msg": "2E1F7949F766FB392AF45FC7A510B82968AAF1E9AB624DA12AD77AF2CCBCD00E33B0F612AE",
+          "len": 295,
+          "functionName": "TupleHash",
+          "customization": "O/O|h273",
+          "outLen": 294
+        },
+        {
+          "tcId": 36,
+          "msg": "0ED580",
+          "len": 17,
+          "functionName": "TupleHash",
+          "customization": "QU_4 JX,G/9",
+          "outLen": 302
+        },
+        {
+          "tcId": 37,
+          "msg": "E706D01A",
+          "len": 31,
+          "functionName": "TupleHash",
+          "customization": "d<>^pL*gULi|'D[eN%kp,02Z0Cl(&<*F'RCfE]y/5x%|v{i><Nf]#lUT*bNL`!a9CCvR u@q+]",
+          "outLen": 258
+        },
+        {
+          "tcId": 38,
+          "msg": "734DBCA96F80",
+          "len": 41,
+          "functionName": "ParallelHash",
+          "customization": "JIh(>n>0u;<>)-)+gzh&fJZC}w][vcX%s(KIr]N;Sndb,s%X/J&^Ldk~nE*F2a93b7I a^7+KLPvex7*r$MK^zV0<KZLS))qUQ~sI%wO4y2~3s:u/~R/3mTg`:c",
+          "outLen": 318
+        },
+        {
+          "tcId": 39,
+          "msg": "6A76F574EB489FB50ABA1B9A674B94EFF08BF50ACFEB0D110F05C77D47258D75A0",
+          "len": 259,
+          "functionName": "ParallelHash",
+          "customization": "6OuKE3'5i?7[YY(>Z:>9F3$v<TIrwM{/zA*%iAu-'ikTA?rGv1~3<%Z#K}0oi3=;B(a8P#T:D22[FMU|b#{fMiqve'Xk2&CsLO3:^Yus[em*q~Z|H3-f7",
+          "outLen": 321
+        },
+        {
+          "tcId": 40,
+          "msg": "C028BF9BB8",
+          "len": 38,
+          "functionName": "",
+          "customization": "pjjP;f,p!{",
+          "outLen": 296
+        },
+        {
+          "tcId": 41,
+          "msg": "33DAC548",
+          "len": 29,
+          "functionName": "ParallelHash",
+          "customization": "64!h[`H@:$] Xsv``LYU#`<4rLGB*Fhy]%@r&;*btHofuXq/8}^/5i0Uvmu08&7r:cBSR$ZEBw`XoU=9Y",
+          "outLen": 264
+        },
+        {
+          "tcId": 42,
+          "msg": "678E9591E36B68E48460D70778EC952FEDAA224E3F38C349751D616E361EA7220A375E00F980",
+          "len": 297,
+          "functionName": "KMAC",
+          "customization": "T^h=I /7xs*RymX=6&h{YS2.H;nG|KK;J3:hiDzCVIwnh&#_}7H;auw!LZt/1f9LHn)gSoRq+DE1ZBDB80If#1XS:8<.Ol2o1KEx|:+/cV1<PgE*6Qu!=RJ85SL",
+          "outLen": 352
+        },
+        {
+          "tcId": 43,
+          "msg": "FCF53389EA64028D101FE985B7FE3A4B369D4C7D9A74E5284DCE44270451FC53695C2D8A06E0",
+          "len": 299,
+          "functionName": "KMAC",
+          "customization": "Ge9nfML?!s;yn*&)/`gNHTB8Q[Y{|sr}D7?mrjBTQ&VoG^?78N%l",
+          "outLen": 268
+        },
+        {
+          "tcId": 44,
+          "msg": "",
+          "len": 0,
+          "functionName": "ParallelHash",
+          "customization": "Y%N>&:E2yE).Lx wEJ^8g7N:r1BEqt-wQU4>D&Ymi4ZD~QiQ,Iq?D9}",
+          "outLen": 353
+        },
+        {
+          "tcId": 45,
+          "msg": "6C4B35D881EB107BF3255D4854F903A8B93614F5D984E5254829AAC5A4A5942840",
+          "len": 258,
+          "functionName": "TupleHash",
+          "customization": "RF*",
+          "outLen": 327
+        },
+        {
+          "tcId": 46,
+          "msg": "D12C139AA311",
+          "len": 48,
+          "functionName": "KMAC",
+          "customization": ">YW@pD<ZpA3GkzWnUz91jQ'&.wU>D66(q~f^=.3C'UH,`<?@SYKg:cxkSR2wm|6Y+,Tk4yPHgt+4*yDpX5i",
+          "outLen": 281
+        },
+        {
+          "tcId": 47,
+          "msg": "CC4F1783B15E",
+          "len": 47,
+          "functionName": "KMAC",
+          "customization": "6-k-w|#O~8xOxH?MCF!#A/nf{05_c5-2)k[',p}3O.!ujxsF<pqL)wE'=%1hgCki+gG.k8ARGmQ4-w{#<nBrC_)0ETi(_6J-B8j$Pe",
+          "outLen": 314
+        },
+        {
+          "tcId": 48,
+          "msg": "3E1BC3DF8AB3418CD0C4A9BE8CC2297CB6E18B8AFE3E34018AF615FFB23BB99A40F4",
+          "len": 270,
+          "functionName": "KMAC",
+          "customization": "3iWKrG2{t9(/+;C:B216",
+          "outLen": 256
+        },
+        {
+          "tcId": 49,
+          "msg": "9D7E0D931F8523B5F53A84F516115538E47743D0D0A33A50820B49A9FAE062155D72573900",
+          "len": 290,
+          "functionName": "KMAC",
+          "customization": "^HRC;|0eYjB@Y*#p7,I*u<AC.0.9^%DdD9X; k*v@N",
+          "outLen": 330
+        },
+        {
+          "tcId": 50,
+          "msg": "6BE027AB383B00",
+          "len": 49,
+          "functionName": "ParallelHash",
+          "customization": "8l=*VeAO[U}z,+a}N`h(C!GMpGr*+#;^ugOlFi=&XfhCJt&qj4g]r,~7Dn9/q8EX:@%DYtW",
+          "outLen": 287
+        },
+        {
+          "tcId": 51,
+          "msg": "5BF18BC580",
+          "len": 34,
+          "functionName": "KMAC",
+          "customization": "dssjz7DyIo2|",
+          "outLen": 280
+        },
+        {
+          "tcId": 52,
+          "msg": "CC5E129FC01DDB2DB8FE7553837B9615F9178A36B18CDCF73F300CE9B70A8E71B06480",
+          "len": 274,
+          "functionName": "",
+          "customization": "{4lKC1CB5@_6v$E3[lT|% -",
+          "outLen": 288
+        },
+        {
+          "tcId": 53,
+          "msg": "2852FDDC85C92026ED994E6D09FC2672ACB68CF770B81D4599EE08A85F1AFDAECEBBDF",
+          "len": 280,
+          "functionName": "KMAC",
+          "customization": "D=-lS%KuN#i$tr0A'_!3g^dx[&a%^z?$Ner_,Uv4nzc{bGsuW>7B[kTfW41NCF8RcfS/ P6PgmDlyh642jL@d|Fc1-'vEHpGb18{sdu",
+          "outLen": 297
+        },
+        {
+          "tcId": 54,
+          "msg": "D1371005C0",
+          "len": 37,
+          "functionName": "TupleHash",
+          "customization": "$m^(IQXv!/hwCi%6*:8(Y'4Q;SDp=+%=(-HS_/&{e}{@!<I@ `(q+ep{Y,lt.hYu*K",
+          "outLen": 343
+        },
+        {
+          "tcId": 55,
+          "msg": "CC7B2F75BA1C5E95A2FD675DD8C7A6E777EDBF12B263CE0FC1C41AB6B66BE2566F0F08666440",
+          "len": 298,
+          "functionName": "KMAC",
+          "customization": "a1?U=|Ce{KFLG]aeT9yG^CzRs^Ae?xePEy$>,+yuM<J:.:WxM<d`H)8=6la^[]E#fu(MXCYI>%xBx`DY'G7$5&(<ae)>I<:puGS83+@+b:AD0uDTG(V5EBm`m",
+          "outLen": 325
+        },
+        {
+          "tcId": 56,
+          "msg": "70F5BF5C597A95125F9F6F98A91F1371576C7E26C89A03722BA65B51607DA58C319B8319",
+          "len": 288,
+          "functionName": "ParallelHash",
+          "customization": "Mb|GgLK<p!o#+'/nLkaU?$)q~X4^k'LU!)mM;XHMunpMMKK",
+          "outLen": 270
+        },
+        {
+          "tcId": 57,
+          "msg": "89919000",
+          "len": 26,
+          "functionName": "KMAC",
+          "customization": "",
+          "outLen": 283
+        },
+        {
+          "tcId": 58,
+          "msg": "D392FCD7AC00",
+          "len": 43,
+          "functionName": "ParallelHash",
+          "customization": "qE})K~?.<Wl>sl=?wx|Ahu{Dp9xt8E?r3=n?v[~78|XoOxrn}QDv8/S{IY72&Jtv8y+U}}H<xe)",
+          "outLen": 333
+        },
+        {
+          "tcId": 59,
+          "msg": "00",
+          "len": 2,
+          "functionName": "KMAC",
+          "customization": "?2]wJ:_k)|0hj5K[rd/01mzsM_c{'H5v^$$#bfk]CX*^[k2nSPPP>B.P7iJkUcd`h9+g2Hx,xQlWc<7aLtGUvcW;tQjx< '_sIuCaJ],VDWkUUlzQi>a<.h%`nq_^ ow",
+          "outLen": 311
+        },
+        {
+          "tcId": 60,
+          "msg": "006BD4265F7D3AC45F9ACE87D0DEA1B138B397BB0A0E506142FB9FF5E43C31F22EDCBEE4D0",
+          "len": 294,
+          "functionName": "TupleHash",
+          "customization": "_f6Pk1)n|h`+DS4qF1NWk4hn#7yY5D](37X(Z*<>6bja+-R[Q!n}BxCJ}GNS6NXX,Wv.y-6<s1B",
+          "outLen": 348
+        },
+        {
+          "tcId": 61,
+          "msg": "1050A6043E9405E1A002351A3313A9C1149605B384CF6A8DA1599692C65D3BD433841B2B88",
+          "len": 293,
+          "functionName": "TupleHash",
+          "customization": "f?kzT/un?'m,),v,S;bYS=**:t]wJ(}~3WV%!",
+          "outLen": 274
+        },
+        {
+          "tcId": 62,
+          "msg": "2CC68865C966E5F8479BF9A2045FE0B8BD6C0C73B36579889FEE405C8BAB0D46FD1507C0",
+          "len": 282,
+          "functionName": "TupleHash",
+          "customization": "9?8OHlOlexJL1HVvVtFVf |krbp!0C1g1dR8_GDig^wF'<LcC1GZQA 9B",
+          "outLen": 354
+        },
+        {
+          "tcId": 63,
+          "msg": "501CBEF31AF146231844A5C5BCAB67288BCB84A2AAEAB832FC636CDF4CBB999C3C80",
+          "len": 266,
+          "functionName": "KMAC",
+          "customization": ",m40EnYl=_,Wo.~b.M$92u+wAIJ^8J)*<foU4ae0MK]S^HU}T{Cv&.,6c<nzC{TqU#;)=INKgrjf9U9x",
+          "outLen": 276
+        },
+        {
+          "tcId": 64,
+          "msg": "B8",
+          "len": 7,
+          "functionName": "KMAC",
+          "customization": "9pj,(pwZA9(6*qQq}A@~p>9S:T?{ZTL}^A<*doTn3@If] !=KgHV/h]yV7pQPz kl)VgTH./lQlOsRu9R#Pr-uou",
+          "outLen": 324
+        },
+        {
+          "tcId": 65,
+          "msg": "3F5B5CFBFC71D178F72F1C3139B2655646EDBB0CE2981A36DCB7EFB8D5EB30B165C0",
+          "len": 268,
+          "functionName": "TupleHash",
+          "customization": "dG1dZo?Sf *ZPOYjYavth'-?Xi=lGE:u,: %ebx 0B<V",
+          "outLen": 342
+        },
+        {
+          "tcId": 66,
+          "msg": "874000587F84EF6087F22F258D9835178F1E4667CA1937FEBC936C2CC6608AC1483B9C",
+          "len": 279,
+          "functionName": "",
+          "customization": "J+utLs'_sP,5-kO 9^2|IY'bGBTtIWx^D?Jd1Vch&};XD^-aq#m=",
+          "outLen": 355
+        },
+        {
+          "tcId": 67,
+          "msg": "8DCD6609522872EB3A1B79D5DD878932D09819838AE2674C18BCC31DAF8B7A320C",
+          "len": 262,
+          "functionName": "TupleHash",
+          "customization": "r7Q]}JwA`$4YS?,h&WaO$RL?9)8U(.dB{=l9VK5LF]NCv,&M",
+          "outLen": 326
+        },
+        {
+          "tcId": 68,
+          "msg": "A3AED1F9D195F1924AFE3B7FBD72453844819183B7171CC6A3FD857433643D72FA4A00",
+          "len": 273,
+          "functionName": "KMAC",
+          "customization": "#1sR{P1Q`?yDw$Bn^lj|{T7AxjKgL24~F]ve3>HOu<.,Ton~X%qWfYZ",
+          "outLen": 257
+        },
+        {
+          "tcId": 69,
+          "msg": "643D5D",
+          "len": 24,
+          "functionName": "",
+          "customization": "9[4gjE(d=h}TRAp@m1% -|+zH7caKBkA7L3 K6=]=vP(D(Q3yOdK&vC<Q8?SbE9z{[=&/psWsGc5L#UAdOgz]@<@)vM3vhyv]T,hiL%)Z,V^4.nNb}",
+          "outLen": 346
+        },
+        {
+          "tcId": 70,
+          "msg": "A8A576B3E5FED1D1082580B2D5954959C25ADC7B4A7FAFB5365A4542F9808350E58A9B70",
+          "len": 284,
+          "functionName": "",
+          "customization": "$dW;gFWx!idCC}>wQ6?%t*$teW^}%p;S,.]gNveN@!gsIW4A1+t)Iu=ya",
+          "outLen": 299
+        },
+        {
+          "tcId": 71,
+          "msg": "043B011F20",
+          "len": 35,
+          "functionName": "",
+          "customization": "OdqdV{Nk.g4",
+          "outLen": 263
+        },
+        {
+          "tcId": 72,
+          "msg": "A61C6291CC",
+          "len": 39,
+          "functionName": "KMAC",
+          "customization": "c`s7uia-|8MiD?uo.l#EoQ)L0%SYK{#eDe50K>y|oS'Q/ddn.TTMttn2VG'p6'a!6gD^",
+          "outLen": 4096
+        },
+        {
+          "tcId": 73,
+          "msg": "5720E0",
+          "len": 21,
+          "functionName": "ParallelHash",
+          "customization": "{LND'?;%C{&&LnzJ~{ }7z<ai7qG*By{`#9&CmR#x%#'$B`4olv[A1D!1mYoMrz #)DJTt(2I|&2w6]FV^V<K=",
+          "outLen": 316
+        },
+        {
+          "tcId": 74,
+          "msg": "87CFA32D4506B72ED94A8B6952F7E8B6D3F7325ABCB0BB4AEFF9BF0F54EC6B43D8",
+          "len": 261,
+          "functionName": "ParallelHash",
+          "customization": "@bLIDn[RR",
+          "outLen": 269
+        },
+        {
+          "tcId": 75,
+          "msg": "33D2B19F4EECF56C32CD98F683088041A5406FFEDB9B6BA15D926833DB3A63AD5B5EEFC180",
+          "len": 289,
+          "functionName": "TupleHash",
+          "customization": "E6vh )Nwok'p%CCo-_}=L)6[ds'P}kua5(K}h,EZ;!DUqd/D; {$ 1F<~:$-!}x$uE[{vE' :C#Jd_j db5",
+          "outLen": 319
+        },
+        {
+          "tcId": 76,
+          "msg": "13976D4C73873BD17FE927D564E46AE52386ED59E9B19AC80E5A8187CC8930A72A66EDBEB09500",
+          "len": 306,
+          "functionName": "",
+          "customization": "1.opS%r",
+          "outLen": 309
+        },
+        {
+          "tcId": 77,
+          "msg": "96B72F5F9A6F3EC99C39586FA674CA8DE0F3B6DCDFD4F4E3EBA071D4E4843D32C8A77F5A",
+          "len": 287,
+          "functionName": "",
+          "customization": "vdWo",
+          "outLen": 344
+        },
+        {
+          "tcId": 78,
+          "msg": "E58FCA2B7C80",
+          "len": 42,
+          "functionName": "KMAC",
+          "customization": "N-*?6N9n!{Rb3PSxOPjDY%kaKM]x#wDQ,]t3iY.7p+dbQ<8z~+?!eyDI@Grhq?l*V!UU[A0uCRRN@)0/5bywXCl28JqBfDEQ",
+          "outLen": 267
+        },
+        {
+          "tcId": 79,
+          "msg": "3000A5A4D6B43FF731CD4BF8685C4FC1BC27EF2723BB60D817CAB50D4D3458BFFF3FB8BAE5A0",
+          "len": 302,
+          "functionName": "",
+          "customization": "@}[T+Ig7f1c[ivPUs*^.a^q^<[`Cwp@TogPa%j]M).$E",
+          "outLen": 320
+        },
+        {
+          "tcId": 80,
+          "msg": "0C2D40",
+          "len": 19,
+          "functionName": "KMAC",
+          "customization": "n.n@TXHmE}_`kFH>h`g=5}Br&+`p7j/sshbF%ihI@!E(cziW7IpHL[yokz:IwVUYojk$d!:",
+          "outLen": 289
+        },
+        {
+          "tcId": 81,
+          "msg": "AADD42BB1F753212E1B18B73273CEA3A2EED720840EA9ABE010EF95497BDED8480",
+          "len": 257,
+          "functionName": "",
+          "customization": "eNtl= P}fH~)u2bHA~]Uf*6CK/yE~IeiJM>K)G@y5fLz,*4hMjvo_)mZ8PA/&+}=c6]Gr6?y_bA ];7Bz1w5Ru+B_c4V'2s*g08uKk",
+          "outLen": 293
+        },
+        {
+          "tcId": 82,
+          "msg": "7FA37919",
+          "len": 32,
+          "functionName": "KMAC",
+          "customization": "}#=7@^xSI9g#Y9j[{-'%@V}MJ-_v9a$3v_0i4T06XAo:;M9r,3yV;L.F$nk3}#:h6S+y* HF|oJ}gd3|skk'fLwJQheDh|7V('$fB>i+jRXK#/_?",
+          "outLen": 277
+        },
+        {
+          "tcId": 83,
+          "msg": "00",
+          "len": 1,
+          "functionName": "KMAC",
+          "customization": "E9@~ Za9VX2JWQ9",
+          "outLen": 323
+        },
+        {
+          "tcId": 84,
+          "msg": "F67DF89F30",
+          "len": 36,
+          "functionName": "KMAC",
+          "customization": "x4>u%B&{Kn7X;U0E'Rs<-@R%7B|:q%z/G}g&r3GU%bKc',;aYZ$+LljW`:_bDk*Gr)2<n+Qs+>8Jto|+(<`7 pbY30EWSe19W%",
+          "outLen": 291
+        },
+        {
+          "tcId": 85,
+          "msg": "176433B71EC523B4B578DC14798D8741CC237B712CFEF8BCCC64DBF25FAAEB975CE3E0",
+          "len": 275,
+          "functionName": "",
+          "customization": "#hnj'B[U}_gX*",
+          "outLen": 349
+        },
+        {
+          "tcId": 86,
+          "msg": "20",
+          "len": 5,
+          "functionName": "ParallelHash",
+          "customization": ",uJ]B.A7'pb[90Y3N!~lFlGwoodbb.2Mr$ih2A6",
+          "outLen": 322
+        },
+        {
+          "tcId": 87,
+          "msg": "54DF4EF46C7622F01CD41137D25FDA4A3BF8A6104A9E5D8DFFD2A43D85EA305B34",
+          "len": 263,
+          "functionName": "KMAC",
+          "customization": "530^@;&p-44Eo36G~~7SMEYfz[WG4 %Yfn` XOO>ye@^ZxR?IQdWz=%oWIbdb^[,/X^ R6mNOwYh%{,#)9|b<L_IjoG0ljZ;*4N!;Rk4d5)#c<j[>`ZI`yobx56",
+          "outLen": 331
+        },
+        {
+          "tcId": 88,
+          "msg": "24A65AC43538337A2DD38737CF1C337E6DA8220F6511761AD3F8D612BAAE2F65F88713A28600",
+          "len": 301,
+          "functionName": "ParallelHash",
+          "customization": "fuhsU,ntrlItQNSiJgIx*L'gw#I[C?sxDf+ye_&}KLS",
+          "outLen": 259
+        },
+        {
+          "tcId": 89,
+          "msg": "409E5E7A729E9E12504875F232271D1FD54D7714769F855A2F03D370CE5AFD364E062E48B28E",
+          "len": 303,
+          "functionName": "KMAC",
+          "customization": "e/Zqe8=(|~u}DJj0#f6a*c.OSOxx(%YQ}5){`uIiJkOo@:)XUf,SJ)K! ,=5?D wDD~0BmO-<L7>3>/9F?B@w&(uh'zSW4I'",
+          "outLen": 332
+        },
+        {
+          "tcId": 90,
+          "msg": "F35D2ABB3CC5244C0A990687BF5EB3C822694838FD19A35114ACFE1FC2B08A14ADC0",
+          "len": 269,
+          "functionName": "",
+          "customization": "{j={'Rc~&ZG^XqJ{YN&$:cF}HFdG_w[rh!u|y[~IU_FDh",
+          "outLen": 350
+        },
+        {
+          "tcId": 91,
+          "msg": "A87F856809E4C97A1BFDF6E2C758C91609EA746F9BBCB933E7AD9636EE0FD1807ACA9C201A70",
+          "len": 300,
+          "functionName": "KMAC",
+          "customization": "_|*XJth~ vm?@&2,B8|WPUudtJ-mQ{O@Qf,rVA}$c@LEzuR}6]9eQc))'Ec~gzM%FLlXx>T!:xs1*Oi~w/Wscjmn^#l2]};hqH}M)y%v)7JXnw~U[d(XBY@[^",
+          "outLen": 271
+        },
+        {
+          "tcId": 92,
+          "msg": "EF80",
+          "len": 9,
+          "functionName": "TupleHash",
+          "customization": "fzM[Bhc;Ku?70O[o)(UeU5.]~zT5nc9t4i^n:!U^B  m%x7,uQw1lf'Pmo]F3MKh[I$FpmT'QvBU5?X'cH?=k)(Mb",
+          "outLen": 278
+        },
+        {
+          "tcId": 93,
+          "msg": "84BEF1413372ABCA439F8C9E898F5AF837DF159DC82291DA546C1DCC454EA6DF638B40",
+          "len": 276,
+          "functionName": "TupleHash",
+          "customization": "vAILG!I.smpj*C3xOj;k0#75Q>PNT*lB_l%j+STs8o9Om!:m3$h?LJPt*5z)PyXj N,<>Hn{6GS@hgFO%b<PAMt4;0`uWLB=7NN>u|Ni5l*%v",
+          "outLen": 300
+        },
+        {
+          "tcId": 94,
+          "msg": "505C3F30",
+          "len": 28,
+          "functionName": "TupleHash",
+          "customization": "=2T~0|JE|%;#J~<$Rr3v|v1R^ .cImn[",
+          "outLen": 286
+        },
+        {
+          "tcId": 95,
+          "msg": "2890C4",
+          "len": 23,
+          "functionName": "KMAC",
+          "customization": "hXs0M175AUIZPodrB/J-C<my{3+6oc'k@Uef.",
+          "outLen": 304
+        },
+        {
+          "tcId": 96,
+          "msg": "8D0955B3EEC1BB81F67A058165A42202A6C73D460DBC8AC947653AB7E0249913A6F10EA960",
+          "len": 292,
+          "functionName": "ParallelHash",
+          "customization": "sdd-vh3B/`'UiJ:^Tc&~4~%~ycT]?qfv/ZJin_Z`K2i}-2K{VBW(J/Js_d334T#<x",
+          "outLen": 310
+        },
+        {
+          "tcId": 97,
+          "msg": "A1A0",
+          "len": 12,
+          "functionName": "ParallelHash",
+          "customization": " 6j U=ZCFseaM~trCwJC.|:vO1k%",
+          "outLen": 279
+        },
+        {
+          "tcId": 98,
+          "msg": "361F167FA48045692EC1BE01B6F49CA46FD7CBBACFC43C881D6D071CACC325458229A95D73",
+          "len": 296,
+          "functionName": "ParallelHash",
+          "customization": "|)#E[moB[&TkoR]",
+          "outLen": 351
+        },
+        {
+          "tcId": 99,
+          "msg": "9D27DB91871324C9D982419353A1B05AD4DF57CDD074CF6EAA98063D63F71209EA",
+          "len": 264,
+          "functionName": "",
+          "customization": "D]uJi])MJ57z3e#h~b0#]wJekj^Em2f2>1#r`k/i%EH",
+          "outLen": 315
+        },
+        {
+          "tcId": 100,
+          "msg": "C707EB882869F8CE74A7663442A3DDE438A9F21713BB0B6ADBD488B5A1B8803DBBB5FC",
+          "len": 278,
+          "functionName": "TupleHash",
+          "customization": "AaW#LXzxM|j8nhS&zBu|`us:h-wLu6!QtBO94hCJQw,,YI+:M",
+          "outLen": 329
+        }
+      ]
+    },
+    {
+      "tgId": 2,
+      "testType": "MCT",
+      "hexCustomization": false,
+      "minOutLen": 256,
+      "maxOutLen": 4096,
+      "outLenIncrement": 1,
+      "tests": [
+        {
+          "tcId": 101,
+          "msg": "64160E6663A5C8E916060FF6358957C6",
+          "len": 128,
+          "functionName": "",
+          "customization": ""
+        }
+      ]
+    }
+  ]
+}

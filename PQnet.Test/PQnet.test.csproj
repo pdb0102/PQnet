@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>mldsa_net.test</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Vectors\ML-DSA\keyGen\expectedResults.json" />
+    <None Remove="Vectors\ML-DSA\keyGen\prompt.json" />
+    <None Remove="Vectors\ML-DSA\sigGen\expectedResults.json" />
+    <None Remove="Vectors\ML-DSA\sigGen\prompt.json" />
+    <None Remove="Vectors\ML-DSA\sigVer\expectedResults.json" />
+    <None Remove="Vectors\ML-DSA\sigVer\prompt.json" />
+    <None Remove="Vectors\SLH-DSA\keyGen\expectedResults.json" />
+    <None Remove="Vectors\SLH-DSA\keyGen\prompt.json" />
+    <None Remove="Vectors\SLH-DSA\sigGen\expectedResults.json" />
+    <None Remove="Vectors\SLH-DSA\sigGen\prompt.json" />
+    <None Remove="Vectors\SLH-DSA\sigVer\expectedResults.json" />
+    <None Remove="Vectors\SLH-DSA\sigVer\prompt.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest" Version="3.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Vectors\ML-DSA\keyGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\keyGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigVer\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-DSA\sigVer\prompt.json" />
+    <EmbeddedResource Include="Vectors\SLH-DSA\keyGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\SLH-DSA\keyGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\SLH-DSA\sigGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\SLH-DSA\sigGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\SLH-DSA\sigVer\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\SLH-DSA\sigVer\prompt.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Vectors\cSHAKE-128\" />
+    <Folder Include="Vectors\cSHAKE-256\" />
+    <Folder Include="Vectors\SHA2-512\" />
+    <Folder Include="Vectors\SHA2-256\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PQnet\PQnet.csproj" />
+  </ItemGroup>
+
+</Project>
