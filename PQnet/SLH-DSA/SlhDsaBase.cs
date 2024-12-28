@@ -446,7 +446,7 @@ namespace PQnet.SLH_DSA {
 			mask = (1 << h_prime) - 1;
 			for (int j = 1; j < d; j++) {
 				idx_leaf = idx_tree & mask;
-				idx_tree >>= h_prime;
+				idx_tree = (long)((ulong)idx_tree >> h_prime);
 				adrs.SetLayerAddress((uint)j);
 				adrs.SetTreeAddress((ulong)idx_tree);
 				sig_tmp = xmss_sign(root, sk_seed, idx_leaf, pk_seed, adrs);
@@ -484,7 +484,7 @@ namespace PQnet.SLH_DSA {
 			mask = (1 << h_prime) - 1;
 			for (int j = 1; j < d; j++) {
 				idx_leaf = idx_tree & mask;
-				idx_tree >>= h_prime;
+				idx_tree = (long)((ulong)idx_tree >> h_prime);
 				adrs.SetLayerAddress((uint)j);
 				adrs.SetTreeAddress((ulong)idx_tree);
 				sig_tmp = new byte[(h_prime + len) * n];
@@ -728,8 +728,14 @@ namespace PQnet.SLH_DSA {
 			tmp_idx_tree = GetDigestPart(ka, (h_hd + 7) / 8);
 			tmp_idx_leaf = GetDigestPart(ka + ((h_hd + 7) / 8), (hd + 7) / 8);
 
-			idx_tree = toInt(tmp_idx_tree, (h_hd + 7) / 8) % ((long)1 << h_hd);
-			idx_leaf = toInt(tmp_idx_leaf, (hd + 7) / 8) % ((long)1 << hd);
+			idx_tree = toInt(tmp_idx_tree, (h_hd + 7) / 8);
+			if (h_hd < 64) {
+				idx_tree = (long)((ulong)idx_tree % (1ul << h_hd));
+			}
+			idx_leaf = toInt(tmp_idx_leaf, (hd + 7) / 8);
+			if (hd < 32) {
+				idx_leaf %= (long)1 << hd;
+			}
 
 			adrs.SetTreeAddress((ulong)idx_tree);
 			adrs.SetTypeAndClear(AddressType.ForsTree);
@@ -804,8 +810,14 @@ namespace PQnet.SLH_DSA {
 			tmp_idx_tree = GetDigestPart(ka, (h_hd + 7) / 8);
 			tmp_idx_leaf = GetDigestPart(ka + ((h_hd + 7) / 8), (hd + 7) / 8);
 
-			idx_tree = toInt(tmp_idx_tree, (h_hd + 7) / 8) % ((long)1 << h_hd);
-			idx_leaf = toInt(tmp_idx_leaf, (hd + 7) / 8) % ((long)1 << hd);
+			idx_tree = toInt(tmp_idx_tree, (h_hd + 7) / 8);
+			if (h_hd < 64) {
+				idx_tree = (long)((ulong)idx_tree % (1ul << h_hd));
+			}
+			idx_leaf = toInt(tmp_idx_leaf, (hd + 7) / 8);
+			if (hd < 32) {
+				idx_leaf %= (long)1 << hd;
+			}
 
 			adrs.SetTreeAddress((ulong)idx_tree);
 			adrs.SetTypeAndClear(AddressType.ForsTree);
