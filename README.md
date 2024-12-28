@@ -1,4 +1,4 @@
-# PQNet
+# PQnet
 
 PQnet is a managed implementation of NIST Post-Quantum algorithms:
  * SLH-DSA (FIPS 205) implemented directly from NIST specification
