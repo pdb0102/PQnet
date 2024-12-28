@@ -56,6 +56,10 @@ Getting started:
     // Verify signature
     authentic = slhDsaShake_256f.VerifyHash(digest, public_key, PreHashFunction.SHA256, signature);
 
+## Documentation
+  API documentation can be found at 
+  [Sandcastle/Documentation/Home.md](Sandcastle/Documentation/Home.md)
+
 ### All ACVP test vectors pass for:
   - ML-DSA 
   - SLH-DSA
