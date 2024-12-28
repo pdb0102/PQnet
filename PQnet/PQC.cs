@@ -26,6 +26,11 @@ using PQnet.SLH_DSA;
 
 namespace PQnet {
 	/// <summary>
+	/// The <c>PQnet</c> namespace contains classes and methods for post-quantum cryptographic algorithms.
+	/// </summary>
+	static class NamespaceDoc { }
+
+	/// <summary>
 	/// Provides access to various post-quantum cryptographic algorithms.
 	/// </summary>
 	public static class PQC {
