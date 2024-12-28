@@ -49,7 +49,7 @@ namespace PQnet.test {
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet);
+					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, true);
 					if (slh_dsa.Name.Contains("SHA2")) {
 						continue;
 					}
@@ -83,7 +83,7 @@ namespace PQnet.test {
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet);
+					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 					if (slh_dsa.Name.Contains("SHA2")) {
 						continue;
 					}
@@ -116,7 +116,7 @@ namespace PQnet.test {
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet);
+					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, true);
 					if (slh_dsa.Name.Contains("SHA2")) {
 						continue;
 					}
@@ -128,32 +128,32 @@ namespace PQnet.test {
 			}
 		}
 
-		private SlhDsaBase GetAlgorithm(string parameter_set) {
+		private SlhDsaBase GetAlgorithm(string parameter_set, bool deterministic) {
 			switch (parameter_set) {
 				case "SLH-DSA-SHA2-128s":
-					return new SlhDsaSha2_128s(true);
+					return new SlhDsaSha2_128s(deterministic);
 				case "SLH-DSA-SHA2-128f":
-					return new SlhDsaSha2_128f(true);
+					return new SlhDsaSha2_128f(deterministic);
 				case "SLH-DSA-SHA2-192s":
-					return new SlhDsaSha2_192s(true);
+					return new SlhDsaSha2_192s(deterministic);
 				case "SLH-DSA-SHA2-192f":
-					return new SlhDsaSha2_192f(true);
+					return new SlhDsaSha2_192f(deterministic);
 				case "SLH-DSA-SHA2-256s":
-					return new SlhDsaSha2_256s(true);
+					return new SlhDsaSha2_256s(deterministic);
 				case "SLH-DSA-SHA2-256f":
-					return new SlhDsaSha2_256f(true);
+					return new SlhDsaSha2_256f(deterministic);
 				case "SLH-DSA-SHAKE-128s":
-					return new SlhDsaShake_128s(true);
+					return new SlhDsaShake_128s(deterministic);
 				case "SLH-DSA-SHAKE-128f":
-					return new SlhDsaShake_128f(true);
+					return new SlhDsaShake_128f(deterministic);
 				case "SLH-DSA-SHAKE-192s":
-					return new SlhDsaShake_192s(true);
+					return new SlhDsaShake_192s(deterministic);
 				case "SLH-DSA-SHAKE-192f":
-					return new SlhDsaShake_192f(true);
+					return new SlhDsaShake_192f(deterministic);
 				case "SLH-DSA-SHAKE-256s":
-					return new SlhDsaShake_256s(true);
+					return new SlhDsaShake_256s(deterministic);
 				case "SLH-DSA-SHAKE-256f":
-					return new SlhDsaShake_256f(true);
+					return new SlhDsaShake_256f(deterministic);
 
 				default:
 					throw new NotImplementedException($"ParameterSet {parameter_set} not supported");

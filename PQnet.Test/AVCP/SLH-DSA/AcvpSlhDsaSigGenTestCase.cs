@@ -76,7 +76,7 @@ namespace PQnet.test.AVCP {
 		/// <summary>
 		/// When the test group properties "testType": "AFT" and "deterministic": false, the random value used to generate the signature
 		/// </summary>
-		[DataMember(Name = "rnd")]
+		[DataMember(Name = "additionalRandomness")]
 		public string Random { get; set; }
 
 		/// <summary>
