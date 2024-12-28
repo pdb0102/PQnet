@@ -24,7 +24,7 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	public abstract partial class SlhDsaBase : ISecurityCategory {
 		private IHashAlgorithm hash;
 		private int n;
@@ -49,6 +49,18 @@ namespace PQnet.SLH_DSA {
 
 		private string name;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SlhDsaBase"/> class.
+		/// </summary>
+		/// <param name="hash"></param>
+		/// <param name="n"></param>
+		/// <param name="h"></param>
+		/// <param name="d"></param>
+		/// <param name="hp"></param>
+		/// <param name="a"></param>
+		/// <param name="k"></param>
+		/// <param name="lg_w"></param>
+		/// <param name="m"></param>
 		public SlhDsaBase(IHashAlgorithm hash, int n = 16, int h = 66, int d = 22, int hp = 3, int a = 6, int k = 33, int lg_w = 4, int m = 34) {
 			this.hash = hash;
 			this.n = n;
@@ -119,9 +131,8 @@ namespace PQnet.SLH_DSA {
 		/// <summary>
 		/// FIPS 205 Algorithm 2 
 		/// </summary>
-		/// <param name="b"></param>
-		/// <param name="offset"></param>
-		/// <param name="i"></param>
+		/// <param name="x"></param>
+		/// <param name="n"></param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long toInt(byte[] x, int n) {
 			long l;
@@ -154,7 +165,7 @@ namespace PQnet.SLH_DSA {
 		/// FIPS 205 Algorithm 4 - Computes the base 2𝑏 representation of 𝑋.
 		/// </summary>
 		/// <param name="x">Byte string 𝑋 of length at least ⌈𝑜𝑢𝑡_𝑙𝑒𝑛⋅𝑏 / 8 ⌉</param>
-		/// <param name="i">Integer</param>
+		/// <param name="b">Integer</param>
 		/// <param name="out_len">output length</param>
 		/// <returns>Array of 𝑜𝑢𝑡_𝑙𝑒𝑛 integers in the range[0, … , 2𝑏 − 1]</returns>
 		private long[] base_2b(byte[] x, int b, uint out_len) {

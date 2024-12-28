@@ -23,7 +23,7 @@
 
 using System.Security.Cryptography;
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	internal class Sha2SecCat35Hash : IHashAlgorithm {
 		private int n;
 		private int m;

@@ -23,7 +23,7 @@
 
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 
 	public abstract partial class MlDsaBase {
 		private const int QINV = 58728449; // q^(-1) mod 2^32
@@ -35,7 +35,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="a">finite field element a</param>
 		/// <returns>r</returns>
 		/// <remarks>
-		/// For finite field element a with -2^{31}Q <= a <= Q*2^31, compute r \equiv a*2^{-32} (mod Q) such that -Q < r < Q.
+		/// For finite field element a with -2^{31}Q &lt;= a &lt;= Q*2^31, compute r \equiv a*2^{-32} (mod Q) such that -Q &lt; r &lt; Q.
 		/// </remarks>
 		private int montgomery_reduce(long a) {
 			int t;
@@ -51,7 +51,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="a">finite field element a</param>
 		/// <returns>r</returns>
 		/// <remarks>
-		/// For finite field element a with a <= 2^{31} - 2^{22} - 1, compute r \equiv a (mod Q) such that -6283008 <= r <= 6283008.
+		/// For finite field element a with a &lt;= 2^{31} - 2^{22} - 1, compute r \equiv a (mod Q) such that -6283008 &lt;= r &lt;= 6283008.
 		/// </remarks>
 		private int reduce32(int a) {
 			int t;

@@ -27,7 +27,7 @@ using System.Diagnostics;
 
 using PQnet.Digest;
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	public abstract partial class MlDsaBase {
 		private const int STREAM128_BLOCKBYTES = Shake.SHAKE128_RATE;
 		private const int STREAM256_BLOCKBYTES = Shake.SHAKE256_RATE;

@@ -25,7 +25,7 @@ using System.Security.Cryptography;
 
 using PQnet.Digest;
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	/// <summary>
 	/// FIPS 205 Section 11.1 SHAKE
 	/// </summary>

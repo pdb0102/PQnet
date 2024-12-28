@@ -3,7 +3,7 @@
 
 Gets a ML-DSA-44 signature scheme object.
 
-**Namespace:**&nbsp;<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d.md">PQnet</a><br />**Assembly:**&nbsp;PQnet (in PQnet.dll) Version: 1.0.0+2389d30bd26bfacd2eb83d96ee6ec4c7b3ca4606
+**Namespace:**&nbsp;<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d.md">PQnet</a><br />**Assembly:**&nbsp;PQnet (in PQnet.dll) Version: 1.0.0+12584ed77717a7c7a23b24a8fa46e5237f71a5c8
 
 ## Syntax
 
@@ -21,7 +21,7 @@ Public Shared ReadOnly Property MlDsa44 As MlDsa44
 <br />
 
 #### Property Value
-Type: <a href="6ced723b-94b9-cefc-3c4e-51e99bd94fb4.md">MlDsa44</a>
+Type: <a href="6140b821-bd40-cffe-8323-815b97b9a800.md">MlDsa44</a>
 
 ## See Also
 

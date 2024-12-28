@@ -23,7 +23,6 @@
 
 using System.Diagnostics;
 
-using PQnet.SLH_DSA;
 using PQnet.test.AVCP;
 
 namespace PQnet.test {

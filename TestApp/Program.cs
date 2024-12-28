@@ -3,8 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 
 using PQnet;
-using PQnet.ML_DSA;
-using PQnet.SLH_DSA;
 
 
 // Sample use of ML-DSA

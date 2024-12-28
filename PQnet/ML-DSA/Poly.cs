@@ -27,7 +27,7 @@ using System.Diagnostics;
 
 using PQnet.Digest;
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	public abstract partial class MlDsaBase {
 		private const int POLY_UNIFORM_NBLOCKS = (768 + STREAM128_BLOCKBYTES - 1) / STREAM128_BLOCKBYTES;
 
@@ -160,7 +160,7 @@ namespace PQnet.ML_DSA {
 		}
 
 		/// <summary>
-		/// For all coefficients c of the input polynomial, compute c0, c1 such that c mod Q = c1*2^D + c0 with -2^{D-1} < c0 <= 2^{D-1}. 
+		/// For all coefficients c of the input polynomial, compute c0, c1 such that c mod Q = c1*2^D + c0 with -2^{D-1} &lt; c0 &lt;= 2^{D-1}. 
 		/// </summary>
 		/// <param name="a1">polynomial with coefficients c1</param>
 		/// <param name="a0">polynomial with coefficients c0</param>
@@ -175,7 +175,7 @@ namespace PQnet.ML_DSA {
 		}
 
 		/// <summary>
-		/// For all coefficients c of the input polynomial, compute high and low bits c0, c1 such c mod Q = c1*ALPHA + c0 with -ALPHA/2 < c0 <= ALPHA/2 except c1 = (Q-1)/ALPHA where we set c1 = 0 and -ALPHA/2 <= c0 = c mod Q - Q < 0.
+		/// For all coefficients c of the input polynomial, compute high and low bits c0, c1 such c mod Q = c1*ALPHA + c0 with -ALPHA/2 &lt; c0 &lt;= ALPHA/2 except c1 = (Q-1)/ALPHA where we set c1 = 0 and -ALPHA/2 &lt;= c0 = c mod Q - Q &lt; 0.
 		/// </summary>
 		/// <param name="a1"></param>
 		/// <param name="a0"></param>
@@ -227,7 +227,7 @@ namespace PQnet.ML_DSA {
 		/// </summary>
 		/// <param name="a">polynomial</param>
 		/// <param name="B">norm bound</param>
-		/// <returns>0 if norm is strictly smaller than B <= (Q-1)/8 and 1 otherwise.</returns>
+		/// <returns>0 if norm is strictly smaller than B &lt;= (Q-1)/8 and 1 otherwise.</returns>
 		/// <remarks>
 		/// Assumes input coefficients were reduced by reduce32().
 		/// </remarks>
@@ -259,8 +259,10 @@ namespace PQnet.ML_DSA {
 		/// Sample uniformly random coefficients in [0, Q-1] by performing rejection sampling on array of random bytes
 		/// </summary>
 		/// <param name="a">output array</param>
+		/// <param name="a_offset">offset in output array</param>
 		/// <param name="len">number of coefficients to be sampled</param>
 		/// <param name="buf">array of random bytes</param>
+		/// <param name="buflen">length of array of random bytes</param>
 		/// <returns></returns>
 		private int rej_uniform(int[] a, int a_offset, int len, byte[] buf, int buflen) {
 			int ctr;

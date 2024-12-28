@@ -23,7 +23,7 @@
 
 using System.Runtime.CompilerServices;
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	/// <summary>
 	/// FIPS 205 Section 4.4 Arrays, Byte Strings, and Integers
 	/// </summary>

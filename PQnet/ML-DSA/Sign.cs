@@ -28,7 +28,7 @@ using System.Security.Cryptography;
 
 using PQnet.Digest;
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	public abstract partial class MlDsaBase {
 		/*************************************************
 		* Name:        crypto_sign_keypair
@@ -42,7 +42,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success)
 		**************************************************/
-		public bool ml_keygen(out byte[] pk, out byte[] sk, byte[] seed = null) {
+		internal bool ml_keygen(out byte[] pk, out byte[] sk, byte[] seed = null) {
 			byte[] seedbuf;
 			byte[] tr;
 			byte[] rho;
@@ -280,7 +280,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success) or -1 (context string too long)
 		**************************************************/
-		public int ml_sign(out byte[] sig, byte[] m, byte[] ctx, byte[] sk) {
+		internal int ml_sign(out byte[] sig, byte[] m, byte[] ctx, byte[] sk) {
 			int i;
 			byte[] pre;
 			byte[] rnd;
@@ -390,7 +390,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success) or -1 (context string too long)
 		**************************************************/
-		public int ml_sign_message(out byte[] sm, byte[] m, byte[] ctx, byte[] sk) {
+		internal int ml_sign_message(out byte[] sm, byte[] m, byte[] ctx, byte[] sk) {
 			int ret;
 			byte[] sig;
 
@@ -525,7 +525,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 if signature could be verified correctly and -1 otherwise
 		**************************************************/
-		public int ml_verify(byte[] sig, byte[] m, byte[] ctx, byte[] pk) {
+		internal int ml_verify(byte[] sig, byte[] m, byte[] ctx, byte[] pk) {
 			int i;
 			byte[] pre;
 
@@ -552,7 +552,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="pk">Public key</param>
 		/// <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
 		/// <exception cref="ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
-		public bool hash_ml_verify(byte[] m, byte[] sig, byte[] ctx, PreHashFunction ph, byte[] pk) {
+		internal bool hash_ml_verify(byte[] m, byte[] sig, byte[] ctx, PreHashFunction ph, byte[] pk) {
 			byte[] m_prime;
 			byte[] ph_m;
 			byte[] oid;

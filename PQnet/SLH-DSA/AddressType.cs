@@ -21,7 +21,7 @@
 // SOFTWARE.
 //
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	/// <summary>
 	/// FIPS 205 Section 4.2 - Enumeration of the different types of addresses used in the SLH-DSA algorithm.
 	/// </summary>

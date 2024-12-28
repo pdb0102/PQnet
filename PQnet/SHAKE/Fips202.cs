@@ -25,6 +25,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace PQnet.Digest {
+	/// <summary>
+	/// Implements the SHA-3 and SHAKE hash functions.
+	/// </summary>
 	public static class Shake {
 		/* Based on the public domain implementation in crypto_hash/keccakc512/simple/ from
 		 * http://bench.cr.yp.to/supercop.html by Ronny Van Keer and the public domain "TweetFips202"
@@ -48,11 +51,23 @@ namespace PQnet.Digest {
 			0x8000000080008081UL, 0x8000000000008080UL, 0x0000000080000001UL, 0x8000000080008008UL
 		};
 
+		/// <summary>
+		/// The state of the Keccak sponge function.
+		/// </summary>
 		public class keccak_state {
+			/// <summary>
+			/// Initializes a new instance of the <see cref="keccak_state"/> class.
+			/// </summary>
 			public keccak_state() {
 				s = new ulong[25];
 			}
+			/// <summary>
+			/// The state of the Keccak sponge function.
+			/// </summary>
 			public ulong[] s;
+			/// <summary>
+			/// The position in the current block.
+			/// </summary>
 			public int pos;
 		}
 
@@ -553,6 +568,10 @@ namespace PQnet.Digest {
 		*
 		* Arguments:   - keccak_state *state: pointer to (uninitialized) Keccak state
 		**************************************************/
+		/// <summary>
+		/// Initializes the Keccak state for use as SHAKE128 XOF.
+		/// </summary>
+		/// <param name="state"></param>
 		public static void shake128_init(keccak_state state) {
 			keccak_init(state.s);
 			state.pos = 0;
@@ -567,6 +586,12 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input to be absorbed into s
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// Absorb step of the SHAKE128 XOF; incremental.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void shake128_absorb(keccak_state state, byte[] in_buf, int inlen) {
 			state.pos = keccak_absorb(state.s, state.pos, SHAKE128_RATE, in_buf, inlen);
 		}
@@ -578,6 +603,10 @@ namespace PQnet.Digest {
 		*
 		* Arguments:   - keccak_state *state: pointer to Keccak state
 		**************************************************/
+		/// <summary>
+		/// Finalize absorb step of the SHAKE128 XOF.
+		/// </summary>
+		/// <param name="state"></param>
 		public static void shake128_finalize(keccak_state state) {
 			keccak_finalize(state.s, state.pos, SHAKE128_RATE, 0x1F);
 			state.pos = SHAKE128_RATE;
@@ -593,6 +622,13 @@ namespace PQnet.Digest {
 		*              - int outlen : number of bytes to be squeezed (written to output)
 		*              - keccak_state *s: pointer to input/output Keccak state
 		**************************************************/
+		/// <summary>
+		/// Squeeze step of SHAKE128 XOF. Squeezes arbitrarily many bytes.
+		/// </summary>
+		/// <param name="out_buf"></param>
+		/// <param name="out_buf_pos"></param>
+		/// <param name="outlen"></param>
+		/// <param name="state"></param>
 		public static void shake128_squeeze(byte[] out_buf, int out_buf_pos, int outlen, keccak_state state) {
 			state.pos = keccak_squeeze(out_buf, out_buf_pos, outlen, state.s, state.pos, SHAKE128_RATE);
 		}
@@ -606,6 +642,12 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input to be absorbed into s
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// Initialize, absorb into and finalize SHAKE128 XOF; non-incremental.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void shake128_absorb_once(keccak_state state, byte[] in_buf, int inlen) {
 			keccak_absorb_once(state.s, SHAKE128_RATE, in_buf, inlen, 0x1F);
 			state.pos = SHAKE128_RATE;
@@ -623,6 +665,13 @@ namespace PQnet.Digest {
 		*              - int nblocks: number of blocks to be squeezed (written to output)
 		*              - keccak_state *s: pointer to input/output Keccak state
 		**************************************************/
+		/// <summary>
+		/// Squeeze step of SHAKE128 XOF. Squeezes full blocks of SHAKE128_RATE bytes each.
+		/// </summary>
+		/// <param name="out_buf"></param>
+		/// <param name="out_buf_pos"></param>
+		/// <param name="nblocks"></param>
+		/// <param name="state"></param>
 		public static void shake128_squeezeblocks(byte[] out_buf, int out_buf_pos, int nblocks, keccak_state state) {
 			keccak_squeezeblocks(out_buf, out_buf_pos, nblocks, state.s, SHAKE128_RATE);
 		}
@@ -634,6 +683,10 @@ namespace PQnet.Digest {
 		*
 		* Arguments:   - keccak_state *state: pointer to (uninitialized) Keccak state
 		**************************************************/
+		/// <summary>
+		/// Initializes the Keccak state for use as SHAKE256 XOF.
+		/// </summary>
+		/// <param name="state"></param>
 		public static void shake256_init(keccak_state state) {
 			keccak_init(state.s);
 			state.pos = 0;
@@ -648,6 +701,12 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input to be absorbed into s
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// Absorb step of the SHAKE256 XOF; incremental.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void shake256_absorb(keccak_state state, byte[] in_buf, int inlen) {
 			state.pos = keccak_absorb(state.s, state.pos, SHAKE256_RATE, in_buf, inlen);
 		}
@@ -659,6 +718,10 @@ namespace PQnet.Digest {
 		*
 		* Arguments:   - keccak_state *state: pointer to Keccak state
 		**************************************************/
+		/// <summary>
+		/// Finalize absorb step of the SHAKE256 XOF.
+		/// </summary>
+		/// <param name="state"></param>
 		public static void shake256_finalize(keccak_state state) {
 			keccak_finalize(state.s, state.pos, SHAKE256_RATE, 0x1F);
 			state.pos = SHAKE256_RATE;
@@ -674,6 +737,13 @@ namespace PQnet.Digest {
 		*              - int outlen : number of bytes to be squeezed (written to output)
 		*              - keccak_state *s: pointer to input/output Keccak state
 		**************************************************/
+		/// <summary>
+		/// Squeeze step of SHAKE256 XOF. Squeezes arbitrarily many bytes.
+		/// </summary>
+		/// <param name="out_buf"></param>
+		/// <param name="out_buf_pos"></param>
+		/// <param name="outlen"></param>
+		/// <param name="state"></param>
 		public static void shake256_squeeze(byte[] out_buf, int out_buf_pos, int outlen, keccak_state state) {
 			state.pos = keccak_squeeze(out_buf, out_buf_pos, outlen, state.s, state.pos, SHAKE256_RATE);
 		}
@@ -687,6 +757,12 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input to be absorbed into s
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// Initialize, absorb into and finalize SHAKE256 XOF; non-incremental.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void shake256_absorb_once(keccak_state state, byte[] in_buf, int inlen) {
 			keccak_absorb_once(state.s, SHAKE256_RATE, in_buf, inlen, 0x1F);
 			state.pos = SHAKE256_RATE;
@@ -704,6 +780,13 @@ namespace PQnet.Digest {
 		*              - int nblocks: number of blocks to be squeezed (written to output)
 		*              - keccak_state *s: pointer to input/output Keccak state
 		**************************************************/
+		/// <summary>
+		/// Squeeze step of SHAKE256 XOF. Squeezes full blocks of SHAKE256_RATE bytes each.
+		/// </summary>
+		/// <param name="out_buf"></param>
+		/// <param name="out_buf_pos"></param>
+		/// <param name="nblocks"></param>
+		/// <param name="state"></param>
 		public static void shake256_squeezeblocks(byte[] out_buf, int out_buf_pos, int nblocks, keccak_state state) {
 			keccak_squeezeblocks(out_buf, out_buf_pos, nblocks, state.s, SHAKE256_RATE);
 		}
@@ -718,6 +801,13 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// SHAKE128 XOF with non-incremental API.
+		/// </summary>
+		/// <param name="out_buf"></param>
+		/// <param name="outlen"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void shake128(byte[] out_buf, int outlen, byte[] in_buf, int inlen) {
 			keccak_state state;
 			int out_buf_pos;
@@ -743,6 +833,13 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// SHAKE256 XOF with non-incremental API.
+		/// </summary>
+		/// <param name="out_buf"></param>
+		/// <param name="outlen"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void shake256(byte[] out_buf, int outlen, byte[] in_buf, int inlen) {
 			keccak_state state;
 			int out_buf_pos;
@@ -767,6 +864,12 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// SHA3-256 with non-incremental API.
+		/// </summary>
+		/// <param name="h"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void sha3_256(out byte[] h, byte[] in_buf, int inlen) {
 			ulong[] s;
 
@@ -789,6 +892,12 @@ namespace PQnet.Digest {
 		*              - const uint8_t *in: pointer to input
 		*              - int inlen: length of input in bytes
 		**************************************************/
+		/// <summary>
+		/// SHA3-512 with non-incremental API.
+		/// </summary>
+		/// <param name="h"></param>
+		/// <param name="in_buf"></param>
+		/// <param name="inlen"></param>
 		public static void sha3_512(out byte[] h, byte[] in_buf, int inlen) {
 			ulong[] s;
 

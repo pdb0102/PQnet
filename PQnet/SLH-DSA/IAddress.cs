@@ -21,7 +21,7 @@
 // SOFTWARE.
 //
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	/// <summary>
 	/// FIPS 205 Section 4.3 ADRS Member Functions
 	/// </summary>

@@ -25,7 +25,7 @@
 
 using System.Security.Cryptography;
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	public abstract partial class MlDsaBase : ISecurityCategory {
 		/// <summary>
 		/// The size, in bytes, of the seed used for key generation
@@ -58,6 +58,19 @@ namespace PQnet.ML_DSA {
 		private int Omega;
 		private int CTildeBytes;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MlDsaBase"/> class.
+		/// </summary>
+		/// <param name="K"></param>
+		/// <param name="L"></param>
+		/// <param name="Eta"></param>
+		/// <param name="Tau"></param>
+		/// <param name="Beta"></param>
+		/// <param name="Gamma1"></param>
+		/// <param name="Gamma2"></param>
+		/// <param name="Omega"></param>
+		/// <param name="CTildeBytes"></param>
+		/// <exception cref="NotImplementedException"></exception>
 		public MlDsaBase(int K, int L, int Eta, int Tau, int Beta, int Gamma1, int Gamma2, int Omega, int CTildeBytes) {
 			this.K = K;
 			this.L = L;

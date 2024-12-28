@@ -21,7 +21,6 @@
 // SOFTWARE.
 //
 
-using PQnet.ML_DSA;
 using PQnet.test.AVCP;
 
 namespace PQnet.test {

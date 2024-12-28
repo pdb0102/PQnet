@@ -6,7 +6,7 @@ Cryptographically strong random number generator
 
 ## Inheritance Hierarchy
 <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">System.Object</a><br />&nbsp;&nbsp;PQnet.Rng<br />
-**Namespace:**&nbsp;<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d.md">PQnet</a><br />**Assembly:**&nbsp;PQnet (in PQnet.dll) Version: 1.0.0+2389d30bd26bfacd2eb83d96ee6ec4c7b3ca4606
+**Namespace:**&nbsp;<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d.md">PQnet</a><br />**Assembly:**&nbsp;PQnet (in PQnet.dll) Version: 1.0.0+12584ed77717a7c7a23b24a8fa46e5237f71a5c8
 
 ## Syntax
 

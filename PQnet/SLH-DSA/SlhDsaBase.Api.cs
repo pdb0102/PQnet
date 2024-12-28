@@ -23,7 +23,10 @@
 
 using System.Security.Cryptography;
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
+	/// <summary>
+	/// Base class for SLH-DSA signature schemes
+	/// </summary>
 	public abstract partial class SlhDsaBase {
 		/// <summary>
 		/// Generates a SLH-DSA key pair. Throws if an error occurs

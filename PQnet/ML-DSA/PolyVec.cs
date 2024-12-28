@@ -25,7 +25,7 @@
 
 using System.Diagnostics;
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	public abstract partial class MlDsaBase {
 		private class PolyVecK {
 			private int k;

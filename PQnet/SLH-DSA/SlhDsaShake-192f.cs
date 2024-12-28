@@ -21,7 +21,7 @@
 // SOFTWARE.
 //
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	/// <summary>
 	/// Implements the SLH-DSA-SHAKE-192f signature scheme.
 	/// </summary>

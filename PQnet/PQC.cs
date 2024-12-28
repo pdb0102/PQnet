@@ -21,9 +21,6 @@
 // SOFTWARE.
 //
 
-using PQnet.ML_DSA;
-using PQnet.SLH_DSA;
-
 namespace PQnet {
 	/// <summary>
 	/// The <c>PQnet</c> namespace contains classes and methods for post-quantum cryptographic algorithms.

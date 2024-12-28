@@ -23,7 +23,7 @@
 
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	/// <summary>
 	/// Implements the ML-DSA-65 signature scheme.
 	/// </summary>

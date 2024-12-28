@@ -23,7 +23,7 @@
 
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
-namespace PQnet.ML_DSA {
+namespace PQnet {
 	/// <summary>
 	/// Number Theoretic Transform algorithm
 	/// </summary>
