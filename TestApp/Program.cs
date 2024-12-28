@@ -16,8 +16,13 @@ bool authentic;
 
 message = Encoding.UTF8.GetBytes("Hello, World!");
 
-// Create ML-DSA object
-MlDsa44 mlDsa44 = new MlDsa44();
+// Static API sample
+PQC.MlDsa87.GenerateKeyPair(out public_key, out private_key);
+PQC.MlDsa87.Sign(message, private_key, out signature);
+authentic = PQC.MlDsa87.Verify(message, public_key, signature);
+
+// Create ML-DSA object with deterministic output
+MlDsa44 mlDsa44 = new MlDsa44(true);
 
 // Generate key pair
 mlDsa44.GenerateKeyPair(out public_key, out private_key);
