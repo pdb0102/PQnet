@@ -43,6 +43,31 @@
 <DocumentationSource sourceFile="..\PQnet\bin\Debug\net8.0\PQnet.xml" /></DocumentationSources>
     <SourceCodeBasePath>..\PQnet\</SourceCodeBasePath>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
+    <ApiFilter>
+      <Filter entryType="Namespace" fullName="PQnet.ML_DSA" isExposed="True">
+  <Filter entryType="Class" fullName="PQnet.ML_DSA.MlDsaBase" filterName="MlDsaBase" isExposed="True">
+    <Filter entryType="Constructor" fullName="PQnet.ML_DSA.MlDsaBase.#ctor" filterName=".ctor" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.ML_DSA.MlDsaBase.hash_ml_sign" filterName="hash_ml_sign" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.ML_DSA.MlDsaBase.hash_ml_verify" filterName="hash_ml_verify" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.ML_DSA.MlDsaBase.ml_keygen" filterName="ml_keygen" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.ML_DSA.MlDsaBase.ml_sign" filterName="ml_sign" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.ML_DSA.MlDsaBase.ml_sign_message" filterName="ml_sign_message" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.ML_DSA.MlDsaBase.ml_verify" filterName="ml_verify" isExposed="False" />
+  </Filter>
+</Filter>
+<Filter entryType="Namespace" fullName="PQnet.SLH_DSA" isExposed="True">
+  <Filter entryType="Enumeration" fullName="PQnet.SLH_DSA.AddressType" filterName="AddressType" isExposed="False" />
+  <Filter entryType="Interface" fullName="PQnet.SLH_DSA.IAddress" filterName="IAddress" isExposed="False" />
+  <Filter entryType="Interface" fullName="PQnet.SLH_DSA.IHashAlgorithm" filterName="IHashAlgorithm" isExposed="False" />
+  <Filter entryType="Class" fullName="PQnet.SLH_DSA.SlhDsaBase" filterName="SlhDsaBase" isExposed="True">
+    <Filter entryType="Constructor" fullName="PQnet.SLH_DSA.SlhDsaBase.#ctor" filterName=".ctor" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.SLH_DSA.SlhDsaBase.hash_slh_sign" filterName="hash_slh_sign" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.SLH_DSA.SlhDsaBase.hash_slh_verify" filterName="hash_slh_verify" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.SLH_DSA.SlhDsaBase.slh_keygen" filterName="slh_keygen" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.SLH_DSA.SlhDsaBase.slh_sign" filterName="slh_sign" isExposed="False" />
+    <Filter entryType="Method" fullName="PQnet.SLH_DSA.SlhDsaBase.slh_verify" filterName="slh_verify" isExposed="False" />
+  </Filter>
+</Filter></ApiFilter>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
