@@ -24,10 +24,8 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-using PQnet.Common;
-
 namespace PQnet.SLH_DSA {
-	public abstract class SlhDsaBase : ISecurityCategory {
+	public abstract partial class SlhDsaBase : ISecurityCategory {
 		private IHashAlgorithm hash;
 		private int n;
 		private int h;
@@ -44,8 +42,6 @@ namespace PQnet.SLH_DSA {
 		private int len2;          // FIPS 205 (5.3)
 		private int len;           // FIPS 205 (5.4)
 
-		private int private_key_size;
-		private int public_key_size;
 		private int signature_size;
 
 		private int tree_bits;
@@ -69,8 +65,10 @@ namespace PQnet.SLH_DSA {
 			len2 = ((int)Math.Log2(len1 * (w - 1)) / lg_w) + 1;
 			len = len1 + len2;
 
-			private_key_size = 2 * n;
-			public_key_size = 4 * n;
+			PrivateKeyBytes = 2 * n;
+			PublicKeyBytes = 4 * n;
+			SeedBytes = 3 * n;
+
 			signature_size = (1 + (k * (1 + a)) + h + (d * len)) * n;
 
 			leaf_bits = h / d;
@@ -87,18 +85,24 @@ namespace PQnet.SLH_DSA {
 		/// <summary>
 		/// Gets the size, in bytes, of the private key
 		/// </summary>
-		public virtual int PrivateKeySize {
-			get {
-				return private_key_size;
-			}
-		}
+		public int PrivateKeyBytes { get; }
 
 		/// <summary>
 		/// Gets the size, in bytes, of the public key
 		/// </summary>
-		public virtual int PublicKeySize {
+		public int PublicKeyBytes { get; }
+
+		/// <summary>
+		/// Gets the size, in bytes, of the seed used for key generation
+		/// </summary>
+		public int SeedBytes { get; }
+
+		/// <summary>
+		/// Gets the size, in bytes, of the signature
+		/// </summary>
+		public int SignatureSize {
 			get {
-				return public_key_size;
+				return signature_size;
 			}
 		}
 
@@ -119,7 +123,7 @@ namespace PQnet.SLH_DSA {
 		/// <param name="offset"></param>
 		/// <param name="i"></param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long toInt(byte[] x, int n) {
+		private static long toInt(byte[] x, int n) {
 			long l;
 
 			l = 0;
@@ -135,7 +139,7 @@ namespace PQnet.SLH_DSA {
 		/// <param name="x">integer</param>
 		/// <param name="n">length</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte[] toByte(long x, int n) {
+		private static byte[] toByte(long x, int n) {
 			byte[] b;
 
 			b = new byte[n];
@@ -652,7 +656,7 @@ namespace PQnet.SLH_DSA {
 		/// <param name="sk_prf">PRF key</param>
 		/// <param name="pk_seed">Public seed</param>
 		/// <returns>SLH-DSA key pair (SK, PK)</returns>
-		public (byte[], byte[]) slh_keygen_internal(byte[] sk_seed, byte[] sk_prf, byte[] pk_seed) {
+		internal (byte[], byte[]) slh_keygen_internal(byte[] sk_seed, byte[] sk_prf, byte[] pk_seed) {
 			IAddress adrs;
 			byte[] pk_root;
 
@@ -672,7 +676,7 @@ namespace PQnet.SLH_DSA {
 		/// <param name="sk">Private key (SK.seed, SK.prf, PK.seed, PK.root)</param>
 		/// <param name="addrnd">Additional randomness, or <c>null</c></param>
 		/// <returns>SLH-DSA signature SIG</returns>
-		public byte[] slh_sign_internal(byte[] m, byte[] sk, byte[] addrnd) {
+		internal byte[] slh_sign_internal(byte[] m, byte[] sk, byte[] addrnd) {
 			IAddress adrs;
 			byte[] opt_rand;
 			byte[] sk_seed;
@@ -758,7 +762,7 @@ namespace PQnet.SLH_DSA {
 		/// <param name="sig">Signature</param>
 		/// <param name="pk">Public key (PK.seed, PK.root)</param>
 		/// <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
-		public bool slh_verify_internal(byte[] m, byte[] sig, byte[] pk) {
+		internal bool slh_verify_internal(byte[] m, byte[] sig, byte[] pk) {
 			IAddress adrs;
 			byte[] pk_seed;
 			byte[] pk_root;

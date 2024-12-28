@@ -21,7 +21,7 @@
 // SOFTWARE.
 //
 
-namespace PQnet.Common {
+namespace PQnet {
 	/// <summary>
 	/// Interface for cryptographic algorithms to indicate the NIST security category.
 	/// </summary>

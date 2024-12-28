@@ -49,7 +49,7 @@ namespace PQnet.ML_DSA {
 			}
 		}
 
-		public class Poly {
+		private class Poly {
 			private int n;
 
 			public Poly(int N) {
@@ -75,7 +75,7 @@ namespace PQnet.ML_DSA {
 		/// Inplace reduction of all coefficients of polynomial to representative in [-6283008,6283008].
 		/// </summary>
 		/// <param name="a">polynominal</param>
-		public void poly_reduce(Poly a) {
+		private void poly_reduce(Poly a) {
 			for (int i = 0; i < N; i++) {
 				a.coeffs[i] = reduce32(a.coeffs[i]);
 			}
@@ -85,7 +85,7 @@ namespace PQnet.ML_DSA {
 		/// For all coefficients of in/out polynomial add Q if coefficient is negative.
 		/// </summary>
 		/// <param name="a">polynominal</param>
-		public void poly_caddq(Poly a) {
+		private void poly_caddq(Poly a) {
 			for (int i = 0; i < N; i++) {
 				a.coeffs[i] = caddq(a.coeffs[i]);
 			}
@@ -97,7 +97,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="c">Output polynominal</param>
 		/// <param name="a">First summand</param>
 		/// <param name="b">Second summand</param>
-		public void poly_add(Poly c, Poly a, Poly b) {
+		private void poly_add(Poly c, Poly a, Poly b) {
 			for (int i = 0; i < N; i++) {
 				c.coeffs[i] = a.coeffs[i] + b.coeffs[i];
 			}
@@ -109,7 +109,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="c">Output polynominal</param>
 		/// <param name="a">First polynominal</param>
 		/// <param name="b">Second polynominal to be subtracted from first</param>
-		public void poly_sub(Poly c, Poly a, Poly b) {
+		private void poly_sub(Poly c, Poly a, Poly b) {
 			for (int i = 0; i < N; i++) {
 				c.coeffs[i] = a.coeffs[i] - b.coeffs[i];
 			}
@@ -122,7 +122,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// Multiply polynomial by 2^D without modular reduction. 
 		/// </remarks>
-		public void poly_shiftl(Poly a) {
+		private void poly_shiftl(Poly a) {
 			for (int i = 0; i < N; i++) {
 				a.coeffs[i] <<= D;
 			}
@@ -132,7 +132,7 @@ namespace PQnet.ML_DSA {
 		/// Inplace forward NTT. Coefficients can grow by 8*Q in absolute value.
 		/// </summary>
 		/// <param name="a">Polynominal</param>
-		public void poly_ntt(Poly a) {
+		private void poly_ntt(Poly a) {
 			ntt(a.coeffs);
 		}
 
@@ -143,7 +143,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// Input coefficients need to be less than Q in absolute value and output coefficients are again bounded by Q.
 		/// </remarks>
-		public void poly_invntt_tomont(Poly a) {
+		private void poly_invntt_tomont(Poly a) {
 			invntt_tomont(a.coeffs);
 		}
 
@@ -153,7 +153,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="c">Output polynominal</param>
 		/// <param name="a">First polynominal</param>
 		/// <param name="b">Second polynominal</param>
-		public void poly_pointwise_montgomery(Poly c, Poly a, Poly b) {
+		private void poly_pointwise_montgomery(Poly c, Poly a, Poly b) {
 			for (int i = 0; i < N; i++) {
 				c.coeffs[i] = montgomery_reduce((long)a.coeffs[i] * b.coeffs[i]);
 			}
@@ -168,7 +168,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// Assumes coefficients to be standard representatives.
 		/// </remarks>
-		public void poly_power2round(Poly a1, Poly a0, Poly a) {
+		private void poly_power2round(Poly a1, Poly a0, Poly a) {
 			for (int i = 0; i < N; i++) {
 				a1.coeffs[i] = power2round(out a0.coeffs[i], a.coeffs[i]);
 			}
@@ -183,7 +183,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// Assumes coefficients to be standard representatives.
 		/// </remarks>
-		public void poly_decompose(Poly a1, Poly a0, Poly a) {
+		private void poly_decompose(Poly a1, Poly a0, Poly a) {
 			for (int i = 0; i < N; i++) {
 				a1.coeffs[i] = decompose(out a0.coeffs[i], a.coeffs[i]);
 			}
@@ -196,7 +196,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="a0">low part of input polynomial</param>
 		/// <param name="a1">high part of input polynomial</param>
 		/// <returns>number of 1 bits</returns>
-		public uint poly_make_hint(Poly h, Poly a0, Poly a1) {
+		private uint poly_make_hint(Poly h, Poly a0, Poly a1) {
 			uint s;
 
 			s = 0;
@@ -216,7 +216,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="b">output polynomial with corrected high bits</param>
 		/// <param name="a">input polynomial</param>
 		/// <param name="h">input hint polynomial</param>
-		public void poly_use_hint(Poly b, Poly a, Poly h) {
+		private void poly_use_hint(Poly b, Poly a, Poly h) {
 			for (int i = 0; i < N; i++) {
 				b.coeffs[i] = use_hint(a.coeffs[i], h.coeffs[i]);
 			}
@@ -231,7 +231,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// Assumes input coefficients were reduced by reduce32().
 		/// </remarks>
-		public int poly_chknorm(Poly a, int B) {
+		private int poly_chknorm(Poly a, int B) {
 			long t;
 
 			if (B > (Q - 1) / 8) {
@@ -262,7 +262,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="len">number of coefficients to be sampled</param>
 		/// <param name="buf">array of random bytes</param>
 		/// <returns></returns>
-		public int rej_uniform(int[] a, int a_offset, int len, byte[] buf, int buflen) {
+		private int rej_uniform(int[] a, int a_offset, int len, byte[] buf, int buflen) {
 			int ctr;
 			int pos;
 			uint t;

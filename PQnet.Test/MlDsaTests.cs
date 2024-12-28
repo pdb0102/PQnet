@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Text;
-
 using PQnet.ML_DSA;
 using PQnet.test.AVCP;
 
@@ -51,7 +49,7 @@ namespace PQnet.test {
 
 					mldsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 
-					mldsa.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
+					mldsa.ml_keygen(out pk, out sk, seed: test_case.SeedBytes);
 					CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Public key mismatch");
 					CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Secret key mismatch");
 				}
@@ -81,7 +79,7 @@ namespace PQnet.test {
 
 					mldsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 
-					mldsa.crypto_sign_signature_internal(out sig, test_case.MessageBytes, Array.Empty<byte>(), test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
+					mldsa.ml_sign_internal(out sig, test_case.MessageBytes, Array.Empty<byte>(), test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
 					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature mismatch");
 				}
 			}
@@ -111,38 +109,8 @@ namespace PQnet.test {
 
 					mldsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, false);
 
-					StringBuilder sb;
-
-					sb = new StringBuilder();
-					sb.Append($"uint8_t pk[{test_group.PublicKeyBytes.Length}] = {{");
-					for (int x = 0; x < test_group.PublicKeyBytes.Length; x++) {
-						sb.Append("0x");
-						sb.Append(test_group.PublicKeyBytes[x].ToString("X2"));
-						sb.Append(", ");
-					}
-					sb.Length -= 2;
-					sb.AppendLine(" };");
-
-					sb.Append($"uint8_t m[{test_case.MessageBytes.Length}] = {{");
-					for (int x = 0; x < test_case.MessageBytes.Length; x++) {
-						sb.Append("0x");
-						sb.Append(test_case.MessageBytes[x].ToString("X2"));
-						sb.Append(", ");
-					}
-					sb.Length -= 2;
-					sb.AppendLine(" };");
-
-					sb.Append($"uint8_t sig[{test_case.SignatureBytes.Length}] = {{");
-					for (int x = 0; x < test_case.SignatureBytes.Length; x++) {
-						sb.Append("0x");
-						sb.Append(test_case.SignatureBytes[x].ToString("X2"));
-						sb.Append(", ");
-					}
-					sb.Length -= 2;
-					sb.AppendLine(" };");
-
-					ret = mldsa.crypto_sign_verify_internal(test_case.SignatureBytes, test_case.MessageBytes, Array.Empty<byte>(), test_group.PublicKeyBytes);
-					Assert.AreEqual(test_case.TestPassed, ret == 0, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature verification mismatch\n{sb.ToString()}");
+					ret = mldsa.ml_verify_internal(test_case.SignatureBytes, test_case.MessageBytes, Array.Empty<byte>(), test_group.PublicKeyBytes);
+					Assert.AreEqual(test_case.TestPassed, ret == 0, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature verification mismatch");
 				}
 			}
 		}

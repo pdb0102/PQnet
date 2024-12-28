@@ -9,5 +9,8 @@
   <ItemGroup>
     <Folder Include="SHA2\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <InternalsVisibleTo Include="PQnet.test" />
+    <InternalsVisibleTo Include="TestApp" />
+  </ItemGroup>
 </Project>

@@ -21,137 +21,34 @@
 // SOFTWARE.
 //
 
-// Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
-
 using System.Security.Cryptography;
 
-namespace PQnet.ML_DSA {
-	public abstract partial class MlDsaBase : ISecurityCategory {
+namespace PQnet.SLH_DSA {
+	public abstract partial class SlhDsaBase {
 		/// <summary>
-		/// The size, in bytes, of the seed used for key generation
-		/// </summary>
-		public const int SeedBytes = 32;
-
-		private const int CrhBytes = 64;
-		private const int TrBytes = 64;
-		private const int RndBytes = 32;
-		private const int N = 256;
-		private const int Q = 8380417;
-		private const int D = 13;
-		private const int PolyT1PackedBytes = 320;
-		private const int PolyT0PackedBytes = 416;
-		private int PolyVecHPacketBytes;
-		private int PolyZPackedBytes;
-		private int PolyW1PackedBytes;
-		private int PolyEtaPackedBytes;
-
-		private static readonly byte[] null_rnd = new byte[RndBytes];
-		private static readonly byte[] empty_ctx = Array.Empty<byte>();
-
-		private int K;
-		private int L;
-		private int Eta;
-		private int Tau;
-		private int Beta;
-		private int Gamma1;
-		private int Gamma2;
-		private int Omega;
-		private int CTildeBytes;
-
-		public MlDsaBase(int K, int L, int Eta, int Tau, int Beta, int Gamma1, int Gamma2, int Omega, int CTildeBytes) {
-			this.K = K;
-			this.L = L;
-			this.Eta = Eta;
-			this.Tau = Tau;
-			this.Beta = Beta;
-			this.Gamma1 = Gamma1;
-			this.Gamma2 = Gamma2;
-			this.Omega = Omega;
-			this.CTildeBytes = CTildeBytes;
-
-			this.PolyVecHPacketBytes = Omega + K;
-			if (Gamma1 == (1 << 17)) {
-				PolyZPackedBytes = 576;
-			} else if (Gamma1 == (1 << 19)) {
-				PolyZPackedBytes = 640;
-			} else {
-				throw new NotImplementedException($"Unsupported Gamma1 value {Gamma1} [Allowed are '1 << 17' and '1 << 19']");
-			}
-
-			if (Gamma2 == (Q - 1) / 88) {
-				PolyW1PackedBytes = 192;
-			} else if (Gamma2 == (Q - 1) / 32) {
-				PolyW1PackedBytes = 128;
-			} else {
-				throw new NotImplementedException($"Unsupported Gamma2 value {Gamma2} [Allowed are '(Q - 1) / 88' and '(Q - 1) / 32']");
-			}
-
-			if (Eta == 2) {
-				PolyEtaPackedBytes = 96;
-			} else if (Eta == 4) {
-				PolyEtaPackedBytes = 128;
-			} else {
-				throw new NotImplementedException($"Unsupported Eta value {Eta} [Allowed are '2' and '4']");
-			}
-
-			PublicKeybytes = SeedBytes + (K * PolyT1PackedBytes);
-			SecretKeyBytes = (2 * SeedBytes) + TrBytes + (L * PolyEtaPackedBytes) + (K * PolyEtaPackedBytes) + (K * PolyT0PackedBytes);
-			SignatureBytes = CTildeBytes + (L * PolyZPackedBytes) + PolyVecHPacketBytes;
-		}
-
-		/// <summary>
-		/// Gets whether the signature should be randomized or deterministic (predictable, same input causes same signature)
-		/// </summary>
-		public abstract bool Deterministic { get; }
-
-		/// <inheritdoc/>
-		public abstract int NistSecurityCategory { get; }
-
-		/// <summary>
-		/// Gets the size, in bytes, of the public key
-		/// </summary>
-		public int PublicKeybytes { get; }
-
-		/// <summary>
-		/// Gets the size, in bytes, of the private key
-		/// </summary>
-		public int SecretKeyBytes { get; }
-
-		/// <summary>
-		/// Gets the size, in bytes, of the signature
-		/// </summary>
-		public int SignatureBytes { get; }
-
-		/// <summary>
-		/// Generates a ML-DSA key pair. Throws if an error occurs
+		/// Generates a SLH-DSA key pair. Throws if an error occurs
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
-		/// <exception cref="CryptographicException"></exception>
 		public void GenerateKeyPair(out byte[] public_key, out byte[] private_key) {
-			if (!ml_keygen(out public_key, out private_key)) {
-				throw new CryptographicException($"Key generation failed");
-			}
+			slh_keygen(out private_key, out public_key);
 		}
 
 		/// <summary>
-		/// Generates a ML-DSA key pair.
+		/// Generates a SLH-DSA key pair.
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
 		/// <param name="error">Receives any error that occurred, or <c>null</c></param>
 		/// <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
 		public bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, out string error) {
-			if (ml_keygen(out public_key, out private_key)) {
-				error = null;
-				return true;
-			}
-			error = "Key generation failed";
-			return false;
+			slh_keygen(out private_key, out public_key);
+			error = null;
+			return true;
 		}
 
 		/// <summary>
-		/// Generates a ML-DSA key pair.
+		/// Generates a SLH-DSA key pair.
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
@@ -162,19 +59,28 @@ namespace PQnet.ML_DSA {
 		/// If <paramref name="seed"/> is provided, it must be exactly <see cref="SeedBytes"/> bytes long.
 		/// </remarks>
 		public bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, byte[] seed, out string error) {
-			if ((seed != null) && (seed.Length != SeedBytes)) {
+			byte[] sk_seed;
+			byte[] sk_prf;
+			byte[] pk_seed;
+
+			if ((seed != null) && (seed.Length != (3 * n))) {
 				public_key = null;
 				private_key = null;
-				error = $"Seed must be {SeedBytes} bytes long";
+				error = $"Seed must be {n} bytes long";
 				return false;
 			}
 
-			if (ml_keygen(out public_key, out private_key)) {
-				error = null;
-				return true;
-			}
-			error = "Key generation failed";
-			return false;
+			sk_seed = new byte[n];
+			sk_prf = new byte[n];
+			pk_seed = new byte[n];
+			Array.Copy(seed, 0, sk_prf, 0, n);
+			Array.Copy(seed, n, sk_seed, 0, n);
+			Array.Copy(seed, 2 * n, pk_seed, 0, n);
+
+			(private_key, public_key) = slh_keygen_internal(sk_seed, sk_prf, pk_seed);
+
+			error = null;
+			return true;
 		}
 
 		/// <summary>
@@ -185,7 +91,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="signature">Receives the signature</param>
 		/// <remarks>Uses an empty context string (ctx)</remarks>
 		public void Sign(byte[] message, byte[] private_key, out byte[] signature) {
-			ml_sign(out signature, message, empty_ctx, private_key);
+			signature = slh_sign(message, null, private_key);
 		}
 
 		/// <summary>
@@ -195,13 +101,13 @@ namespace PQnet.ML_DSA {
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="signature">Receives the signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes</exception>
+		/// <exception cref="ArgumentException">Context was larger than 255 bytes</exception>
 		public void Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature) {
 			if ((ctx != null) && (ctx.Length > 255)) {
-				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
+				throw new ArgumentException($"ctx must be not be longer than 255 bytes");
 			}
 
-			ml_sign(out signature, message, ctx != null ? ctx : empty_ctx, private_key);
+			signature = slh_sign(message, ctx, private_key);
 		}
 
 		/// <summary>
@@ -220,14 +126,10 @@ namespace PQnet.ML_DSA {
 				return false;
 			}
 
-			if (ml_sign(out signature, message, ctx != null ? ctx : empty_ctx, private_key) == 0) {
-				error = null;
-				return true;
-			}
+			signature = slh_sign(message, ctx, private_key);
 
-			signature = null;
-			error = "Signature generation failed";
-			return false;
+			error = null;
+			return true;
 		}
 
 		/// <summary>
@@ -238,9 +140,9 @@ namespace PQnet.ML_DSA {
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">Receives the signature</param>
 		/// <remarks>Uses an empty context string (ctx)</remarks>
+		/// <exception cref="ArgumentException">The provided hash function <paramref name="ph"/> is not supported</exception>
 		public void SignHash(byte[] digest, byte[] private_key, PreHashFunction ph, out byte[] signature) {
-			signature = hash_ml_sign(private_key, digest, null, ph);
-			throw new NotImplementedException("PreHashFunction not implemented yet");
+			signature = hash_slh_sign(digest, null, ph, private_key);
 		}
 
 		/// <summary>
@@ -251,13 +153,13 @@ namespace PQnet.ML_DSA {
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">Receives the signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes</exception>
+		/// <exception cref="ArgumentException">Context was larger than 255 bytes, or the provided hash function is not supported</exception>
 		public void SignHash(byte[] digest, byte[] private_key, byte[] ctx, PreHashFunction ph, out byte[] signature) {
 			if ((ctx != null) && (ctx.Length > 255)) {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			signature = hash_ml_sign(private_key, digest, ctx, ph);
+			signature = hash_slh_sign(digest, ctx, ph, private_key);
 		}
 
 		/// <summary>
@@ -277,15 +179,17 @@ namespace PQnet.ML_DSA {
 				return false;
 			}
 
+			try {
+				signature = hash_slh_sign(digest, ctx, ph, private_key);
+			} catch (ArgumentException e) {
+				signature = null;
+				error = e.Message;
 
-			signature = hash_ml_sign(private_key, digest, ctx, ph);
-			if (signature != null) {
-				error = null;
-				return true;
+				return false;
 			}
 
-			error = "Signature generation failed";
-			return false;
+			error = null;
+			return true;
 		}
 
 		/// <summary>
@@ -296,7 +200,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
 		public bool Verify(byte[] message, byte[] public_key, byte[] signature) {
-			return ml_verify(signature, message, empty_ctx, public_key) == 0;
+			return slh_verify(signature, message, null, public_key);
 		}
 
 		/// <summary>
@@ -313,7 +217,7 @@ namespace PQnet.ML_DSA {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			return ml_verify(signature, message, ctx != null ? ctx : empty_ctx, public_key) == 0;
+			return slh_verify(message, signature, ctx, public_key);
 		}
 
 		/// <summary>
@@ -330,7 +234,7 @@ namespace PQnet.ML_DSA {
 				error = $"ctx must be not be longer than 255 bytes";
 			}
 
-			if (ml_verify(signature, message, ctx != null ? ctx : empty_ctx, public_key) == 0) {
+			if (slh_verify(message, signature, ctx, public_key)) {
 				error = null;
 				return true;
 			}
@@ -347,7 +251,7 @@ namespace PQnet.ML_DSA {
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
 		public bool VerifyHash(byte[] digest, byte[] public_key, PreHashFunction ph, byte[] signature) {
-			return hash_ml_verify(digest, signature, null, ph, public_key);
+			return hash_slh_verify(digest, signature, null, ph, public_key);
 		}
 
 		/// <summary>
@@ -365,7 +269,7 @@ namespace PQnet.ML_DSA {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			return hash_ml_verify(digest, signature, ctx, ph, public_key);
+			return hash_slh_verify(digest, signature, ctx, ph, public_key);
 		}
 
 		/// <summary>
@@ -383,12 +287,13 @@ namespace PQnet.ML_DSA {
 				error = $"ctx must be not be longer than 255 bytes";
 			}
 
-			if (hash_ml_verify(digest, signature, ctx, ph, public_key)) {
+			if (hash_slh_verify(digest, signature, ctx, ph, public_key)) {
 				error = null;
 				return true;
 			}
 			error = "Signature is not valid";
 			return false;
 		}
+
 	}
 }

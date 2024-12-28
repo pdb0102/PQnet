@@ -24,6 +24,7 @@
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 using PQnet.Digest;
 
@@ -41,7 +42,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success)
 		**************************************************/
-		public int crypto_sign_keypair(out byte[] pk, out byte[] sk, byte[] seed = null) {
+		public bool ml_keygen(out byte[] pk, out byte[] sk, byte[] seed = null) {
 			byte[] seedbuf;
 			byte[] tr;
 			byte[] rho;
@@ -66,7 +67,7 @@ namespace PQnet.ML_DSA {
 				if (seed.Length != SeedBytes) {
 					pk = null;
 					sk = null;
-					return -1;
+					return false;
 				}
 			}
 
@@ -113,7 +114,7 @@ namespace PQnet.ML_DSA {
 			sk = new byte[SecretKeyBytes];
 			pack_sk(sk, rho, tr, key, t0, s1, s2);
 
-			return 0;
+			return true;
 		}
 
 		/*************************************************
@@ -132,7 +133,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success)
 		**************************************************/
-		public int crypto_sign_signature_internal(out byte[] sig, byte[] m, byte[] pre, byte[] rnd, byte[] sk) {
+		internal int ml_sign_internal(out byte[] sig, byte[] m, byte[] pre, byte[] rnd, byte[] sk) {
 			uint n;
 			byte[] seedbuf;
 			byte[] rho;
@@ -279,7 +280,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success) or -1 (context string too long)
 		**************************************************/
-		public int crypto_sign_signature(out byte[] sig, byte[] m, byte[] ctx, byte[] sk) {
+		public int ml_sign(out byte[] sig, byte[] m, byte[] ctx, byte[] sk) {
 			int i;
 			byte[] pre;
 			byte[] rnd;
@@ -303,8 +304,72 @@ namespace PQnet.ML_DSA {
 				rnd = new byte[RndBytes];
 			}
 
-			crypto_sign_signature_internal(out sig, m, pre, rnd, sk);
+			ml_sign_internal(out sig, m, pre, rnd, sk);
 			return 0;
+		}
+
+		/// <summary>
+		/// FIPS 204 Algorithm 4 - Generates a pre-hash ML-DSA signature
+		/// </summary>
+		/// <param name="m">Message</param>
+		/// <param name="ctx">Context string</param>
+		/// <param name="ph">Pre-hash function</param>
+		/// <param name="sk">Private key</param>
+		/// <returns>SLH-DSA signature SIG</returns>
+		/// <exception cref="ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+		public byte[] hash_ml_sign(byte[] sk, byte[] m, byte[] ctx, PreHashFunction ph) {
+			byte[] addrnd;
+			byte[] m_prime;
+			byte[] ph_m;
+			byte[] oid;
+			byte[] sig;
+
+			if (ctx == null) {
+				ctx = empty_ctx;
+			}
+			if (ctx.Length > 255) {
+				throw new ArgumentException("Context too long");
+			}
+
+			if (!Deterministic) {
+				Rng.randombytes(out addrnd, SeedBytes);
+			} else {
+				addrnd = null_rnd;
+			}
+
+			switch (ph) {
+				case PreHashFunction.SHA256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
+					ph_m = SHA256.Create().ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA512:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
+					ph_m = SHA512.Create().ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHAKE128:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
+					ph_m = Shake256.HashData(m, 256);
+					break;
+
+				case PreHashFunction.SHAKE256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
+					ph_m = Shake256.HashData(m, 512);
+					break;
+
+				default:
+					throw new ArgumentException($"Invalid hash function '{ph}'");
+			}
+
+			m_prime = new byte[ctx.Length + oid.Length + ph_m.Length + 2];
+			m_prime[0] = 1;
+			m_prime[1] = (byte)ctx.Length;
+			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
+			Array.Copy(oid, 0, m_prime, ctx.Length + 2, oid.Length);
+			Array.Copy(ph_m, 0, m_prime, ctx.Length + oid.Length + 2, ph_m.Length);
+			ml_sign_internal(out sig, m_prime, empty_ctx, addrnd, sk);
+			return sig;
 		}
 
 		/*************************************************
@@ -325,11 +390,11 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 (success) or -1 (context string too long)
 		**************************************************/
-		public int crypto_sign(out byte[] sm, byte[] m, byte[] ctx, byte[] sk) {
+		public int ml_sign_message(out byte[] sm, byte[] m, byte[] ctx, byte[] sk) {
 			int ret;
 			byte[] sig;
 
-			ret = crypto_sign_signature(out sig, m, ctx, sk);
+			ret = ml_sign(out sig, m, ctx, sk);
 			if (ret != 0) {
 				sm = null;
 				return ret;
@@ -356,7 +421,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 if signature could be verified correctly and -1 otherwise
 		**************************************************/
-		public int crypto_sign_verify_internal(byte[] sig, byte[] m, byte[] pre, byte[] pk) {
+		internal int ml_verify_internal(byte[] sig, byte[] m, byte[] pre, byte[] pk) {
 			byte[] buf;
 			byte[] rho;
 			byte[] mu;
@@ -460,7 +525,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 if signature could be verified correctly and -1 otherwise
 		**************************************************/
-		public int crypto_sign_verify(byte[] sig, byte[] m, byte[] ctx, byte[] pk) {
+		public int ml_verify(byte[] sig, byte[] m, byte[] ctx, byte[] pk) {
 			int i;
 			byte[] pre;
 
@@ -474,8 +539,61 @@ namespace PQnet.ML_DSA {
 			for (i = 0; i < ctx.Length; i++)
 				pre[2 + i] = ctx[i];
 
-			return crypto_sign_verify_internal(sig, m, pre, pk);
+			return ml_verify_internal(sig, m, pre, pk);
 		}
+
+		/// <summary>
+		/// FIPS 204 Algorithm 8 - Verifies a pre-hash ML-DSA signature
+		/// </summary>
+		/// <param name="m">Message</param>
+		/// <param name="sig">Signature</param>
+		/// <param name="ctx">Context string</param>
+		/// <param name="ph">Pre-hash function</param>
+		/// <param name="pk">Public key</param>
+		/// <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
+		/// <exception cref="ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+		public bool hash_ml_verify(byte[] m, byte[] sig, byte[] ctx, PreHashFunction ph, byte[] pk) {
+			byte[] m_prime;
+			byte[] ph_m;
+			byte[] oid;
+
+			if (ctx == null) {
+				ctx = empty_ctx;
+			}
+			if (ctx.Length > 255) {
+				throw new ArgumentException("Context too long");
+			}
+
+			switch (ph) {
+				case PreHashFunction.SHA256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
+					ph_m = SHA256.Create().ComputeHash(m);
+					break;
+				case PreHashFunction.SHA512:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
+					ph_m = SHA512.Create().ComputeHash(m);
+					break;
+				case PreHashFunction.SHAKE128:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
+					ph_m = Shake256.HashData(m, 256);
+					break;
+				case PreHashFunction.SHAKE256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
+					ph_m = Shake256.HashData(m, 512);
+					break;
+				default:
+					throw new ArgumentException($"Invalid hash function '{ph}'");
+			}
+
+			m_prime = new byte[ctx.Length + oid.Length + ph_m.Length + 2];
+			m_prime[0] = 1;
+			m_prime[1] = (byte)ctx.Length;
+			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
+			Array.Copy(oid, 0, m_prime, ctx.Length + 2, oid.Length);
+			Array.Copy(ph_m, 0, m_prime, ctx.Length + oid.Length + 2, ph_m.Length);
+			return ml_verify_internal(sig, m_prime, Array.Empty<byte>(), pk) == 0;
+		}
+
 
 		/*************************************************
 		* Name:        crypto_sign_open
@@ -493,7 +611,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 if signed message could be verified correctly and -1 otherwise
 		**************************************************/
-		public int crypto_sign_open(out byte[] m, byte[] sm, byte[] ctx, byte[] pk) {
+		internal int ml_verify_message(out byte[] m, byte[] sm, byte[] ctx, byte[] pk) {
 			byte[] sig;
 
 			if (sm.Length < SignatureBytes) {
@@ -505,7 +623,7 @@ namespace PQnet.ML_DSA {
 			m = new byte[sm.Length - SignatureBytes];
 			Array.Copy(sm, SignatureBytes, m, 0, sm.Length - SignatureBytes);
 
-			if (crypto_sign_verify(sig, m, ctx, pk) != 0) {
+			if (ml_verify(sig, m, ctx, pk) != 0) {
 				goto badsig;
 			} else {
 				/* All good, msg already copied, return 0 */

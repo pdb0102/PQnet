@@ -26,7 +26,6 @@
 namespace PQnet.ML_DSA {
 
 	public abstract partial class MlDsaBase {
-		private const int MONT = -4186625; // 2^32 % Q
 		private const int QINV = 58728449; // q^(-1) mod 2^32
 
 
@@ -38,7 +37,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// For finite field element a with -2^{31}Q <= a <= Q*2^31, compute r \equiv a*2^{-32} (mod Q) such that -Q < r < Q.
 		/// </remarks>
-		public int montgomery_reduce(long a) {
+		private int montgomery_reduce(long a) {
 			int t;
 
 			t = (int)a * QINV;
@@ -54,7 +53,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// For finite field element a with a <= 2^{31} - 2^{22} - 1, compute r \equiv a (mod Q) such that -6283008 <= r <= 6283008.
 		/// </remarks>
-		public int reduce32(int a) {
+		private int reduce32(int a) {
 			int t;
 
 			t = (a + (1 << 22)) >> 23;
@@ -67,7 +66,7 @@ namespace PQnet.ML_DSA {
 		/// </summary>
 		/// <param name="a">finite field element a</param>
 		/// <returns>r</returns>
-		public int caddq(int a) {
+		private int caddq(int a) {
 			a += (a >> 31) & Q;
 			return a;
 		}
@@ -80,7 +79,7 @@ namespace PQnet.ML_DSA {
 		/// <remarks>
 		/// For finite field element a, compute standard representative r = a mod^+ Q.
 		/// </remarks>
-		public int freeze(int a) {
+		private int freeze(int a) {
 			a = reduce32(a);
 			a = caddq(a);
 			return a;

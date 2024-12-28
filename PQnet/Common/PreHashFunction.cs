@@ -21,9 +21,11 @@
 // SOFTWARE.
 //
 
-namespace PQnet.SLH_DSA {
+namespace PQnet {
 	/// <summary>
-	/// FIPS 205 Section 10.2.2 Pre-Hash Functions
+	/// Pre-Hash Functions
+	///  FIPS 204 Section 5.4.1
+	///  FIPS 205 Section 10.2.2 
 	/// </summary>
 	public enum PreHashFunction {
 		/// <summary>

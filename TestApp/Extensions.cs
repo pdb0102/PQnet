@@ -25,10 +25,8 @@ internal static class Extensions {
 
 	public static byte[] HexToBytes(this string hex) {
 		int length;
-		int upper;
-		int lower;
-		int index;
 		byte[] bytes;
+		int index;
 
 		if (string.IsNullOrEmpty(hex)) {
 			return Array.Empty<byte>();
@@ -36,41 +34,28 @@ internal static class Extensions {
 
 		length = hex.Length;
 		if ((length % 2) != 0) {
-			throw new InvalidOperationException();
+			throw new InvalidOperationException("Hex string must have an even length.");
 		}
 
-		index = 0;
 		bytes = new byte[length / 2];
-		for (int l = 0; l < length; l += 2) {
-			upper = hex[l];
+		index = 0;
 
-			if (('0' <= upper) && (upper <= '9')) {
-				upper -= 48;
-			} else if (('A' <= upper) && (upper <= 'F')) {
-				upper -= 55;
-			} else if (('a' <= upper) && (upper <= 'f')) {
-				upper -= 87;
-			} else {
-				throw new InvalidDataException(string.Format(System.Globalization.CultureInfo.InvariantCulture, "The character at index {0} of \'{1}\' is not a hexadecimal digit.", l, hex[l]));
-			}
+		for (int i = 0; i < length; i += 2) {
+			int upper = GetHexValue(hex[i]);
+			int lower = GetHexValue(hex[i + 1]);
 
-			upper <<= 4;
-
-			lower = hex[l + 1];
-
-			if (('0' <= lower) && (lower <= '9')) {
-				lower -= 48;
-			} else if (('A' <= lower) && (lower <= 'F')) {
-				lower -= 55;
-			} else if (('a' <= lower) && (lower <= 'f')) {
-				lower -= 87;
-			} else {
-				throw new InvalidDataException(string.Format(System.Globalization.CultureInfo.InvariantCulture, "The character at index {0} of \'{1}\' is not a hexadecimal digit.", l, hex[l + 1]));
-			}
-
-			bytes[index++] = (byte)(upper + lower);
+			bytes[index++] = (byte)((upper << 4) + lower);
 		}
 
 		return bytes;
+	}
+
+	private static int GetHexValue(char hex) {
+		return hex switch {
+			>= '0' and <= '9' => hex - '0',
+			>= 'A' and <= 'F' => hex - 'A' + 10,
+			>= 'a' and <= 'f' => hex - 'a' + 10,
+			_ => throw new InvalidDataException($"The character '{hex}' is not a valid hexadecimal digit.")
+		};
 	}
 }

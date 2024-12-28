@@ -235,7 +235,7 @@ public abstract partial class DilithiumBase {
 	/// <param name="len">number of coefficients to be sampled</param>
 	/// <param name="buf">array of random bytes</param>
 	/// <returns></returns>
-	public int rej_uniform(int[] a, int a_offset, int len, byte[] buf, int buflen) {
+	private int rej_uniform(int[] a, int a_offset, int len, byte[] buf, int buflen) {
 		int ctr;
 		int pos;
 		uint t;

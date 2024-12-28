@@ -73,7 +73,7 @@ namespace PQnet.ML_DSA {
 		/// No modular reduction is performed after additions or subtractions.
 		/// Output vector is in bitreversed order.
 		/// </remarks>
-		public void ntt(int[] a) {
+		private void ntt(int[] a) {
 			uint len;
 			uint start;
 			uint j;
@@ -102,7 +102,7 @@ namespace PQnet.ML_DSA {
 		/// Q in absolute value.Output coefficient are smaller than Q in absolute value
 		/// </remarks>
 		/// <param name="a"></param>
-		public void invntt_tomont(int[] a) {
+		private void invntt_tomont(int[] a) {
 			uint start;
 			uint len;
 			uint j;
