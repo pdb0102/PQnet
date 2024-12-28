@@ -356,7 +356,7 @@ namespace PQnet.ML_DSA {
 		*
 		* Returns 0 if signature could be verified correctly and -1 otherwise
 		**************************************************/
-		private int crypto_sign_verify_internal(byte[] sig, byte[] m, byte[] pre, byte[] pk) {
+		public int crypto_sign_verify_internal(byte[] sig, byte[] m, byte[] pre, byte[] pk) {
 			byte[] buf;
 			byte[] rho;
 			byte[] mu;

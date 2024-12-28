@@ -33,16 +33,9 @@ namespace PQnet.test {
 		[TestMethod]
 		public void TestAvcpKeyGen() {
 			AcvpMlDsaTestVectors<AcvpMlDsaKeyGenTestCase> test_vectors;
-			MlDsaBase dilithium;
-			MlDsa44 dilithium2;
-			MlDsa65 dilithium3;
-			MlDsa87 dilithium5;
+			MlDsaBase mldsa;
 			byte[] pk;
 			byte[] sk;
-
-			dilithium2 = new MlDsa44();
-			dilithium3 = new MlDsa65();
-			dilithium5 = new MlDsa87();
 
 			test_vectors = AcvpMlDsa.LoadKeyGenVectors("ML_DSA.keyGen.prompt.json", "ML_DSA.keyGen.expectedResults.json");
 
@@ -56,24 +49,11 @@ namespace PQnet.test {
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					// Perform the test
-					switch (test_vectors.TestGroups[i].ParameterSet) {
-						case "ML-DSA-44":
-							dilithium = dilithium2;
-							break;
-						case "ML-DSA-65":
-							dilithium = dilithium3;
-							break;
-						case "ML-DSA-87":
-							dilithium = dilithium5;
-							break;
-						default:
-							throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
-					}
+					mldsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 
-					dilithium.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
-					CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Public key mismatch");
-					CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Secret key mismatch");
+					mldsa.crypto_sign_keypair(out pk, out sk, seed: test_case.SeedBytes);
+					CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Public key mismatch");
+					CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Secret key mismatch");
 				}
 			}
 		}
@@ -81,16 +61,9 @@ namespace PQnet.test {
 		[TestMethod]
 		public void TestAvcpSigGen() {
 			AcvpMlDsaTestVectors<AcvpMlDsaSigGenTestCase> test_vectors;
-			MlDsaBase dilithium;
-			MlDsa44 dilithium2;
-			MlDsa65 dilithium3;
-			MlDsa87 dilithium5;
+			MlDsaBase mldsa;
 			byte[] sig;
 			byte[] null_rnd;
-
-			dilithium2 = new MlDsa44();
-			dilithium3 = new MlDsa65();
-			dilithium5 = new MlDsa87();
 
 			null_rnd = new byte[32];
 
@@ -106,23 +79,10 @@ namespace PQnet.test {
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					// Perform the test
-					switch (test_vectors.TestGroups[i].ParameterSet) {
-						case "ML-DSA-44":
-							dilithium = dilithium2;
-							break;
-						case "ML-DSA-65":
-							dilithium = dilithium3;
-							break;
-						case "ML-DSA-87":
-							dilithium = dilithium5;
-							break;
-						default:
-							throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
-					}
+					mldsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 
-					dilithium.crypto_sign_signature_internal(out sig, test_case.MessageBytes, Array.Empty<byte>(), test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
-					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature mismatch");
+					mldsa.crypto_sign_signature_internal(out sig, test_case.MessageBytes, Array.Empty<byte>(), test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
+					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature mismatch");
 				}
 			}
 		}
@@ -130,16 +90,9 @@ namespace PQnet.test {
 		[TestMethod]
 		public void TestAvcpSigVer() {
 			AcvpMlDsaTestVectors<AcvpMlDsaSigVerTestCase> test_vectors;
-			MlDsaBase dilithium;
-			MlDsa44 dilithium2;
-			MlDsa65 dilithium3;
-			MlDsa87 dilithium5;
+			MlDsaBase mldsa;
 			byte[] null_rnd;
 			int ret;
-
-			dilithium2 = new MlDsa44();
-			dilithium3 = new MlDsa65();
-			dilithium5 = new MlDsa87();
 
 			null_rnd = new byte[32];
 
@@ -156,32 +109,11 @@ namespace PQnet.test {
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					// Perform the test
-					switch (test_vectors.TestGroups[i].ParameterSet) {
-						case "ML-DSA-44":
-							dilithium = dilithium2;
-							break;
-						case "ML-DSA-65":
-							dilithium = dilithium3;
-							break;
-						case "ML-DSA-87":
-							dilithium = dilithium5;
-							break;
-						default:
-							throw new NotImplementedException($"ParameterSet {test_vectors.TestGroups[i].ParameterSet} not supported");
-					}
+					mldsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, false);
+
 					StringBuilder sb;
 
 					sb = new StringBuilder();
-					sb.Append($"uint8_t m[{test_case.MessageBytes.Length}] = {{");
-					for (int x = 0; x < test_case.MessageBytes.Length; x++) {
-						sb.Append("0x");
-						sb.Append(test_case.MessageBytes[x].ToString("X2"));
-						sb.Append(", ");
-					}
-					sb.Length -= 2;
-					sb.AppendLine();
-
 					sb.Append($"uint8_t pk[{test_group.PublicKeyBytes.Length}] = {{");
 					for (int x = 0; x < test_group.PublicKeyBytes.Length; x++) {
 						sb.Append("0x");
@@ -189,7 +121,16 @@ namespace PQnet.test {
 						sb.Append(", ");
 					}
 					sb.Length -= 2;
-					sb.AppendLine();
+					sb.AppendLine(" };");
+
+					sb.Append($"uint8_t m[{test_case.MessageBytes.Length}] = {{");
+					for (int x = 0; x < test_case.MessageBytes.Length; x++) {
+						sb.Append("0x");
+						sb.Append(test_case.MessageBytes[x].ToString("X2"));
+						sb.Append(", ");
+					}
+					sb.Length -= 2;
+					sb.AppendLine(" };");
 
 					sb.Append($"uint8_t sig[{test_case.SignatureBytes.Length}] = {{");
 					for (int x = 0; x < test_case.SignatureBytes.Length; x++) {
@@ -198,11 +139,25 @@ namespace PQnet.test {
 						sb.Append(", ");
 					}
 					sb.Length -= 2;
-					sb.AppendLine();
+					sb.AppendLine(" };");
 
-					ret = dilithium.crypto_sign_verify(test_case.SignatureBytes, test_case.MessageBytes, Array.Empty<byte>(), test_group.PublicKeyBytes);
-					Assert.AreEqual(test_case.TestPassed, ret == 0, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature verification mismatch");
+					ret = mldsa.crypto_sign_verify_internal(test_case.SignatureBytes, test_case.MessageBytes, Array.Empty<byte>(), test_group.PublicKeyBytes);
+					Assert.AreEqual(test_case.TestPassed, ret == 0, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature verification mismatch\n{sb.ToString()}");
 				}
+			}
+		}
+
+		private MlDsaBase GetAlgorithm(string parameter_set, bool deterministic) {
+			switch (parameter_set) {
+				case "ML-DSA-44":
+					return new MlDsa44(deterministic);
+				case "ML-DSA-65":
+					return new MlDsa65(deterministic);
+				case "ML-DSA-87":
+					return new MlDsa87(deterministic);
+
+				default:
+					throw new NotImplementedException($"ParameterSet {parameter_set} not supported");
 			}
 		}
 	}
