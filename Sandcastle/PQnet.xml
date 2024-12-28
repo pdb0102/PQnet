@@ -1,0 +1,1697 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PQnet</name>
+    </assembly>
+    <members>
+        <member name="T:PQnet.ISecurityCategory">
+            <summary>
+            Interface for cryptographic algorithms to indicate the NIST security category.
+            </summary>
+        </member>
+        <member name="P:PQnet.ISecurityCategory.NistSecurityCategory">
+            <summary>
+            Gets the NIST security category of the cryptographic algorithm.
+            </summary>
+        </member>
+        <member name="T:PQnet.PreHashFunction">
+            <summary>
+            Pre-Hash Functions
+             FIPS 204 Section 5.4.1
+             FIPS 205 Section 10.2.2 
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA256">
+            <summary>
+            SHA-256
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA512">
+            <summary>
+            SHA-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHAKE128">
+            <summary>
+            SHAKE-128
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHAKE256">
+            <summary>
+            SHAKE-256
+            </summary>
+        </member>
+        <member name="T:PQnet.ML_DSA.MlDsa44">
+            <summary>
+            Implements the ML-DSA-44 signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsa44.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.ML_DSA.MlDsa44"/> class with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsa44.#ctor(System.Boolean)">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.ML_DSA.MlDsa44"/> class.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsa44.Deterministic">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsa44.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.ML_DSA.MlDsa65">
+            <summary>
+            Implements the ML-DSA-65 signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsa65.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.ML_DSA.MlDsa65"/> class with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsa65.#ctor(System.Boolean)">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.ML_DSA.MlDsa65"/> class.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsa65.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsa65.Deterministic">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.ML_DSA.MlDsa87">
+            <summary>
+            Implements the ML-DSA-87 signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsa87.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.ML_DSA.MlDsa87"/> class with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsa87.#ctor(System.Boolean)">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.ML_DSA.MlDsa87"/> class.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsa87.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsa87.Deterministic">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.ML_DSA.MlDsaBase">
+            <summary>
+            Number Theoretic Transform algorithm
+            </summary>
+        </member>
+        <member name="F:PQnet.ML_DSA.MlDsaBase.SeedBytes">
+            <summary>
+            The size, in bytes, of the seed used for key generation
+            </summary>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsaBase.Deterministic">
+            <summary>
+            Gets whether the signature should be randomized or deterministic (predictable, same input causes same signature)
+            </summary>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsaBase.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsaBase.PublicKeybytes">
+            <summary>
+            Gets the size, in bytes, of the public key
+            </summary>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsaBase.SecretKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the private key
+            </summary>
+        </member>
+        <member name="P:PQnet.ML_DSA.MlDsaBase.SignatureBytes">
+            <summary>
+            Gets the size, in bytes, of the signature
+            </summary>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Generates a ML-DSA key pair. Throws if an error occurs
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Generates a ML-DSA key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
+            <summary>
+            Generates a ML-DSA key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+            <remarks>
+            If <paramref name="seed"/> is provided, it must be exactly <see cref="F:PQnet.ML_DSA.MlDsaBase.SeedBytes"/> bytes long.
+            </remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Generate a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="signature">Receives the signature</param>
+            <remarks>Uses an empty context string (ctx)</remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Generate a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">Receives the signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes</exception>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Generate a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">Receives the signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.SignHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
+            <summary>
+            Generate a ML-DSA signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <remarks>Uses an empty context string (ctx)</remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
+            <summary>
+            Generate a ML-DSA signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes</exception>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@,System.String@)">
+            <summary>
+            Generate a ML-DSA signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.Verify(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Verify a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Verify a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">The message signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes</exception>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.String@)">
+            <summary>
+            Verify a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">The message signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.VerifyHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            Verify a digest ("pre-hash") ML-DSA signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            Verify a digest ("pre-hash") ML-DSA signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes</exception>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[],System.String@)">
+            <summary>
+            Verify a digest ("pre-hash") ML-DSA signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.ntt(System.Int32[])">
+            <summary>
+            Forward NTT, in-place.
+            </summary>
+            <param name="a">input/output coefficient array</param>
+            <remarks>
+            No modular reduction is performed after additions or subtractions.
+            Output vector is in bitreversed order.
+            </remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.invntt_tomont(System.Int32[])">
+            <summary>
+            Inverse NTT and multiplication by Montgomery factor 2^32.
+            </summary>
+            <remarks>
+            In-place. No modular reductions after additions or subtractions; input coefficients need to be smaller than
+            Q in absolute value.Output coefficient are smaller than Q in absolute value
+            </remarks>
+            <param name="a"></param>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_reduce(PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Inplace reduction of all coefficients of polynomial to representative in [-6283008,6283008].
+            </summary>
+            <param name="a">polynominal</param>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_caddq(PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            For all coefficients of in/out polynomial add Q if coefficient is negative.
+            </summary>
+            <param name="a">polynominal</param>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_add(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Add polynomials. No modular reduction is performed.
+            </summary>
+            <param name="c">Output polynominal</param>
+            <param name="a">First summand</param>
+            <param name="b">Second summand</param>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_sub(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Subtract polynomials. No modular reduction is performed.
+            </summary>
+            <param name="c">Output polynominal</param>
+            <param name="a">First polynominal</param>
+            <param name="b">Second polynominal to be subtracted from first</param>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_shiftl(PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Multiply polynomial by 2^D without modular reduction. 
+            </summary>
+            <param name="a">Polynominal</param>
+            <remarks>
+            Multiply polynomial by 2^D without modular reduction. 
+            </remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_ntt(PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Inplace forward NTT. Coefficients can grow by 8*Q in absolute value.
+            </summary>
+            <param name="a">Polynominal</param>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_invntt_tomont(PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Inplace inverse NTT and multiplication by 2^{32}.
+            </summary>
+            <param name="a"></param>
+            <remarks>
+            Input coefficients need to be less than Q in absolute value and output coefficients are again bounded by Q.
+            </remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_pointwise_montgomery(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Pointwise multiplication of polynomials in NTT domain representation and multiplication of resulting polynomial by 2^{-32}.
+            </summary>
+            <param name="c">Output polynominal</param>
+            <param name="a">First polynominal</param>
+            <param name="b">Second polynominal</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PQnet.ML_DSA.MlDsaBase.poly_power2round(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)" -->
+        <!-- Badly formed XML comment ignored for member "M:PQnet.ML_DSA.MlDsaBase.poly_decompose(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)" -->
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_make_hint(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Compute hint polynomial. The coefficients of which indicate whether the low bits of the corresponding coefficient of the input polynomial overflow into the high bits.
+            </summary>
+            <param name="h">output hint polynomial</param>
+            <param name="a0">low part of input polynomial</param>
+            <param name="a1">high part of input polynomial</param>
+            <returns>number of 1 bits</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.poly_use_hint(PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly,PQnet.ML_DSA.MlDsaBase.Poly)">
+            <summary>
+            Use hint polynomial to correct the high bits of a polynomial
+            </summary>
+            <param name="b">output polynomial with corrected high bits</param>
+            <param name="a">input polynomial</param>
+            <param name="h">input hint polynomial</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PQnet.ML_DSA.MlDsaBase.poly_chknorm(PQnet.ML_DSA.MlDsaBase.Poly,System.Int32)" -->
+        <member name="M:PQnet.ML_DSA.MlDsaBase.rej_uniform(System.Int32[],System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Sample uniformly random coefficients in [0, Q-1] by performing rejection sampling on array of random bytes
+            </summary>
+            <param name="a">output array</param>
+            <param name="len">number of coefficients to be sampled</param>
+            <param name="buf">array of random bytes</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PQnet.ML_DSA.MlDsaBase.montgomery_reduce(System.Int64)" -->
+        <!-- Badly formed XML comment ignored for member "M:PQnet.ML_DSA.MlDsaBase.reduce32(System.Int32)" -->
+        <member name="M:PQnet.ML_DSA.MlDsaBase.caddq(System.Int32)">
+            <summary>
+            Add Q if input coefficient is negative.
+            </summary>
+            <param name="a">finite field element a</param>
+            <returns>r</returns>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.freeze(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="a">finite field element a</param>
+            <returns>r</returns>
+            <remarks>
+            For finite field element a, compute standard representative r = a mod^+ Q.
+            </remarks>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.hash_ml_sign(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction)">
+            <summary>
+            FIPS 204 Algorithm 4 - Generates a pre-hash ML-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="ctx">Context string</param>
+            <param name="ph">Pre-hash function</param>
+            <param name="sk">Private key</param>
+            <returns>SLH-DSA signature SIG</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+        </member>
+        <member name="M:PQnet.ML_DSA.MlDsaBase.hash_ml_verify(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            FIPS 204 Algorithm 8 - Verifies a pre-hash ML-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sig">Signature</param>
+            <param name="ctx">Context string</param>
+            <param name="ph">Pre-hash function</param>
+            <param name="pk">Public key</param>
+            <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+        </member>
+        <member name="T:PQnet.NamespaceDoc">
+            <summary>
+            The <c>PQnet</c> namespace contains classes and methods for post-quantum cryptographic algorithms.
+            </summary>
+        </member>
+        <member name="T:PQnet.PQC">
+            <summary>
+            Provides access to various post-quantum cryptographic algorithms.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlDsa44">
+            <summary>
+            Gets a ML-DSA-44 signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlDsa65">
+            <summary>
+            Gets a ML-DSA-65 signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlDsa87">
+            <summary>
+            Gets a ML-DSA-87 signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_128f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_128s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_192f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_192s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_256f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_256s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_128f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_128s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_192f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_192s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_256f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_256s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256s signature scheme object.
+            </summary>
+        </member>
+        <member name="T:PQnet.Rng">
+            <summary>
+            Cryptographically strong random number generator
+            </summary>
+        </member>
+        <member name="M:PQnet.Rng.randombytes(System.Byte[]@,System.Int32)">
+            <summary>
+            Generates a random byte array
+            </summary>
+            <param name="out_buffer">The buffer to receive the random bytes</param>
+            <param name="outlen">The number of bytes to generate</param>
+        </member>
+        <member name="T:PQnet.SLH_DSA.AddressType">
+            <summary>
+            FIPS 205 Section 4.2 - Enumeration of the different types of addresses used in the SLH-DSA algorithm.
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.WotsHash">
+            <summary>
+             WOTS+ hash address
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.WotsPk">
+            <summary>
+            WOTS+ public key address
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.Tree">
+            <summary>
+            Hash tree address
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.ForsTree">
+            <summary>
+            FORS tree address
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.ForsRoots">
+            <summary>
+            FOTS tree roots compression address
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.WotsPrf">
+            <summary>
+            WOTS+ key generation address
+            </summary>
+        </member>
+        <member name="F:PQnet.SLH_DSA.AddressType.ForsPrf">
+            <summary>
+            FORS key generation address
+            </summary>
+        </member>
+        <member name="T:PQnet.SLH_DSA.IAddress">
+            <summary>
+            FIPS 205 Section 4.3 ADRS Member Functions
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.Clone">
+            <summary>
+            Clone the address
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetLayerAddress(System.UInt32)">
+            <summary>
+            The the layer value
+            </summary>
+            <param name="layer"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetTreeAddress(System.UInt64)">
+            <summary>
+            Set the tree value
+            </summary>
+            <param name="tree"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetTypeAndClear(PQnet.SLH_DSA.AddressType)">
+            <summary>
+            Set the type and clear the rest of the address
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetKeyPairAddress(System.UInt32)">
+            <summary>
+            Set the key pair value
+            </summary>
+            <param name="keyPair"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetChainAddress(System.UInt32)">
+            <summary>
+            Set the chain value
+            </summary>
+            <param name="chain"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetTreeHeight(System.UInt32)">
+            <summary>
+            Set the tree height
+            </summary>
+            <param name="treeHeight"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetHashAddress(System.UInt32)">
+            <summary>
+            Set the hash
+            </summary>
+            <param name="hash"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IAddress.SetTreeIndex(System.UInt32)">
+            <summary>
+            Set the tree index
+            </summary>
+            <param name="treeIndex"></param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.IAddress.TreeIndex">
+            <summary>
+            Get the tree index
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.IAddress.KeyPairAddress">
+            <summary>
+            Get the key pair value
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.IAddress.Bytes">
+            <summary>
+            The the full address
+            </summary>
+        </member>
+        <member name="T:PQnet.SLH_DSA.IHashAlgorithm">
+            <summary>
+            FIPS 205 Section 4.1 - Hash Functions and Pseudo-Random Functions
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IHashAlgorithm.prf_msg(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            A pseudorandom function (PRF) that generates the randomizer(𝑅) for the randomized hashing of the message to be signed.
+            </summary>
+            <param name="sk_prf"></param>
+            <param name="opt_rand"></param>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IHashAlgorithm.h_msg(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Used to generate the digest of the message to be signed.
+            </summary>
+            <param name="r"></param>
+            <param name="pk_seed"></param>
+            <param name="pk_root"></param>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IHashAlgorithm.prf(System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            A PRF that is used to generate the secret values in WOTS+ and FORS private keys.
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="sk_seed"></param>
+            <param name="adrs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IHashAlgorithm.t_len(System.Byte[],PQnet.SLH_DSA.IAddress,System.Byte[])">
+            <summary>
+            A hash function that maps an ℓ𝑛-byte message to an 𝑛-byte message.
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="adrs"></param>
+            <param name="m_l"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IHashAlgorithm.h(System.Byte[],PQnet.SLH_DSA.IAddress,System.Byte[])">
+            <summary>
+            A special case of Tℓ that takes a 2𝑛-byte message as input.
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="adrs"></param>
+            <param name="m_2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.IHashAlgorithm.f(System.Byte[],PQnet.SLH_DSA.IAddress,System.Byte[])">
+            <summary>
+            A hash function that takes an 𝑛-byte message as input and produces an 𝑛-byte output.
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="adrs"></param>
+            <param name="m_1"></param>
+            <returns></returns>
+        </member>
+        <member name="P:PQnet.SLH_DSA.IHashAlgorithm.Name">
+            <summary>
+            Gets the name of the hash algorithm.
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.IHashAlgorithm.IsShake">
+            <summary>
+            Gets a value indicating whether the hash algorithm is a SHAKE function.
+            </summary>
+        </member>
+        <member name="T:PQnet.SLH_DSA.Sha2Address">
+            <summary>
+            FIPS 205 Section 11.2 ADRS Implementation for SHA2
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.#ctor">
+            <summary>
+            Instantiates a new object of class <see cref="T:PQnet.SLH_DSA.Sha2Address"/> 
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.Sha2Address.Bytes">
+            <summary>
+            ADRS[0:22]
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.Sha2Address.TreeIndex">
+            <summary>
+            𝑖 ← toInt(ADRS[18 ∶ 22], 4)
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.Sha2Address.KeyPairAddress">
+            <summary>
+            𝑖 ← toInt(ADRS[10 ∶ 14], 4)
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.Clone">
+            <summary>
+            Returns a clone of the current <see cref="T:PQnet.SLH_DSA.Sha2Address"/>
+            </summary>
+            <returns>The cloned <see cref="T:PQnet.SLH_DSA.Sha2Address"/></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetChainAddress(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 14] ∥ toByte(𝑖, 4) ∥ ADRS[18 ∶ 22]
+            </summary>
+            <param name="chain"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetHashAddress(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 18] ∥ toByte(𝑖, 4)
+            </summary>
+            <param name="hash"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetKeyPairAddress(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 10] ∥ toByte(𝑖, 4) ∥ ADRS[14 ∶ 22]
+            </summary>
+            <param name="keyPair"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetLayerAddress(System.UInt32)">
+            <summary>
+            ADRS ← toByte(𝑙, 1) ∥ ADRS[1 ∶ 22]
+            </summary>
+            <param name="layer"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetTreeAddress(System.UInt64)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 1] ∥ toByte(𝑡, 8) ∥ ADRS[9 ∶ 22]
+            </summary>
+            <param name="tree"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetTreeHeight(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 14] ∥ toByte(𝑖, 4) ∥ ADRS[18 ∶ 22]
+            </summary>
+            <param name="treeHeight"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetTreeIndex(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 18] ∥ toByte(𝑖, 4)
+            </summary>
+            <param name="treeIndex"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Sha2Address.SetTypeAndClear(PQnet.SLH_DSA.AddressType)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 9] ∥ toByte(𝑌 , 1) ∥ toByte(0, 12)
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="T:PQnet.SLH_DSA.ShakeAddress">
+            <summary>
+            FIPS 205 Section 4.3 ADRS Implement for SHAKE
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.#ctor">
+            <summary>
+            Instantiates a new object of class <see cref="T:PQnet.SLH_DSA.Sha2Address"/>
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.ShakeAddress.Bytes">
+            <summary>
+            ADRS[0:22]
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.ShakeAddress.TreeIndex">
+            <summary>
+            𝑖 ← toInt(ADRS[28 ∶ 32], 4)
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.ShakeAddress.KeyPairAddress">
+            <summary>
+            𝑖 ← toInt(ADRS[20 ∶ 24], 4)
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetChainAddress(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 24] ∥ toByte(𝑖, 4) ∥ ADRS[28 ∶ 32]
+            </summary>
+            <param name="chain"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetHashAddress(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 28] ∥ toByte(𝑖, 4)
+            </summary>
+            <param name="hash"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetKeyPairAddress(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 20] ∥ toByte(𝑖, 4) ∥ ADRS[24 ∶ 32]
+            </summary>
+            <param name="keyPair"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetLayerAddress(System.UInt32)">
+            <summary>
+            ADRS ← toByte(𝑙, 4) ∥ ADRS[4 ∶ 32]
+            </summary>
+            <param name="layer"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetTreeAddress(System.UInt64)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 4] ∥ toByte(𝑡, 12) ∥ ADRS[16 ∶ 32]
+            </summary>
+            <param name="tree"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetTreeHeight(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 24] ∥ toByte(𝑖, 4) ∥ ADRS[28 ∶ 32]
+            </summary>
+            <param name="treeHeight"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetTreeIndex(System.UInt32)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 28] ∥ toByte(𝑖, 4)
+            </summary>
+            <param name="treeIndex"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeAddress.SetTypeAndClear(PQnet.SLH_DSA.AddressType)">
+            <summary>
+            ADRS ← ADRS[0 ∶ 16] ∥ toByte(𝑌 , 4) ∥ toByte(0, 12)
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="T:PQnet.SLH_DSA.ShakeHash">
+            <summary>
+            FIPS 205 Section 11.1 SHAKE
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeHash.f(System.Byte[],PQnet.SLH_DSA.IAddress,System.Byte[])">
+            <summary>
+            SHAKE256(PK.seed ∥ ADRS ∥ 𝑀1, 8𝑛)
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="adrs"></param>
+            <param name="m_1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeHash.h(System.Byte[],PQnet.SLH_DSA.IAddress,System.Byte[])">
+            <summary>
+            SHAKE256(PK.seed ∥ ADRS ∥ 𝑀2, 8𝑛)
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="adrs"></param>
+            <param name="m_2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeHash.h_msg(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            SHAKE256(𝑅 ∥ PK.seed ∥ PK.root ∥ 𝑀 , 8𝑚)
+            </summary>
+            <param name="r"></param>
+            <param name="pk_seed"></param>
+            <param name="pk_root"></param>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeHash.prf(System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            SHAKE256(PK.seed ∥ ADRS ∥ SK.seed, 8𝑛)
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="sk_seed"></param>
+            <param name="adrs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeHash.prf_msg(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            SHAKE256(SK.prf ∥ 𝑜𝑝𝑡_𝑟𝑎𝑛𝑑 ∥ 𝑀 , 8𝑛)
+            </summary>
+            <param name="sk_prf"></param>
+            <param name="opt_rand"></param>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.ShakeHash.t_len(System.Byte[],PQnet.SLH_DSA.IAddress,System.Byte[])">
+            <summary>
+            SHAKE256(PK.seed ∥ ADRS ∥ 𝑀2, 8𝑛)
+            </summary>
+            <param name="pk_seed"></param>
+            <param name="adrs"></param>
+            <param name="m_l"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Generates a SLH-DSA key pair. Throws if an error occurs
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Generates a SLH-DSA key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
+            <summary>
+            Generates a SLH-DSA key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+            <remarks>
+            If <paramref name="seed"/> is provided, it must be exactly <see cref="P:PQnet.SLH_DSA.SlhDsaBase.SeedBytes"/> bytes long.
+            </remarks>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Generate a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="signature">Receives the signature</param>
+            <remarks>Uses an empty context string (ctx)</remarks>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Generate a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">Receives the signature</param>
+            <exception cref="T:System.ArgumentException">Context was larger than 255 bytes</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Generate a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">Receives the signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.SignHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
+            <summary>
+            Generate a ML-DSA signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <remarks>Uses an empty context string (ctx)</remarks>
+            <exception cref="T:System.ArgumentException">The provided hash function <paramref name="ph"/> is not supported</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
+            <summary>
+            Generate a ML-DSA signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <exception cref="T:System.ArgumentException">Context was larger than 255 bytes, or the provided hash function is not supported</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@,System.String@)">
+            <summary>
+            Generate a ML-DSA signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.Verify(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Verify a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Verify a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">The message signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes</exception>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.String@)">
+            <summary>
+            Verify a pure ML-DSA signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">The message signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.VerifyHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            Verify a digest ("pre-hash") ML-DSA signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            Verify a digest ("pre-hash") ML-DSA signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes</exception>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[],System.String@)">
+            <summary>
+            Verify a digest ("pre-hash") ML-DSA signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.Deterministic">
+            <summary>
+            Gets or sets whether signature generation is deterministic
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.PrivateKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the private key
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.PublicKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the public key
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.SeedBytes">
+            <summary>
+            Gets the size, in bytes, of the seed used for key generation
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.SignatureSize">
+            <summary>
+            Gets the size, in bytes, of the signature
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.Name">
+            <summary>
+            Gets the name of the algorithm
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaBase.NistSecurityCategory">
+            <summary>
+            Gets the NIST security category of the cryptographic algorithm.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.toInt(System.Byte[],System.Int32)">
+            <summary>
+            FIPS 205 Algorithm 2 
+            </summary>
+            <param name="b"></param>
+            <param name="offset"></param>
+            <param name="i"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.toByte(System.Int64,System.Int32)">
+            <summary>
+            FIPS 205 Algorithm 3 
+            </summary>
+            <param name="x">integer</param>
+            <param name="n">length</param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.base_2b(System.Byte[],System.Int32,System.UInt32)">
+            <summary>
+            FIPS 205 Algorithm 4 - Computes the base 2𝑏 representation of 𝑋.
+            </summary>
+            <param name="x">Byte string 𝑋 of length at least ⌈𝑜𝑢𝑡_𝑙𝑒𝑛⋅𝑏 / 8 ⌉</param>
+            <param name="i">Integer</param>
+            <param name="out_len">output length</param>
+            <returns>Array of 𝑜𝑢𝑡_𝑙𝑒𝑛 integers in the range[0, … , 2𝑏 − 1]</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.chain(System.Byte[],System.Int32,System.Int32,System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 5 - Chaining function used in WOTS+
+            </summary>
+            <param name="x">Input string</param>
+            <param name="i">Start index</param>
+            <param name="s">Number of steps</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>Value of F iterated 𝑠 times on 𝑋</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.wots_pkGen(System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 6 - Generates a WOTS+ public key
+            </summary>
+            <param name="sk_seed">Secret seed</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>WOTS+ public key 𝑝𝑘</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.wots_sign(System.Byte[],System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 7 - Generates a WOTS+ signature on an 𝑛-byte message
+            </summary>
+            <param name="m">Message</param>
+            <param name="sk_seed">Secret seed</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>WOTS+ signature 𝑠𝑖𝑔</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.wots_pkFromSig(System.Byte[],System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 8 - Computes a WOTS+ public key from a message and its signature
+            </summary>
+            <param name="sig">WOTS+ signature</param>
+            <param name="m">Message</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>WOTS+ public key 𝑝𝑘𝑠𝑖𝑔 derived from 𝑠𝑖𝑔</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.xmss_node(System.Byte[],System.Int64,System.Int64,System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 9 - Computes the root of a Merkle subtree of WOTS+ public keys
+            </summary>
+            <param name="sk_seed">Secret seed</param>
+            <param name="i">Target node index</param>
+            <param name="z">Target node height</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>𝑛-byte root 𝑛𝑜𝑑𝑒</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.xmss_sign(System.Byte[],System.Byte[],System.Int64,System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 10 - Generates an XMSS signature
+            </summary>
+            <param name="m">𝑛-byte message</param>
+            <param name="sk_seed">Secret seed</param>
+            <param name="idx">Index</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>XMSS signature SIG𝑋𝑀𝑆𝑆 = (𝑠𝑖𝑔 ∥ AUTH)</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.xmss_pkFromSig(System.Int64,System.Byte[],System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 11 - Computes an XMSS public key from an XMSS signature
+            </summary>
+            <param name="idx">Index</param>
+            <param name="sig_xmss">XMSS signature SIG𝑋𝑀𝑆𝑆 = (𝑠𝑖𝑔 ∥ AUTH)</param>
+            <param name="m">𝑛-byte message</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>𝑛-byte root value 𝑛𝑜𝑑𝑒[0]</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.ht_sign(System.Byte[],System.Byte[],System.Byte[],System.Int64,System.Int64)">
+            <summary>
+            FIPS 205 Algorithm 12 - Generates a hypertree signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sk_seed">Secret seed</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="idx_tree">Tree index</param>
+            <param name="idx_leaf">Leaf index</param>
+            <returns>HT signature SIG𝐻𝑇</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.ht_verify(System.Byte[],System.Byte[],System.Byte[],System.Int64,System.Int64,System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 13 - Verifies a hypertree signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sig_ht">Signature SIG𝐻𝑇</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="idx_tree">Tree index</param>
+            <param name="idx_leaf">Leaf index</param>
+            <param name="pk_root">HT public key</param>
+            <returns><c>true</c> if the signature is correct, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.fors_skGen(System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress,System.Int32)">
+            <summary>
+            FIPS 205 Algorithm 14 - Generates a FORS private-key value
+            </summary>
+            <param name="sk_seed">Secret seed</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <param name="idx">Secret key index</param>
+            <returns>𝑛-byte FORS private-key value</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.fors_node(System.Byte[],System.Int32,System.Int32,System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 15 - Computes the root of a Merkle subtree of FORS public values
+            </summary>
+            <param name="sk_seed">Secret seed</param>
+            <param name="i">Target node index</param>
+            <param name="z">Target node height</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>𝑛-byte root 𝑛𝑜𝑑𝑒</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.fors_sign(System.Byte[],System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 16 - Generates a FORS signature
+            </summary>
+            <param name="md">Message digest</param>
+            <param name="sk_seed">Secret seed</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>FORS signature SIG𝐹𝑂𝑅𝑆</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.fors_pkFromSig(System.Byte[],System.Byte[],System.Byte[],PQnet.SLH_DSA.IAddress)">
+            <summary>
+            FIPS 205 Algorithm 17 - Computes a FORS public key from a FORS signature
+            </summary>
+            <param name="sig_fors">FORS signature SIG𝐹𝑂𝑅𝑆</param>
+            <param name="md">Message digest</param>
+            <param name="pk_seed">Public seed</param>
+            <param name="adrs">Address</param>
+            <returns>FORS public key</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.slh_keygen_internal(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 18 - Generates an SLH-DSA key pair
+            </summary>
+            <param name="sk_seed">Secret seed</param>
+            <param name="sk_prf">PRF key</param>
+            <param name="pk_seed">Public seed</param>
+            <returns>SLH-DSA key pair (SK, PK)</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.slh_sign_internal(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 19 - Generates an SLH-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sk">Private key (SK.seed, SK.prf, PK.seed, PK.root)</param>
+            <param name="addrnd">Additional randomness, or <c>null</c></param>
+            <returns>SLH-DSA signature SIG</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.slh_verify_internal(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 20 - Verifies an SLH-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sig">Signature</param>
+            <param name="pk">Public key (PK.seed, PK.root)</param>
+            <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.slh_keygen(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            FIPS 205 Algorithm 21 - Generates an SLH-DSA key pair
+            </summary>
+            <param name="sk">Receives private key</param>
+            <param name="pk">Receives public key</param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.slh_sign(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 22 - Generates a pure SLH-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="ctx">Context string</param>
+            <param name="sk">Private key</param>
+            <returns>SLH-DSA signature SIG</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.hash_slh_sign(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 23 - Generates a pre-hash SLH-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="ctx">Context string</param>
+            <param name="ph">Pre-hash function</param>
+            <param name="sk">Private key</param>
+            <returns>SLH-DSA signature SIG</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.slh_verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 24 -	Verifies a pure SLH-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sig">Signature</param>
+            <param name="ctx">Context string</param>
+            <param name="pk">Public key</param>
+            <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.hash_slh_verify(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 25 - Verifies a pre-hash SLH-DSA signature
+            </summary>
+            <param name="m">Message</param>
+            <param name="sig">Signature</param>
+            <param name="ctx">Context string</param>
+            <param name="ph">Pre-hash function</param>
+            <param name="pk">Public key</param>
+            <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.GetAddress">
+            <summary>
+            Gets an address appropriate for the chosen hash function
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.SplitSk(System.Byte[],System.Byte[]@,System.Byte[]@,System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Split the private key into its components
+            </summary>
+            <param name="sk">Private key</param>
+            <param name="sk_seed">Receives the secret seed</param>
+            <param name="sk_prf">Receives the secret key PRF</param>
+            <param name="pk_seed">Receives the public seed</param>
+            <param name="pk_root">Receives the HT public key</param>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaBase.SplitPk(System.Byte[],System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Split the public key into its components
+            </summary>
+            <param name="pk">Public key</param>
+            <param name="pk_seed">Receives the public seed</param>
+            <param name="pk_root">Receives the HT public key</param>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaSha2_128f">
+            <summary>
+            Implements the SLH-DSA-SHA2-128f signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_128f.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_128f"/> object with non-deterministic signatures
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_128f.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_128f"/> object.
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+            </summary>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_128f.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_128f.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaSha2_128s">
+            <summary>
+            Implements the SLH-DSA-SHA2-128s signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_128s.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_128s"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_128s.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_128s"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_128s.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_128s.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaSha2_192f">
+            <summary>
+            Implements the SLH-DSA-SHA2-192f signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_192f.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_192f"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_192f.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_192f"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_192f.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_192f.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaSha2_192s">
+            <summary>
+            Implements the SLH-DSA-SHA2-192s signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_192s.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_192s"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_192s.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_192s"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_192s.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_192s.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaSha2_256f">
+            <summary>
+            Implements the SLH-DSA-SHA2-256f signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_256f.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_256f"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_256f.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_256f"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_256f.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_256f.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaSha2_256s">
+            <summary>
+            Implements the SLH-DSA-SHA2-256s signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_256s.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_256s"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaSha2_256s.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaSha2_256s"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_256s.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaSha2_256s.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaShake_128f">
+            <summary>
+            Implements the SLH-DSA-SHAKE-128f signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_128f.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_128f"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_128f.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_128f"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_128f.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_128f.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaShake_128s">
+            <summary>
+            Implements the SLH-DSA-SHAKE-128s signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_128s.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_128s"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_128s.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_128s"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_128s.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_128s.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaShake_192f">
+            <summary>
+            Implements the SLH-DSA-SHAKE-192f signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_192f.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_192f"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_192f.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_192f"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_192f.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_192f.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaShake_192s">
+            <summary>
+            Implements the SLH-DSA-SHAKE-192s signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_192s.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_192s"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_192s.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_192s"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_192s.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_192s.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaShake_256f">
+            <summary>
+            Implements the SLH-DSA-SHAKE-256f signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_256f.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_256f"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_256f.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_256f"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_256f.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_256f.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.SlhDsaShake_256s">
+            <summary>
+            Implements the SLH-DSA-SHAKE-256s signature scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_256s.#ctor">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_256s"/> object with non-deterministic signatures.
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.SlhDsaShake_256s.#ctor(System.Boolean)">
+            <summary>
+            Instantiates a new <see cref="T:PQnet.SLH_DSA.SlhDsaShake_256s"/> object.
+            </summary>
+            <param name="deterministic"><c>true</c> if generated signatures should be deterministic, <c>false</c> otherwise</param>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_256s.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.SLH_DSA.SlhDsaShake_256s.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.SLH_DSA.Utility">
+            <summary>
+            FIPS 205 Section 4.4 Arrays, Byte Strings, and Integers
+            </summary>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Utility.toInt(System.Byte[],System.Int32)">
+            <summary>
+            FIPS 205 Algorithm 2 - Load a <see cref="T:System.UInt32"/> from a <see cref="T:System.Byte"/> array in big-endian order at offset <paramref name="offset"/>.
+            </summary>
+            <param name="b"></param>
+            <param name="offset"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Utility.toByte(System.UInt32,System.Byte[],System.Int32)">
+            <summary>
+            FIPS 205 Algorithm 3 - Store a <see cref="T:System.UInt32"/> in a <see cref="T:System.Byte"/> array in big-endian order at offset <paramref name="offset"/>.
+            </summary>
+            <param name="b"></param>
+            <param name="offset"></param>
+            <param name="i"></param>
+        </member>
+        <member name="M:PQnet.SLH_DSA.Utility.toByte(System.UInt64,System.Byte[],System.Int32)">
+            <summary>
+            FIPS 205 Algorithm 3 - Store a <see cref="T:System.UInt64"/> in a <see cref="T:System.Byte"/> array in big-endian order at offset <paramref name="offset"/>.
+            </summary>
+            <param name="b"></param>
+            <param name="offset"></param>
+            <param name="i"></param>
+        </member>
+    </members>
+</doc>

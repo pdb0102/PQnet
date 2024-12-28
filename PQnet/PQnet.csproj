@@ -11,6 +11,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/pdb0102/PQNet</RepositoryUrl>
     <Authors></Authors>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>C:\Projects\PQNet\Sandcastle\PQnet.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
