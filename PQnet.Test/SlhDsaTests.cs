@@ -29,7 +29,7 @@ using PQnet.test.AVCP;
 namespace PQnet.test {
 
 	[TestClass]
-	public sealed class SlhDsa {
+	public sealed class SlhDsaTests {
 		[TestMethod]
 		public void TestAvcpKeyGen() {
 			AcvpSlhDsaTestVectors<AcvpSlhDsaKeyGenTestCase> test_vectors;
@@ -50,13 +50,10 @@ namespace PQnet.test {
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, true);
-					if (slh_dsa.Name.Contains("SHA2")) {
-						continue;
-					}
 
 					(sk, pk) = slh_dsa.slh_keygen_internal(test_case.SkSeedBytes, test_case.SkPrfBytes, test_case.PkSeedBytes);
-					CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Public key mismatch");
-					CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Secret key mismatch");
+					CollectionAssert.AreEqual(test_case.PublicKeyBytes, pk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Public key mismatch");
+					CollectionAssert.AreEqual(test_case.SecretKeyBytes, sk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Secret key mismatch");
 					Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet}");
 				}
 			}
@@ -84,12 +81,9 @@ namespace PQnet.test {
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
-					if (slh_dsa.Name.Contains("SHA2")) {
-						continue;
-					}
 
 					sig = slh_dsa.slh_sign_internal(test_case.MessageBytes, test_case.SecretKeyBytes, test_group.Deterministic ? null : test_case.RandomBytes);
-					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature mismatch");
+					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature mismatch");
 					Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet}");
 				}
 			}
@@ -117,12 +111,9 @@ namespace PQnet.test {
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, true);
-					if (slh_dsa.Name.Contains("SHA2")) {
-						continue;
-					}
 
 					result = slh_dsa.slh_verify_internal(test_case.MessageBytes, test_case.SignatureBytes, test_case.PublicKeyBytes);
-					Assert.AreEqual(test_case.TestPassed, result, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Signature verification mismatch");
+					Assert.AreEqual(test_case.TestPassed, result, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature verification mismatch");
 					Console.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet}");
 				}
 			}

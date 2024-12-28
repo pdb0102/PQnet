@@ -30,9 +30,9 @@ namespace PQnet.SLH_DSA {
 		private const int TreeOffset = 1;
 		private const int TypeOffset = 9;
 		private const int KeyPairAddrOffset = 10;
-		private const int ChainAddrOffset = 17;
-		private const int HashAddrOffset = 21;
-		private const int TreeHeightOffset = 17;
+		private const int ChainAddrOffset = 14;
+		private const int HashAddrOffset = 18;
+		private const int TreeHeightOffset = 14;
 		private const int TreeIndexOffset = 18;
 
 		private byte[] A;
@@ -41,7 +41,7 @@ namespace PQnet.SLH_DSA {
 		/// Instantiates a new object of class <see cref="Sha2Address"/> 
 		/// </summary>
 		public Sha2Address() {
-			A = new byte[32];
+			A = new byte[22];
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace PQnet.SLH_DSA {
 		/// </summary>
 		public uint TreeIndex {
 			get {
-				return Utility.toInt(A, TreeOffset);
+				return Utility.toInt(A, TreeIndexOffset);
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace PQnet.SLH_DSA {
 		/// </summary>
 		/// <param name="chain"></param>
 		public void SetChainAddress(uint chain) {
-			A[ChainAddrOffset] = (byte)chain;
+			Utility.toByte(chain, A, ChainAddrOffset);
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace PQnet.SLH_DSA {
 		/// </summary>
 		/// <param name="hash"></param>
 		public void SetHashAddress(uint hash) {
-			A[HashAddrOffset] = (byte)hash;
+			Utility.toByte(hash, A, HashAddrOffset);
 		}
 
 		/// <summary>
@@ -112,7 +112,7 @@ namespace PQnet.SLH_DSA {
 		/// </summary>
 		/// <param name="layer"></param>
 		public void SetLayerAddress(uint layer) {
-			Utility.toByte(layer, A, LayerOffset);
+			A[LayerOffset] = (byte)layer;
 		}
 
 		/// <summary>
