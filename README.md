@@ -76,6 +76,7 @@ Getting started:
 ### All ACVP test vectors pass for:
   - ML-DSA 
   - SLH-DSA
+  - ML-KEM
 
 ## ToDo:
   - Create a .Net Framework version
