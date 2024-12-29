@@ -24,9 +24,6 @@
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
 namespace PQnet {
-	/// <summary>
-	/// Number Theoretic Transform algorithm
-	/// </summary>
 	public abstract partial class MlDsaBase {
 		private static int[] zetas = {
 					 0,    25847, -2608894,  -518909,   237124,  -777960,  -876248,   466468,

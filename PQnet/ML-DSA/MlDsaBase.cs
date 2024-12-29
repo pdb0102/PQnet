@@ -26,6 +26,9 @@
 using System.Security.Cryptography;
 
 namespace PQnet {
+	/// <summary>
+	/// Base class for ML-DSA digital signature algorithms.
+	/// </summary>
 	public abstract partial class MlDsaBase : ISecurityCategory {
 		/// <summary>
 		/// The size, in bytes, of the seed used for key generation
