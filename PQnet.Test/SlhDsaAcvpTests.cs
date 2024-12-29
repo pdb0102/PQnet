@@ -28,7 +28,7 @@ using PQnet.test.AVCP;
 namespace PQnet.test {
 
 	[TestClass]
-	public sealed class SlhDsaTests {
+	public sealed class SlhDsaAcvpTests {
 		[TestMethod]
 		public void TestAvcpKeyGen() {
 			AcvpSlhDsaTestVectors<AcvpSlhDsaKeyGenTestCase> test_vectors;

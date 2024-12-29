@@ -28,7 +28,7 @@ using PQnet.test.AVCP;
 namespace PQnet.test {
 
 	[TestClass]
-	public sealed class MlKemTests {
+	public sealed class MlKemAcvpTests {
 		[TestMethod]
 		public void TestAvcpKeyGen() {
 			AcvpMlKemTestVectors<AcvpMlKemKeyGenTestCase> test_vectors;
