@@ -25,7 +25,7 @@ using System.Runtime.Serialization;
 
 namespace PQnet.test.AVCP {
 	/// <summary>
-	/// ML-DSA sigGen Test Groups JSON Schema
+	/// ML-DSA sigGen Test Case JSON Schema
 	/// </summary>
 	[DataContract]
 	public class AcvpMlDsaSigGenTestCase {
@@ -55,7 +55,7 @@ namespace PQnet.test.AVCP {
 		}
 
 		/// <summary>
-		/// The seed used to generate the key pair
+		/// The secret key
 		/// </summary>
 		[DataMember(Name = "sk")]
 		public string SecretKey { get; set; }
@@ -74,7 +74,7 @@ namespace PQnet.test.AVCP {
 		}
 
 		/// <summary>
-		/// When the test group properties "testType": "AFT" and "deterministic": false, the random value used to generate the signature
+		/// Random seed value
 		/// </summary>
 		[DataMember(Name = "rnd")]
 		public string Random { get; set; }
@@ -99,7 +99,7 @@ namespace PQnet.test.AVCP {
 		public string Signature { get; set; }
 
 		/// <summary>
-		/// <see cref="Random"/> as a byte array
+		/// <see cref="Signature"/> as a byte array
 		/// </summary>
 		[IgnoreDataMember]
 		public byte[] SignatureBytes {

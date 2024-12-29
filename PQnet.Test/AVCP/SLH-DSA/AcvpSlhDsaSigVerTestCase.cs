@@ -25,7 +25,7 @@ using System.Runtime.Serialization;
 
 namespace PQnet.test.AVCP {
 	/// <summary>
-	/// SLH-DSA sigVer Test Groups JSON Schema
+	/// SLH-DSA sigVer Test Case JSON Schema
 	/// </summary>
 	[DataContract]
 	public class AcvpSlhDsaSigVerTestCase {
@@ -80,7 +80,7 @@ namespace PQnet.test.AVCP {
 		public string Signature { get; set; }
 
 		/// <summary>
-		/// <see cref="Random"/> as a byte array
+		/// <see cref="Signature"/> as a byte array
 		/// </summary>
 		[IgnoreDataMember]
 		public byte[] SignatureBytes {

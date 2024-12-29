@@ -25,10 +25,10 @@ using System.Runtime.Serialization;
 
 namespace PQnet.test.AVCP {
 	/// <summary>
-	/// ML-DSA keyGen/sigGen/sigVer Test JSON Schema
+	/// ML-KEM keyGen/encapDecap Test Group JSON Schema
 	/// </summary>
 	[DataContract]
-	public class AcvpMlDsaTestVectors<T> {
+	public class AcvpMlKemTestVectors<T> {
 		/// <summary>
 		/// Unique numeric vector set identifier
 		/// </summary>
@@ -54,9 +54,14 @@ namespace PQnet.test.AVCP {
 		public string Revision { get; set; }
 
 		/// <summary>
+		/// 
+		/// </summary>
+		[DataMember(Name = "isSample")]
+		public bool IsSample { get; set; }
+		/// <summary>
 		/// List of test groups
 		/// </summary>
 		[DataMember(Name = "testGroups")]
-		public List<AcvpMlDsaTestGroup<T>> TestGroups { get; set; }
+		public List<AcvpMlKemTestGroup<T>> TestGroups { get; set; }
 	}
 }

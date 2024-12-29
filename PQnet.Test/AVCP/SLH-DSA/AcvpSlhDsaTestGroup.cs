@@ -42,7 +42,7 @@ namespace PQnet.test.AVCP {
 		public string TestType { get; set; }
 
 		/// <summary>
-		/// The ML-DSA parameter set used
+		/// The SLH-DSA parameter set used
 		/// </summary>
 		[DataMember(Name = "parameterSet")]
 		public string ParameterSet { get; set; }

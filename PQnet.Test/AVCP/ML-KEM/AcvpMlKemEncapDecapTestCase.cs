@@ -25,10 +25,10 @@ using System.Runtime.Serialization;
 
 namespace PQnet.test.AVCP {
 	/// <summary>
-	/// SLH-DSA sigGen Test Case JSON Schema
+	/// ML-KEM encapDecap Test Case JSON Schema
 	/// </summary>
 	[DataContract]
-	public class AcvpSlhDsaSigGenTestCase {
+	public class AcvpMlKemEncapDecapTestCase {
 		/// <summary>
 		/// Numeric identifier for the test case, unique across the entire vector set
 		/// </summary>
@@ -36,9 +36,9 @@ namespace PQnet.test.AVCP {
 		public int TcId { get; set; }
 
 		/// <summary>
-		/// The message used to generate the signature
+		/// The message to encrypt
 		/// </summary>
-		[DataMember(Name = "message")]
+		[DataMember(Name = "m")]
 		public string Message { get; set; }
 
 		/// <summary>
@@ -55,59 +55,40 @@ namespace PQnet.test.AVCP {
 		}
 
 		/// <summary>
-		/// The seed used to generate the key pair
+		/// The encapsulation key
 		/// </summary>
-		[DataMember(Name = "sk")]
-		public string SecretKey { get; set; }
+		[DataMember(Name = "ek")]
+		public string EncapsulationKey { get; set; }
 
 		/// <summary>
-		/// <see cref="SecretKey"/> as a byte array
+		/// <see cref="EncapsulationKey"/> as a byte array
 		/// </summary>
 		[IgnoreDataMember]
-		public byte[] SecretKeyBytes {
+		public byte[] EncapsulationKeyBytes {
 			get {
-				if (SecretKey == null) {
+				if (EncapsulationKey == null) {
 					return null;
 				}
-				return Utilities.HexToBytes(SecretKey, out _);
+				return Utilities.HexToBytes(EncapsulationKey, out _);
 			}
 		}
 
 		/// <summary>
-		/// The random value used to generate the signature
+		/// The encrypted message
 		/// </summary>
-		[DataMember(Name = "additionalRandomness")]
-		public string Random { get; set; }
+		[DataMember(Name = "c")]
+		public string EncryptedMessage { get; set; }
 
 		/// <summary>
-		/// <see cref="Random"/> as a byte array
+		/// <see cref="EncryptedMessage"/> as a byte array
 		/// </summary>
 		[IgnoreDataMember]
-		public byte[] RandomBytes {
+		public byte[] EncryptedMessageBytes {
 			get {
-				if (Random == null) {
+				if (EncryptedMessage == null) {
 					return null;
 				}
-				return Utilities.HexToBytes(Random, out _);
-			}
-		}
-
-		/// <summary>
-		/// The expected signature
-		/// </summary>
-		[DataMember(Name = "signature")]
-		public string Signature { get; set; }
-
-		/// <summary>
-		/// <see cref="Random"/> as a byte array
-		/// </summary>
-		[IgnoreDataMember]
-		public byte[] SignatureBytes {
-			get {
-				if (Signature == null) {
-					return null;
-				}
-				return Utilities.HexToBytes(Signature, out _);
+				return Utilities.HexToBytes(EncryptedMessage, out _);
 			}
 		}
 	}

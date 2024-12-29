@@ -50,6 +50,8 @@
   <ItemGroup>
     <Folder Include="Vectors\cSHAKE-128\" />
     <Folder Include="Vectors\cSHAKE-256\" />
+    <Folder Include="Vectors\ML-KEM\keyGen\" />
+    <Folder Include="Vectors\ML-KEM\encapDecap\" />
     <Folder Include="Vectors\SHA2-512\" />
     <Folder Include="Vectors\SHA2-256\" />
   </ItemGroup>

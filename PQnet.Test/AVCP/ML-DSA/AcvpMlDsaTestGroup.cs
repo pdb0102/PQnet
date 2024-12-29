@@ -25,7 +25,7 @@ using System.Runtime.Serialization;
 
 namespace PQnet.test.AVCP {
 	/// <summary>
-	/// ML-DSA sigGen Test Case JSON Schema
+	/// ML-DSA sigGen Test Group JSON Schema
 	/// </summary>
 	[DataContract]
 	public class AcvpMlDsaTestGroup<T> {

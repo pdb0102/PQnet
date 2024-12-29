@@ -21,42 +21,42 @@
 // SOFTWARE.
 //
 
-using System.Runtime.Serialization;
+// Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
-namespace PQnet.test.AVCP {
+namespace PQnet {
 	/// <summary>
-	/// ML-DSA keyGen/sigGen/sigVer Test JSON Schema
+	/// Implements the ML-KEM-512 encapsulation scheme.
 	/// </summary>
-	[DataContract]
-	public class AcvpMlDsaTestVectors<T> {
-		/// <summary>
-		/// Unique numeric vector set identifier
-		/// </summary>
-		[DataMember(Name = "vsId")]
-		public int VsId { get; set; }
+	public class MlKem512 : MlKemBase {
+		private bool deterministic;
 
 		/// <summary>
-		/// Algorithm defined in the capability exchange
+		/// Creates a new instance of the <see cref="MlKem512"/> class with non-deterministic ciphertext.
 		/// </summary>
-		[DataMember(Name = "algorithm")]
-		public string Algorithm { get; set; }
+		public MlKem512() : this(false) {
+		}
+
 
 		/// <summary>
-		/// Mode defined in the capability exchange
+		/// Creates a new instance of the <see cref="MlKem512"/> class.
 		/// </summary>
-		[DataMember(Name = "mode")]
-		public string Mode { get; set; }
+		/// <param name="deterministic"><c>true</c> if generated ciphertext should be deterministic, <c>false</c> otherwise</param>
+		public MlKem512(bool deterministic) : base(2, 3, 2, 128, 2 * 320) {
+			this.deterministic = deterministic;
+		}
 
-		/// <summary>
-		/// Protocol test revision selected
-		/// </summary>
-		[DataMember(Name = "revision")]
-		public string Revision { get; set; }
+		/// <inheritdoc/>
+		public override bool Deterministic {
+			get {
+				return deterministic;
+			}
+		}
 
-		/// <summary>
-		/// List of test groups
-		/// </summary>
-		[DataMember(Name = "testGroups")]
-		public List<AcvpMlDsaTestGroup<T>> TestGroups { get; set; }
+		/// <inheritdoc/>
+		public override int NistSecurityCategory {
+			get {
+				return 2;
+			}
+		}
 	}
 }

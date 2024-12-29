@@ -58,6 +58,7 @@ namespace PQnet.test.AVCP {
 		/// </summary>
 		[DataMember(Name = "isSample")]
 		public bool IsSample { get; set; }
+
 		/// <summary>
 		/// List of test groups
 		/// </summary>

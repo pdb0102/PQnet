@@ -25,38 +25,57 @@ using System.Runtime.Serialization;
 
 namespace PQnet.test.AVCP {
 	/// <summary>
-	/// ML-DSA keyGen/sigGen/sigVer Test JSON Schema
+	/// ML-KEM Test Group JSON Schema
 	/// </summary>
 	[DataContract]
-	public class AcvpMlDsaTestVectors<T> {
+	public class AcvpMlKemTestGroup<T> {
 		/// <summary>
-		/// Unique numeric vector set identifier
+		/// Numeric identifier for the test group, unique across the entire vector set
 		/// </summary>
-		[DataMember(Name = "vsId")]
-		public int VsId { get; set; }
+		[DataMember(Name = "tgId")]
+		public int TgId { get; set; }
 
 		/// <summary>
-		/// Algorithm defined in the capability exchange
+		/// The test operation performed
 		/// </summary>
-		[DataMember(Name = "algorithm")]
-		public string Algorithm { get; set; }
+		[DataMember(Name = "testType")]
+		public string TestType { get; set; }
 
 		/// <summary>
-		/// Mode defined in the capability exchange
+		/// The ML-KEM parameter set used
 		/// </summary>
-		[DataMember(Name = "mode")]
-		public string Mode { get; set; }
+		[DataMember(Name = "parameterSet")]
+		public string ParameterSet { get; set; }
 
 		/// <summary>
-		/// Protocol test revision selected
+		/// The ML-KEM operation
 		/// </summary>
-		[DataMember(Name = "revision")]
-		public string Revision { get; set; }
+		[DataMember(Name = "function")]
+		public string Function { get; set; }
 
 		/// <summary>
-		/// List of test groups
+		/// The message used to generate the signature
 		/// </summary>
-		[DataMember(Name = "testGroups")]
-		public List<AcvpMlDsaTestGroup<T>> TestGroups { get; set; }
+		[DataMember(Name = "dk")]
+		public string DecapsulationKey { get; set; }
+
+		/// <summary>
+		/// <see cref="DecapsulationKey"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] DecapsulationKeyBytes {
+			get {
+				if (DecapsulationKey == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(DecapsulationKey, out _);
+			}
+		}
+
+		/// <summary>
+		/// List of individual test vector JSON objects 
+		/// </summary>
+		[DataMember(Name = "tests")]
+		public List<T> Tests { get; set; }
 	}
 }

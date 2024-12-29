@@ -112,7 +112,7 @@ namespace PQnet.test.AVCP {
 		}
 
 		/// <summary>								   
-		/// The public key
+		/// The secret key
 		/// </summary>
 		[DataMember(Name = "sk")]
 		public string SecretKey { get; set; }
@@ -129,6 +129,5 @@ namespace PQnet.test.AVCP {
 				return Utilities.HexToBytes(SecretKey, out _);
 			}
 		}
-
 	}
 }
