@@ -77,9 +77,9 @@ namespace PQnet {
 			len2 = ((int)Math.Log2(len1 * (w - 1)) / lg_w) + 1;
 			len = len1 + len2;
 
-			PrivateKeyBytes = 2 * n;
-			PublicKeyBytes = 4 * n;
 			SeedBytes = 3 * n;
+			PublicKeyBytes = 2 * n;
+			PrivateKeyBytes = (2 * n) + PublicKeyBytes;
 
 			signature_size = (1 + (k * (1 + a)) + h + (d * len)) * n;
 
@@ -112,7 +112,7 @@ namespace PQnet {
 		/// <summary>
 		/// Gets the size, in bytes, of the signature
 		/// </summary>
-		public int SignatureSize {
+		public int SignatureBytes {
 			get {
 				return signature_size;
 			}

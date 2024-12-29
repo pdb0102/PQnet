@@ -6,7 +6,7 @@ Cryptographically strong random number generator
 
 ## Inheritance Hierarchy
 <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">System.Object</a><br />&nbsp;&nbsp;PQnet.Rng<br />
-**Namespace:**&nbsp;<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d.md">PQnet</a><br />**Assembly:**&nbsp;PQnet (in PQnet.dll) Version: 1.0.0+12584ed77717a7c7a23b24a8fa46e5237f71a5c8
+**Namespace:**&nbsp;<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d">PQnet</a><br />**Assembly:**&nbsp;PQnet (in PQnet.dll) Version: 1.0.0+63cbb78a507491a71ebd4891944ebbfe930c1a59
 
 ## Syntax
 
@@ -25,7 +25,7 @@ The Rng type exposes the following members.
 
 
 ## Constructors
-&nbsp;<table><tr><th></th><th>Name</th><th>Description</th></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="aa41d6cf-8b4a-8d3f-6b1c-75146ae2bc00.md">Rng</a></td><td>
+&nbsp;<table><tr><th></th><th>Name</th><th>Description</th></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="aa41d6cf-8b4a-8d3f-6b1c-75146ae2bc00">Rng</a></td><td>
 Initializes a new instance of the Rng class</td></tr></table>&nbsp;
 <a href="#rng-class">Back to Top</a>
 
@@ -40,7 +40,7 @@ Serves as the default hash function.
 Gets the <a href="https://docs.microsoft.com/dotnet/api/system.type" target="_blank" rel="noopener noreferrer">Type</a> of the current instance.
  (Inherited from <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone" target="_blank" rel="noopener noreferrer">MemberwiseClone</a></td><td>
 Creates a shallow copy of the current <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">Object</a>.
- (Inherited from <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">Object</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")![Static member](media/static.gif "Static member")</td><td><a href="a9b5a6e5-e78b-6b58-dfa1-0a746568abc2.md">randombytes</a></td><td>
+ (Inherited from <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">Object</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")![Static member](media/static.gif "Static member")</td><td><a href="a9b5a6e5-e78b-6b58-dfa1-0a746568abc2">randombytes</a></td><td>
 Generates a random byte array</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring" target="_blank" rel="noopener noreferrer">ToString</a></td><td>
 Returns a string that represents the current object.
  (Inherited from <a href="https://docs.microsoft.com/dotnet/api/system.object" target="_blank" rel="noopener noreferrer">Object</a>.)</td></tr></table>&nbsp;
@@ -50,4 +50,4 @@ Returns a string that represents the current object.
 
 
 #### Reference
-<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d.md">PQnet Namespace</a><br />
+<a href="fc4f881f-e121-9cf0-ed49-65bf6b5a005d">PQnet Namespace</a><br />

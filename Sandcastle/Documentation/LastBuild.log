@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shfbBuild product="Sandcastle Help File Builder and Tools" version="2022.2.6.0" projectFile="C:\Projects\PQNet\Sandcastle\PQnet.shfbproj" started="12/27/2024 11:52:27 PM">
+<shfbBuild product="Sandcastle Help File Builder and Tools" version="2022.2.6.0" projectFile="C:\Projects\PQNet\Sandcastle\PQnet.shfbproj" started="12/29/2024 4:46:55 PM">
 <buildStep step="Initializing">
 Finding tools...
 The Sandcastle tools are located in &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder&#39;
@@ -23,7 +23,7 @@ Copying XML comments files
 </buildStep>
 <buildStep step="GenerateSharedContent">
 Generating shared content files (en-US, English (United States))...
-    Last step completed in 00:00:00.0020
+    Last step completed in 00:00:00.0140
 </buildStep>
 <buildStep step="GenerateApiFilter">
 Generating API filter for MRefBuilder...
@@ -31,10 +31,10 @@ Generating API filter for MRefBuilder...
 </buildStep>
 <buildStep step="GenerateReflectionInfo">
 Generating reflection information...
-[C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe - GenerateRefInfo-d8f273a4-e577-4718-9d1c-62cc80e7fc46.proj]
-Build started 12/27/2024 11:52:28 PM.
+[C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe - GenerateRefInfo-0ef58c23-1422-4496-9c58-f7b387363c6c.proj]
+Build started 12/29/2024 4:46:59 PM.
 
-Project &quot;C:\Projects\PQNet\Sandcastle\Documentation\Working\GenerateRefInfo-d8f273a4-e577-4718-9d1c-62cc80e7fc46.proj&quot; on node 1 (default targets).
+Project &quot;C:\Projects\PQNet\Sandcastle\Documentation\Working\GenerateRefInfo-0ef58c23-1422-4496-9c58-f7b387363c6c.proj&quot; on node 1 (default targets).
 PrepareForBuild:
   Creating directory &quot;obj\Debug\&quot;.
 GenerateRefInfo:
@@ -42,33 +42,34 @@ GenerateRefInfo:
   c Microsoft Corporation. All rights reserved.
   Found a current program database (PDB) file for &#39;C:\Projects\PQNet\PQnet\bin\Debug\net8.0\PQnet.dll&#39;.
   Loaded 1 assemblies for reflection and 1 dependency assemblies.
-  Wrote information on 2 namespaces, 26 types, and 179 members
+  Wrote information on 2 namespaces, 32 types, and 244 members
   Merging duplicate type and member information
   Merged 0 duplicate type(s) and 0 duplicate member(s)
-Done Building Project &quot;C:\Projects\PQNet\Sandcastle\Documentation\Working\GenerateRefInfo-d8f273a4-e577-4718-9d1c-62cc80e7fc46.proj&quot; (default targets).
-    Last step completed in 00:00:00.7789
+Done Building Project &quot;C:\Projects\PQNet\Sandcastle\Documentation\Working\GenerateRefInfo-0ef58c23-1422-4496-9c58-f7b387363c6c.proj&quot; (default targets).
+    Last step completed in 00:00:00.7970
 </buildStep>
 <buildStep step="ApplyDocumentModel">
 Applying document model to reflection output...
-    Last step completed in 00:00:00.0990
+    Last step completed in 00:00:00.1171
 </buildStep>
 <buildStep step="AddApiTopicFilenames">
 Adding topic filenames to API members...
-    Last step completed in 00:00:00.1300
+    Last step completed in 00:00:00.1530
 </buildStep>
 <buildStep step="GenerateApiTopicManifest">
 Generating API topic manifest...
-    Last step completed in 00:00:00.1330
+    Last step completed in 00:00:00.1549
 </buildStep>
 <buildStep step="GenerateNamespaceSummaries">
 Generating namespace summary information...
-    Last step completed in 00:00:00.0072
+    Last step completed in 00:00:00.0110
 </buildStep>
 <buildStep step="GenerateInheritedDocumentation">
 Generating inherited documentation...
 [C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe - GenerateInheritedDocs.proj]
 
-    Last step completed in 00:00:00.8879
+C:\Projects\PQNet\Sandcastle\Documentation\Working\GenerateInheritedDocs.proj(28,3): warning GID0004: No comments found for member &#39;P:PQnet.MlKemBase.NistSecurityCategory&#39;
+    Last step completed in 00:00:00.9949
 </buildStep>
 <buildStep step="CopyAdditionalContent">
 Copying additional content files...
@@ -82,12 +83,12 @@ Merging conceptual and additional tables of contents...
 <buildStep step="GenerateIntermediateTableOfContents">
 Generating intermediate table of contents file for API content...
 Generating conceptual content intermediate TOC file...
-    Last step completed in 00:00:00.0260
+    Last step completed in 00:00:00.0271
 </buildStep>
 <buildStep step="CreateBuildAssemblerConfigs">
 Creating Sandcastle configuration files...
     sandcastle.config
-    Last step completed in 00:00:00.0450
+    Last step completed in 00:00:00.1570
 </buildStep>
 <buildStep step="MergeCustomConfigs">
 Merging custom build component configurations
@@ -99,7 +100,7 @@ C:\Projects\PQNet\Sandcastle\Documentation\Working\sandcastle.config
 <buildStep step="BuildTopics">
 Building help topics...
 [C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe - BuildTopics.proj]
-Build started 12/27/2024 11:52:30 PM.
+Build started 12/29/2024 4:47:01 PM.
 
 Project &quot;C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj&quot; on node 1 (default targets).
 BuildTopics:
@@ -141,6 +142,24 @@ BuildAssembler : warning : ShowMissingComponent: [M:PQnet.IHashAlgorithm.t_len(S
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.IHashAlgorithm.t_len(System.Byte[],PQnet.IAddress,System.Byte[])] Missing &lt;param name=&quot;pk_seed&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.IHashAlgorithm.t_len(System.Byte[],PQnet.IAddress,System.Byte[])] Missing &lt;param name=&quot;adrs&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.IHashAlgorithm.t_len(System.Byte[],PQnet.IAddress,System.Byte[])] Missing &lt;param name=&quot;m_l&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [P:PQnet.MlKem1024.NistSecurityCategory] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [P:PQnet.MlKem512.NistSecurityCategory] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [P:PQnet.MlKem768.NistSecurityCategory] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])] Missing &lt;returns&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])] Missing &lt;param name=&quot;ss&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])] Missing &lt;param name=&quot;ct&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])] Missing &lt;param name=&quot;sk&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])] Missing &lt;returns&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])] Missing &lt;param name=&quot;ct&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])] Missing &lt;param name=&quot;ss&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])] Missing &lt;param name=&quot;pk&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_keypair(System.Byte[]@,System.Byte[]@)] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_keypair(System.Byte[]@,System.Byte[]@)] Missing &lt;returns&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_keypair(System.Byte[]@,System.Byte[]@)] Missing &lt;param name=&quot;pk&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:PQnet.MlKemBase.crypto_kem_keypair(System.Byte[]@,System.Byte[]@)] Missing &lt;param name=&quot;sk&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [P:PQnet.MlKemBase.NistSecurityCategory] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.SlhDsaSha2_128f.#ctor(System.Boolean)] Missing &lt;param name=&quot;deterministic&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [N:PQnet.Digest] Missing &lt;summary&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.Digest.Shake.sha3_256(System.Byte[]@,System.Byte[],System.Int32)] Missing &lt;param name=&quot;h&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
@@ -189,12 +208,12 @@ BuildAssembler : warning : ShowMissingComponent: [M:PQnet.Digest.Shake.shake256_
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.Digest.Shake.shake256_squeezeblocks(System.Byte[],System.Int32,System.Int32,PQnet.Digest.Shake.keccak_state)] Missing &lt;param name=&quot;out_buf_pos&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.Digest.Shake.shake256_squeezeblocks(System.Byte[],System.Int32,System.Int32,PQnet.Digest.Shake.keccak_state)] Missing &lt;param name=&quot;nblocks&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:PQnet.Digest.Shake.shake256_squeezeblocks(System.Byte[],System.Int32,System.Int32,PQnet.Digest.Shake.keccak_state)] Missing &lt;param name=&quot;state&quot;/&gt; documentation [C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj]
-  Processed 266 topic(s)
-  82 warning(s)
+  Processed 361 topic(s)
+  100 warning(s)
   CopyFromIndexComponent: &quot;reflection&quot; in-memory cache entries used: 2 of 15.
   CopyFromIndexComponent: &quot;comments&quot; in-memory cache entries used: 3 of 30.
 Done Building Project &quot;C:\Projects\PQNet\Sandcastle\Documentation\Working\BuildTopics.proj&quot; (default targets).
-    Last step completed in 00:00:03.3029
+    Last step completed in 00:00:03.4939
 </buildStep>
 <buildStep step="CombiningIntermediateTocFiles">
 Combining conceptual and API intermediate TOC files...
@@ -243,7 +262,7 @@ C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\Components\Markdo
 C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\Components\Markdown\media\static.gif -&gt; C:\Projects\PQNet\Sandcastle\Documentation\Working\Output\Markdown\media\static.gif
 C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\Components\Markdown\media\xna.gif -&gt; C:\Projects\PQNet\Sandcastle\Documentation\Working\Output\Markdown\media\xna.gif
 C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\Components\Markdown\MarkdownContent\_Footer.md -&gt; C:\Projects\PQNet\Sandcastle\Documentation\Working\Output\Markdown\_Footer.md
-    Last step completed in 00:00:00.0561
+    Last step completed in 00:00:00.0579
 </buildStep>
 <buildStep step="GenerateHelpProject">
 Executing informational Generate Help Project build step for plug-ins (not used for Markdown)
@@ -253,18 +272,18 @@ Executing informational Generate Help Project build step for plug-ins (not used 
 Generating markdown content...
 [C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe - GenerateMarkdownContent.proj]
 
-  Finished generating 266 topics
+  Finished generating 361 topics
   Copying content to output folder...
-  Finished copying 309 files
-    Last step completed in 00:00:00.9599
+  Finished copying 404 files
+    Last step completed in 00:00:01.1790
 </buildStep>
 <buildStep step="CleanIntermediates">
 Removing intermediate files...
-    Last step completed in 00:00:00.0730
+    Last step completed in 00:00:00.0661
 </buildStep>
 <buildStep step="Completed">
 
-Build completed successfully at 12/27/2024 11:52:35 PM.  Total time: 00:00:07.1427
+Build completed successfully at 12/29/2024 4:47:06 PM.  Total time: 00:00:10.7045
 
 </buildStep>
 </shfbBuild>

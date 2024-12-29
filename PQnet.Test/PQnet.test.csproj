@@ -15,6 +15,10 @@
     <None Remove="Vectors\ML-DSA\sigGen\prompt.json" />
     <None Remove="Vectors\ML-DSA\sigVer\expectedResults.json" />
     <None Remove="Vectors\ML-DSA\sigVer\prompt.json" />
+    <None Remove="Vectors\ML-KEM\encapDecap\expectedResults.json" />
+    <None Remove="Vectors\ML-KEM\encapDecap\prompt.json" />
+    <None Remove="Vectors\ML-KEM\keyGen\expectedResults.json" />
+    <None Remove="Vectors\ML-KEM\keyGen\prompt.json" />
     <None Remove="Vectors\SLH-DSA\keyGen\expectedResults.json" />
     <None Remove="Vectors\SLH-DSA\keyGen\prompt.json" />
     <None Remove="Vectors\SLH-DSA\sigGen\expectedResults.json" />
@@ -35,6 +39,10 @@
     <EmbeddedResource Include="Vectors\ML-DSA\sigGen\prompt.json" />
     <EmbeddedResource Include="Vectors\ML-DSA\sigVer\expectedResults.json" />
     <EmbeddedResource Include="Vectors\ML-DSA\sigVer\prompt.json" />
+    <EmbeddedResource Include="Vectors\ML-KEM\encapDecap\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-KEM\encapDecap\prompt.json" />
+    <EmbeddedResource Include="Vectors\ML-KEM\keyGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\ML-KEM\keyGen\prompt.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\keyGen\expectedResults.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\keyGen\prompt.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\sigGen\expectedResults.json" />

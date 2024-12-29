@@ -44,7 +44,7 @@ namespace PQnet {
 		/// <inheritdoc/>
 		public override string Name {
 			get {
-				return "SLH-DSA-SHA2-128f";
+				return "SLH-DSA-SHA2-256f";
 			}
 		}
 

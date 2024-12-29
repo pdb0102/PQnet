@@ -57,5 +57,12 @@ namespace PQnet {
 				return deterministic;
 			}
 		}
+
+		/// <inheritdoc/>
+		public override string Name {
+			get {
+				return "ML-DSA-87";
+			}
+		}
 	}
 }
