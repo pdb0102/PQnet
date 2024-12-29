@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-
 using PQnet.Digest;
 
 namespace PQnet {
@@ -40,9 +38,6 @@ namespace PQnet {
 		*              const uint8_t *seed: pointer to the input public seed
 		**************************************************/
 		private void pack_pk(byte[] r, Polyvec pk, byte[] seed) {
-			Debug.Assert(r.Length == KYBER_INDCPA_PUBLICKEYBYTES);
-			Debug.Assert(seed.Length == KYBER_SYMBYTES);
-
 			polyvec_tobytes(r, pk);
 			Array.Copy(seed, 0, r, KYBER_POLYVECBYTES, KYBER_SYMBYTES);
 		}
@@ -58,9 +53,6 @@ namespace PQnet {
 		*              - const uint8_t *packedpk: pointer to input serialized public key
 		**************************************************/
 		private void unpack_pk(Polyvec pk, byte[] seed, byte[] packedpk) {
-			Debug.Assert(seed.Length == KYBER_SYMBYTES);
-			Debug.Assert(packedpk.Length == KYBER_INDCPA_PUBLICKEYBYTES);
-
 			polyvec_frombytes(pk, packedpk);
 			Array.Copy(packedpk, KYBER_POLYVECBYTES, seed, 0, KYBER_SYMBYTES);
 		}
@@ -74,8 +66,6 @@ namespace PQnet {
 		*              - polyvec *sk: pointer to input vector of polynomials (secret key)
 		**************************************************/
 		private void pack_sk(byte[] r, Polyvec sk) {
-			Debug.Assert(r.Length >= KYBER_INDCPA_SECRETKEYBYTES);
-
 			polyvec_tobytes(r, sk);
 		}
 
@@ -88,7 +78,6 @@ namespace PQnet {
 		*              - const uint8_t *packedsk: pointer to input serialized secret key
 		**************************************************/
 		private void unpack_sk(Polyvec sk, byte[] packedsk) {
-			Debug.Assert(packedsk.Length == KYBER_INDCPA_SECRETKEYBYTES);
 			polyvec_frombytes(sk, packedsk);
 		}
 
@@ -104,7 +93,6 @@ namespace PQnet {
 		*              poly *v: pointer to the input polynomial v
 		**************************************************/
 		private void pack_ciphertext(byte[] r, Polyvec b, Poly v) {
-			Debug.Assert(r.Length == KYBER_INDCPA_BYTES);
 			polyvec_compress(r, b);
 			poly_compress(r, KYBER_POLYVECCOMPRESSEDBYTES, v);
 		}
@@ -120,7 +108,6 @@ namespace PQnet {
 		*              - const uint8_t *c: pointer to the input serialized ciphertext
 		**************************************************/
 		private void unpack_ciphertext(Polyvec b, Poly v, byte[] c) {
-			Debug.Assert(c.Length == KYBER_INDCPA_BYTES);
 			polyvec_decompress(b, c);
 			poly_decompress(v, c, KYBER_POLYVECCOMPRESSEDBYTES);
 		}
@@ -184,9 +171,6 @@ namespace PQnet {
 			Shake.keccak_state state;
 			int GEN_MATRIX_NBLOCKS;
 
-			Debug.Assert(seed.Length == KYBER_SYMBYTES);
-			Debug.Assert(Shake.SHAKE128_RATE % 3 == 0, "Implementation of gen_matrix assumes that Shake.SHAKE128_RATE is a multiple of 3");
-
 			state = new Shake.keccak_state();
 
 			GEN_MATRIX_NBLOCKS = ((12 * KYBER_N / 8 * (1 << 12) / KYBER_Q) + Shake.SHAKE128_RATE) / Shake.SHAKE128_RATE;
@@ -237,10 +221,6 @@ namespace PQnet {
 			Polyvec e;
 			Polyvec pkpv;
 			Polyvec skpv;
-
-			Debug.Assert(pk.Length == KYBER_INDCPA_PUBLICKEYBYTES);
-			Debug.Assert(sk.Length >= KYBER_INDCPA_SECRETKEYBYTES);
-			Debug.Assert(coins.Length >= KYBER_SYMBYTES);
 
 			nonce = 0;
 
@@ -333,11 +313,6 @@ namespace PQnet {
 			k = new Poly(KYBER_N);
 			epp = new Poly(KYBER_N);
 
-			Debug.Assert(c.Length == KYBER_INDCPA_BYTES);
-			Debug.Assert(m.Length == KYBER_INDCPA_MSGBYTES);
-			Debug.Assert(pk.Length == KYBER_INDCPA_PUBLICKEYBYTES);
-			Debug.Assert(coins.Length == KYBER_SYMBYTES);
-
 			unpack_pk(pkpv, seed, pk.ToArray());
 			poly_frommsg(k, m);
 			gen_matrix(at, seed, true);    // gen_at(at, seed);
@@ -389,10 +364,6 @@ namespace PQnet {
 			Polyvec skpv;
 			Poly v;
 			Poly mp;
-
-			Debug.Assert(m.Length == KYBER_INDCPA_MSGBYTES);
-			Debug.Assert(c.Length == KYBER_INDCPA_BYTES);
-			Debug.Assert(sk.Length == KYBER_INDCPA_SECRETKEYBYTES);
 
 			b = new Polyvec(KYBER_K, KYBER_N);
 			skpv = new Polyvec(KYBER_K, KYBER_N);

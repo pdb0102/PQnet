@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-
 namespace PQnet {
 	public abstract partial class MlKemBase {
 
@@ -47,8 +45,6 @@ namespace PQnet {
 			int u;
 			uint d0;
 			byte[] t;
-
-			Debug.Assert(r.Length == KYBER_POLYCOMPRESSEDBYTES);
 
 			t = new byte[8];
 
@@ -110,8 +106,6 @@ namespace PQnet {
 		*                                  (of length KYBER_POLYCOMPRESSEDBYTES bytes)
 		**************************************************/
 		private void poly_decompress(Poly r, byte[] a, int a_offset) {
-			Debug.Assert(a.Length == KYBER_POLYCOMPRESSEDBYTES);
-
 			if (KYBER_POLYCOMPRESSEDBYTES == 128) {
 				for (int i = 0; i < KYBER_N / 2; i++) {
 					r.coeffs[(2 * i) + 0] = (short)((((ushort)(a[a_offset + 0] & 15) * KYBER_Q) + 8) >> 4);
@@ -155,8 +149,6 @@ namespace PQnet {
 		private void poly_tobytes(byte[] r, int r_offset, Poly a) {
 			ushort t0, t1;
 
-			Debug.Assert(r.Length >= KYBER_POLYBYTES);
-
 			for (int i = 0; i < KYBER_N / 2; i++) {
 				// map to positive standard representatives
 				t0 = (ushort)a.coeffs[2 * i];
@@ -180,8 +172,6 @@ namespace PQnet {
 		*                                  (of KYBER_POLYBYTES bytes)
 		**************************************************/
 		private void poly_frombytes(Poly r, byte[] a, int a_offset) {
-			Debug.Assert(a.Length == KYBER_POLYBYTES);
-
 			for (int i = 0; i < KYBER_N / 2; i++) {
 				r.coeffs[2 * i] = (short)(((a[a_offset + (3 * i) + 0] >> 0) | (a[a_offset + (3 * i) + 1] << 8)) & 0xFFF);
 				r.coeffs[(2 * i) + 1] = (short)(((a[a_offset + (3 * i) + 1] >> 4) | (a[a_offset + (3 * i) + 2] << 4)) & 0xFFF);
@@ -197,8 +187,6 @@ namespace PQnet {
 		*              - const uint8_t *msg: pointer to input message
 		**************************************************/
 		private void poly_frommsg(Poly r, byte[] msg) {
-			Debug.Assert(msg.Length == KYBER_INDCPA_MSGBYTES);
-
 #if DEBUG
 			if (KYBER_INDCPA_MSGBYTES != KYBER_N / 8) {
 				throw new Exception("KYBER_INDCPA_MSGBYTES must be equal to KYBER_N/8 bytes!");
@@ -223,8 +211,6 @@ namespace PQnet {
 		**************************************************/
 		private void poly_tomsg(byte[] msg, Poly a) {
 			uint t;
-
-			Debug.Assert(msg.Length == KYBER_INDCPA_MSGBYTES);
 
 			for (int i = 0; i < KYBER_N / 8; i++) {
 				msg[i] = 0;
@@ -259,8 +245,6 @@ namespace PQnet {
 
 			// FIXME - convert to span
 
-			Debug.Assert(seed.Length == KYBER_SYMBYTES);
-
 			buf = new byte[KYBER_ETA1 * KYBER_N / 4];
 			kyber_shake256_prf(buf, buf.Length, seed, nonce); //prf(buf, buf.Length, seed, nonce);
 			poly_cbd_eta1(r, buf);
@@ -282,8 +266,6 @@ namespace PQnet {
 			byte[] buf;
 
 			buf = new byte[KYBER_ETA2 * KYBER_N / 4];
-
-			Debug.Assert(seed.Length == KYBER_SYMBYTES);
 
 			kyber_shake256_prf(buf, buf.Length, seed, nonce); //prf(buf, buf.Length, seed, nonce);
 			poly_cbd_eta2(r, buf);

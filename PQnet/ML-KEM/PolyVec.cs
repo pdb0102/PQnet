@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-
 namespace PQnet {
 	public abstract partial class MlKemBase {
 		private class Polyvec {
@@ -48,8 +46,6 @@ namespace PQnet {
 			uint i, j, k;
 			ulong d0;
 			int r_offset;
-
-			Debug.Assert(r.Length == KYBER_POLYVECCOMPRESSEDBYTES);
 
 			r_offset = 0;
 
@@ -133,8 +129,6 @@ namespace PQnet {
 			uint i, j, k;
 			int a_offset;
 
-			Debug.Assert(a.Length == KYBER_POLYVECCOMPRESSEDBYTES);
-
 			a_offset = 0;
 
 			if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352)) {
@@ -194,8 +188,6 @@ namespace PQnet {
 		private void polyvec_tobytes(byte[] r, Polyvec a) {
 			int i;
 
-			Debug.Assert(r.Length >= KYBER_POLYVECBYTES);
-
 			for (i = 0; i < KYBER_K; i++) {
 				poly_tobytes(r, i * KYBER_POLYBYTES, a.vec[i]);
 			}
@@ -214,7 +206,6 @@ namespace PQnet {
 		private void polyvec_frombytes(Polyvec r, byte[] a) {
 			int i;
 
-			Debug.Assert(a.Length == KYBER_POLYVECBYTES);
 			for (i = 0; i < KYBER_K; i++) {
 				poly_frombytes(r.vec[i], a, i * KYBER_POLYBYTES);
 			}

@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-
 using PQnet.Digest;
 
 
@@ -42,8 +40,6 @@ namespace PQnet {
 
 		private void kyber_shake128_absorb(Shake.keccak_state state, byte[] seed, byte x, byte y) {
 			byte[] extseed;
-
-			Debug.Assert(seed.Length == KYBER_SYMBYTES);
 
 			extseed = new byte[KYBER_SYMBYTES + 2];
 			Array.Copy(seed, extseed, KYBER_SYMBYTES);
@@ -70,8 +66,6 @@ namespace PQnet {
 
 			extkey = new byte[KYBER_SYMBYTES + 1];
 
-			Debug.Assert(key.Length == KYBER_SYMBYTES);
-
 			key.Slice(0, KYBER_SYMBYTES).CopyTo(extkey);
 			extkey[KYBER_SYMBYTES] = nonce;
 
@@ -91,10 +85,6 @@ namespace PQnet {
 		**************************************************/
 		private void kyber_shake256_rkprf(byte[] out_buf, Span<byte> key, byte[] input) {
 			Shake.keccak_state s;
-
-			Debug.Assert(out_buf.Length == KYBER_SSBYTES);
-			Debug.Assert(key.Length == KYBER_SSBYTES);
-			Debug.Assert(input.Length == KYBER_CIPHERTEXTBYTES);
 
 			s = new Shake.keccak_state();
 

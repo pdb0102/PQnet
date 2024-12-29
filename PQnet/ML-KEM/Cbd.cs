@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-
 namespace PQnet {
 	public abstract partial class MlKemBase {
 		/*************************************************
@@ -37,8 +35,6 @@ namespace PQnet {
 		**************************************************/
 
 		private static uint load32_littleendian(byte[] x, int offset) {
-			Debug.Assert(x.Length >= 4);
-
 			return x[offset + 0] | ((uint)x[offset + 1] << 8) | ((uint)x[offset + 2] << 16) | ((uint)x[offset + 3] << 24);
 		}
 
@@ -54,8 +50,6 @@ namespace PQnet {
 		* Returns 32-bit unsigned integer loaded from x (most significant byte is zero)
 		**************************************************/
 		private static uint load24_littleendian(byte[] x, int offset) {
-			Debug.Assert(x.Length >= 3);
-
 			return x[offset + 0] | ((uint)x[offset + 1] << 8) | ((uint)x[offset + 2] << 16);
 		}
 
@@ -75,8 +69,6 @@ namespace PQnet {
 			uint d;
 			short a;
 			short b;
-
-			Debug.Assert(buf.Length == 2 * KYBER_N / 4);
 
 			for (int i = 0; i < KYBER_N / 8; i++) {
 				t = load32_littleendian(buf, 4 * i);
@@ -108,8 +100,6 @@ namespace PQnet {
 			short a;
 			short b;
 
-			Debug.Assert(buf.Length == 3 * KYBER_N / 4);
-
 			for (int i = 0; i < KYBER_N / 4; i++) {
 				t = load24_littleendian(buf, 3 * i);
 				d = t & 0x00249249;
@@ -125,8 +115,6 @@ namespace PQnet {
 		}
 
 		private void poly_cbd_eta1(Poly r, byte[] buf) {
-			Debug.Assert(buf.Length == KYBER_ETA1 * KYBER_N / 4);
-
 			if (KYBER_ETA1 == 2) {
 				cbd2(r, buf);
 			} else if (KYBER_ETA1 == 3) {
@@ -137,7 +125,6 @@ namespace PQnet {
 		}
 
 		private void poly_cbd_eta2(Poly r, byte[] buf) {
-			Debug.Assert(buf.Length == KYBER_ETA2 * KYBER_N / 4);
 			if (KYBER_ETA2 == 2) {
 				cbd2(r, buf);
 			} else {
