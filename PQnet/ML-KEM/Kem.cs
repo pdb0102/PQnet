@@ -103,7 +103,7 @@ namespace PQnet {
 		**
 		* Returns 0 (success)
 		**************************************************/
-		internal int crypto_kem_enc_derand(byte[] ct, byte[] ss, byte[] pk, byte[] coins) {
+		internal int crypto_kem_enc_derand(out byte[] ct, out byte[] ss, byte[] pk, byte[] coins) {
 			byte[] buf;
 			byte[] kr;
 			byte[] hash;
@@ -120,8 +120,10 @@ namespace PQnet {
 			Shake.sha3_512(out kr, buf, 2 * KYBER_SYMBYTES); //hash_g(kr, buf, 2 * KYBER_SYMBYTES);
 
 			/* coins are in kr+KYBER_SYMBYTES */
+			ct = new byte[KYBER_CIPHERTEXTBYTES];
 			indcpa_enc(ct, buf, new Span<byte>(pk), new Span<byte>(kr).Slice(KYBER_SYMBYTES));
 
+			ss = new byte[KYBER_SSBYTES];
 			Array.Copy(kr, ss, KYBER_SYMBYTES);
 			return 0;
 		}
@@ -148,11 +150,11 @@ namespace PQnet {
 		/// <param name="ss"></param>
 		/// <param name="pk"></param>
 		/// <returns></returns>
-		public int crypto_kem_enc(byte[] ct, byte[] ss, byte[] pk) {
+		public int crypto_kem_enc(out byte[] ct, out byte[] ss, byte[] pk) {
 			byte[] coins;
 
 			Rng.randombytes(out coins, KYBER_SYMBYTES);
-			crypto_kem_enc_derand(ct, ss, pk, coins);
+			crypto_kem_enc_derand(out ct, out ss, pk, coins);
 			return 0;
 		}
 
@@ -180,7 +182,7 @@ namespace PQnet {
 		/// <param name="ct"></param>
 		/// <param name="sk"></param>
 		/// <returns></returns>
-		public int crypto_kem_dec(byte[] ss, byte[] ct, byte[] sk) {
+		public int crypto_kem_dec(out byte[] ss, byte[] ct, byte[] sk) {
 			int fail;
 			byte[] buf;
 			byte[] kr; /* Will contain key, coins */
@@ -204,6 +206,7 @@ namespace PQnet {
 			fail = verify(ct, cmp, KYBER_CIPHERTEXTBYTES);
 
 			/* Compute rejection key */
+			ss = new byte[KYBER_SSBYTES];
 			kyber_shake256_rkprf(ss, new Span<byte>(sk).Slice(KYBER_SECRETKEYBYTES - KYBER_SYMBYTES), ct); //rkprf(ss, sk + KYBER_SECRETKEYBYTES - KYBER_SYMBYTES, ct);
 
 			/* Copy true key to return buffer if fail is false */
