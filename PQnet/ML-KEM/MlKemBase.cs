@@ -87,11 +87,6 @@ namespace PQnet {
 
 		}
 
-		/// <summary>
-		/// Gets whether the signature should be randomized or deterministic (predictable, same input causes same signature)
-		/// </summary>
-		public abstract bool Deterministic { get; }
-
 		/// <inheritdoc/>
 		public abstract int NistSecurityCategory { get; }
 
@@ -108,7 +103,10 @@ namespace PQnet {
 		/// <summary>
 		/// Gets the size, in bytes, of the seed used for key generation
 		/// </summary>
-		public int SeedBytes { get; }
-
+		public int SeedBytes {
+			get {
+				return 32;
+			}
+		}
 	}
 }

@@ -28,34 +28,16 @@ namespace PQnet {
 	/// Implements the ML-KEM-1024 encapsulation scheme.
 	/// </summary>
 	public class MlKem1024 : MlKemBase {
-		private bool deterministic;
-
-		/// <summary>
-		/// Creates a new instance of the <see cref="MlKem1024"/> class with non-deterministic ciphertext.
-		/// </summary>
-		public MlKem1024() : this(false) {
-		}
-
-
 		/// <summary>
 		/// Creates a new instance of the <see cref="MlKem1024"/> class.
 		/// </summary>
-		/// <param name="deterministic"><c>true</c> if generated ciphertext should be deterministic, <c>false</c> otherwise</param>
-		public MlKem1024(bool deterministic) : base(4, 2, 2, 160, 4 * 352) {
-			this.deterministic = deterministic;
-		}
-
-		/// <inheritdoc/>
-		public override bool Deterministic {
-			get {
-				return deterministic;
-			}
+		public MlKem1024() : base(4, 2, 2, 160, 4 * 352) {
 		}
 
 		/// <inheritdoc/>
 		public override int NistSecurityCategory {
 			get {
-				return 2;
+				return 5;
 			}
 		}
 	}
