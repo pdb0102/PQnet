@@ -199,7 +199,7 @@ namespace PQnet {
 			Shake.sha3_512(out kr, buf, 2 * KYBER_SYMBYTES); // hash_g(kr, buf, 2 * KYBER_SYMBYTES);
 
 			/* coins are in kr+KYBER_SYMBYTES */
-			indcpa_enc(cmp, buf, new Span<byte>(sk).Slice(KYBER_INDCPA_BYTES), new Span<byte>(kr).Slice(KYBER_SYMBYTES));
+			indcpa_enc(cmp, buf, new Span<byte>(sk).Slice(KYBER_INDCPA_SECRETKEYBYTES), new Span<byte>(kr).Slice(KYBER_SYMBYTES));
 
 			fail = verify(ct, cmp, KYBER_CIPHERTEXTBYTES);
 
