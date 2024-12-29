@@ -58,5 +58,12 @@ namespace PQnet {
 				return 2;
 			}
 		}
+
+		/// <inheritdoc/>
+		public override string Name {
+			get {
+				return "ML-DSA-44";
+			}
+		}
 	}
 }

@@ -25,96 +25,78 @@ using System.Security.Cryptography;
 
 namespace PQnet {
 	/// <summary>
-	/// Base class for SLH-DSA signature schemes
+	/// Interface for signature algorithms
 	/// </summary>
-	public abstract partial class SlhDsaBase : ISignature {
+	public interface ISignature {
 		/// <summary>
-		/// Generates a SLH-DSA key pair. Throws if an error occurs
+		/// Gets the size, in bytes, of the public key
+		/// </summary>
+		int PublicKeyBytes { get; }
+
+		/// <summary>
+		/// Gets the size, in bytes, of the private key
+		/// </summary>
+		int PrivateKeyBytes { get; }
+
+		/// <summary>
+		/// Gets the size, in bytes, of the signature
+		/// </summary>
+		int SignatureBytes { get; }
+
+		/// <summary>
+		/// Gets name of the algorithm
+		/// </summary>
+		string Name { get; }
+
+		/// <summary>
+		/// Generates a pair. Throws if an error occurs
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
-		public void GenerateKeyPair(out byte[] public_key, out byte[] private_key) {
-			slh_keygen(out private_key, out public_key);
-		}
+		/// <exception cref="CryptographicException"></exception>
+		void GenerateKeyPair(out byte[] public_key, out byte[] private_key);
 
 		/// <summary>
-		/// Generates a SLH-DSA key pair.
+		/// Generates a key pair.
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
 		/// <param name="error">Receives any error that occurred, or <c>null</c></param>
 		/// <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-		public bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, out string error) {
-			slh_keygen(out private_key, out public_key);
-			error = null;
-			return true;
-		}
+		bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, out string error);
 
 		/// <summary>
-		/// Generates a SLH-DSA key pair.
+		/// Generates a key pair.
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
 		/// <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
 		/// <param name="error">Receives any error that occurred, or <c>null</c></param>
 		/// <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-		/// <remarks>
-		/// If <paramref name="seed"/> is provided, it must be exactly <see cref="SeedBytes"/> bytes long.
-		/// </remarks>
-		public bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, byte[] seed, out string error) {
-			byte[] sk_seed;
-			byte[] sk_prf;
-			byte[] pk_seed;
-
-			if ((seed != null) && (seed.Length != (3 * n))) {
-				public_key = null;
-				private_key = null;
-				error = $"Seed must be {n} bytes long";
-				return false;
-			}
-
-			sk_seed = new byte[n];
-			sk_prf = new byte[n];
-			pk_seed = new byte[n];
-			Array.Copy(seed, 0, sk_prf, 0, n);
-			Array.Copy(seed, n, sk_seed, 0, n);
-			Array.Copy(seed, 2 * n, pk_seed, 0, n);
-
-			(private_key, public_key) = slh_keygen_internal(sk_seed, sk_prf, pk_seed);
-
-			error = null;
-			return true;
-		}
+		bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, byte[] seed, out string error);
 
 		/// <summary>
-		/// Generate a pure ML-DSA signature
+		/// Generate a pure signature
 		/// </summary>
 		/// <param name="message">The message to sign</param>
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="signature">Receives the signature</param>
 		/// <remarks>Uses an empty context string (ctx)</remarks>
-		public void Sign(byte[] message, byte[] private_key, out byte[] signature) {
-			signature = slh_sign(message, null, private_key);
-		}
+		/// <exception cref="CryptographicException">Private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
+		void Sign(byte[] message, byte[] private_key, out byte[] signature);
 
 		/// <summary>
-		/// Generate a pure ML-DSA signature
+		/// Generate a pure signature
 		/// </summary>
 		/// <param name="message">The message to sign</param>
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="signature">Receives the signature</param>
-		/// <exception cref="ArgumentException">Context was larger than 255 bytes</exception>
-		public void Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				throw new ArgumentException($"ctx must be not be longer than 255 bytes");
-			}
-
-			signature = slh_sign(message, ctx, private_key);
-		}
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
+		void Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature);
 
 		/// <summary>
-		/// Generate a pure ML-DSA signature
+		/// Generate a pure signature
 		/// </summary>
 		/// <param name="message">The message to sign</param>
 		/// <param name="private_key">The private key to use for signing</param>
@@ -122,51 +104,32 @@ namespace PQnet {
 		/// <param name="signature">Receives the signature</param>
 		/// <param name="error">Receives an error string on failure</param>
 		/// <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
-		public bool Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature, out string error) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				signature = null;
-				error = $"ctx must be not be longer than 255 bytes";
-				return false;
-			}
-
-			signature = slh_sign(message, ctx, private_key);
-
-			error = null;
-			return true;
-		}
+		bool Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature, out string error);
 
 		/// <summary>
-		/// Generate a ML-DSA signature for a digest ("pre-hash signature")
+		/// Generate a signature for a digest ("pre-hash signature")
 		/// </summary>
 		/// <param name="digest">The message digest to sign</param>
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">Receives the signature</param>
 		/// <remarks>Uses an empty context string (ctx)</remarks>
-		/// <exception cref="ArgumentException">The provided hash function <paramref name="ph"/> is not supported</exception>
-		public void SignHash(byte[] digest, byte[] private_key, PreHashFunction ph, out byte[] signature) {
-			signature = hash_slh_sign(digest, null, ph, private_key);
-		}
+		/// <exception cref="CryptographicException">Private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
+		void SignHash(byte[] digest, byte[] private_key, PreHashFunction ph, out byte[] signature);
 
 		/// <summary>
-		/// Generate a ML-DSA signature for a digest ("pre-hash signature")
+		/// Generate a signature for a digest ("pre-hash signature")
 		/// </summary>
 		/// <param name="digest">The message digest to sign</param>
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">Receives the signature</param>
-		/// <exception cref="ArgumentException">Context was larger than 255 bytes, or the provided hash function is not supported</exception>
-		public void SignHash(byte[] digest, byte[] private_key, byte[] ctx, PreHashFunction ph, out byte[] signature) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
-			}
-
-			signature = hash_slh_sign(digest, ctx, ph, private_key);
-		}
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
+		void SignHash(byte[] digest, byte[] private_key, byte[] ctx, PreHashFunction ph, out byte[] signature);
 
 		/// <summary>
-		/// Generate a ML-DSA signature for a digest ("pre-hash signature")
+		/// Generate a signature for a digest ("pre-hash signature")
 		/// </summary>
 		/// <param name="digest">The message digest to sign</param>
 		/// <param name="private_key">The private key to use for signing</param>
@@ -175,56 +138,31 @@ namespace PQnet {
 		/// <param name="signature">Receives the signature</param>
 		/// <param name="error">Receives an error string on failure</param>
 		/// <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
-		public bool SignHash(byte[] digest, byte[] private_key, byte[] ctx, PreHashFunction ph, out byte[] signature, out string error) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				signature = null;
-				error = $"ctx must be not be longer than 255 bytes";
-				return false;
-			}
-
-			try {
-				signature = hash_slh_sign(digest, ctx, ph, private_key);
-			} catch (ArgumentException e) {
-				signature = null;
-				error = e.Message;
-
-				return false;
-			}
-
-			error = null;
-			return true;
-		}
+		bool SignHash(byte[] digest, byte[] private_key, byte[] ctx, PreHashFunction ph, out byte[] signature, out string error);
 
 		/// <summary>
-		/// Verify a pure ML-DSA signature
+		/// Verify a pure signature
 		/// </summary>
 		/// <param name="message">The message to authenticate</param>
 		/// <param name="public_key">The public key to use for verification</param>
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		public bool Verify(byte[] message, byte[] public_key, byte[] signature) {
-			return slh_verify(signature, message, null, public_key);
-		}
+		/// <exception cref="CryptographicException">Public key length did not match the required <see cref="PublicKeyBytes"/></exception>
+		bool Verify(byte[] message, byte[] public_key, byte[] signature);
 
 		/// <summary>
-		/// Verify a pure ML-DSA signature
+		/// Verify a pure signature
 		/// </summary>
 		/// <param name="message">The message to authenticate</param>
 		/// <param name="public_key">The public key to use for verification</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="signature">The message signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes</exception>
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="PublicKeyBytes"/></exception>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		public bool Verify(byte[] message, byte[] public_key, byte[] ctx, byte[] signature) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
-			}
-
-			return slh_verify(message, signature, ctx, public_key);
-		}
+		bool Verify(byte[] message, byte[] public_key, byte[] ctx, byte[] signature);
 
 		/// <summary>
-		/// Verify a pure ML-DSA signature
+		/// Verify a pure signature
 		/// </summary>
 		/// <param name="message">The message to authenticate</param>
 		/// <param name="public_key">The public key to use for verification</param>
@@ -232,51 +170,33 @@ namespace PQnet {
 		/// <param name="signature">The message signature</param>
 		/// <param name="error">Receives an error string on failure</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		public bool Verify(byte[] message, byte[] public_key, byte[] ctx, byte[] signature, out string error) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				error = $"ctx must be not be longer than 255 bytes";
-			}
-
-			if (slh_verify(message, signature, ctx, public_key)) {
-				error = null;
-				return true;
-			}
-			error = "Signature is not valid";
-			return false;
-		}
+		bool Verify(byte[] message, byte[] public_key, byte[] ctx, byte[] signature, out string error);
 
 		/// <summary>
-		/// Verify a digest ("pre-hash") ML-DSA signature
+		/// Verify a digest ("pre-hash") signature
 		/// </summary>
 		/// <param name="digest">The message digest to authenticate</param>
 		/// <param name="public_key">The public key to use for verification</param>
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		public bool VerifyHash(byte[] digest, byte[] public_key, PreHashFunction ph, byte[] signature) {
-			return hash_slh_verify(digest, signature, null, ph, public_key);
-		}
+		/// <exception cref="CryptographicException">The public key length did not match the required <see cref="PublicKeyBytes"/></exception>
+		bool VerifyHash(byte[] digest, byte[] public_key, PreHashFunction ph, byte[] signature);
 
 		/// <summary>
-		/// Verify a digest ("pre-hash") ML-DSA signature
+		/// Verify a digest ("pre-hash") signature
 		/// </summary>
 		/// <param name="digest">The message digest to authenticate</param>
 		/// <param name="public_key">The public key to use for verification</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">The message signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes</exception>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		public bool VerifyHash(byte[] digest, byte[] public_key, byte[] ctx, PreHashFunction ph, byte[] signature) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
-			}
-
-			return hash_slh_verify(digest, signature, ctx, ph, public_key);
-		}
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="PublicKeyBytes"/></exception>
+		bool VerifyHash(byte[] digest, byte[] public_key, byte[] ctx, PreHashFunction ph, byte[] signature);
 
 		/// <summary>
-		/// Verify a digest ("pre-hash") ML-DSA signature
+		/// Verify a digest ("pre-hash") signature
 		/// </summary>
 		/// <param name="digest">The message digest to authenticate</param>
 		/// <param name="public_key">The public key to use for verification</param>
@@ -285,18 +205,6 @@ namespace PQnet {
 		/// <param name="signature">The message signature</param>
 		/// <param name="error">Receives an error string on failure</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		public bool VerifyHash(byte[] digest, byte[] public_key, byte[] ctx, PreHashFunction ph, byte[] signature, out string error) {
-			if ((ctx != null) && (ctx.Length > 255)) {
-				error = $"ctx must be not be longer than 255 bytes";
-			}
-
-			if (hash_slh_verify(digest, signature, ctx, ph, public_key)) {
-				error = null;
-				return true;
-			}
-			error = "Signature is not valid";
-			return false;
-		}
-
+		bool VerifyHash(byte[] digest, byte[] public_key, byte[] ctx, PreHashFunction ph, byte[] signature, out string error);
 	}
 }

@@ -85,10 +85,17 @@ namespace PQnet {
 			KYBER_SECRETKEYBYTES = KYBER_INDCPA_SECRETKEYBYTES + KYBER_INDCPA_PUBLICKEYBYTES + (2 * KYBER_SYMBYTES);
 			KYBER_CIPHERTEXTBYTES = KYBER_INDCPA_BYTES;
 
+			PublicKeyBytes = KYBER_PUBLICKEYBYTES;
+			PrivateKeyBytes = KYBER_SECRETKEYBYTES;
+			CiphertextBytes = KYBER_CIPHERTEXTBYTES;
+
 		}
 
 		/// <inheritdoc/>
 		public abstract int NistSecurityCategory { get; }
+
+		/// <inheritdoc/>
+		public abstract string Name { get; }
 
 		/// <summary>
 		/// Gets the size, in bytes, of the private key
@@ -99,6 +106,11 @@ namespace PQnet {
 		/// Gets the size, in bytes, of the public key
 		/// </summary>
 		public int PublicKeyBytes { get; }
+
+		/// <summary>
+		/// Gets the size, in bytes, of the ciphertext
+		/// </summary>
+		public int CiphertextBytes { get; }
 
 		/// <summary>
 		/// Gets the size, in bytes, of the seed used for key generation

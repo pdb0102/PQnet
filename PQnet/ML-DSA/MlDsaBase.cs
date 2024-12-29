@@ -29,7 +29,7 @@ namespace PQnet {
 	/// <summary>
 	/// Base class for ML-DSA digital signature algorithms.
 	/// </summary>
-	public abstract partial class MlDsaBase : ISecurityCategory {
+	public abstract partial class MlDsaBase : ISignature, ISecurityCategory {
 		/// <summary>
 		/// The size, in bytes, of the seed used for key generation
 		/// </summary>
@@ -110,8 +110,8 @@ namespace PQnet {
 				throw new NotImplementedException($"Unsupported Eta value {Eta} [Allowed are '2' and '4']");
 			}
 
-			PublicKeybytes = SeedBytes + (K * PolyT1PackedBytes);
-			SecretKeyBytes = (2 * SeedBytes) + TrBytes + (L * PolyEtaPackedBytes) + (K * PolyEtaPackedBytes) + (K * PolyT0PackedBytes);
+			PublicKeyBytes = SeedBytes + (K * PolyT1PackedBytes);
+			PrivateKeyBytes = (2 * SeedBytes) + TrBytes + (L * PolyEtaPackedBytes) + (K * PolyEtaPackedBytes) + (K * PolyT0PackedBytes);
 			SignatureBytes = CTildeBytes + (L * PolyZPackedBytes) + PolyVecHPacketBytes;
 		}
 
@@ -123,15 +123,18 @@ namespace PQnet {
 		/// <inheritdoc/>
 		public abstract int NistSecurityCategory { get; }
 
+		/// <inheritdoc/>
+		public abstract string Name { get; }
+
 		/// <summary>
 		/// Gets the size, in bytes, of the public key
 		/// </summary>
-		public int PublicKeybytes { get; }
+		public int PublicKeyBytes { get; }
 
 		/// <summary>
 		/// Gets the size, in bytes, of the private key
 		/// </summary>
-		public int SecretKeyBytes { get; }
+		public int PrivateKeyBytes { get; }
 
 		/// <summary>
 		/// Gets the size, in bytes, of the signature
@@ -200,10 +203,10 @@ namespace PQnet {
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="signature">Receives the signature</param>
 		/// <remarks>Uses an empty context string (ctx)</remarks>
-		/// <exception cref="CryptographicException">Private key length did not match the required <see cref="SecretKeyBytes"/></exception>
+		/// <exception cref="CryptographicException">Private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
 		public void Sign(byte[] message, byte[] private_key, out byte[] signature) {
-			if (private_key.Length != SecretKeyBytes) {
-				throw new CryptographicException($"Private key must be {SecretKeyBytes} bytes long");
+			if (private_key.Length != PrivateKeyBytes) {
+				throw new CryptographicException($"Private key must be {PrivateKeyBytes} bytes long");
 			}
 
 			ml_sign(out signature, message, empty_ctx, private_key);
@@ -216,14 +219,14 @@ namespace PQnet {
 		/// <param name="private_key">The private key to use for signing</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="signature">Receives the signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="SecretKeyBytes"/></exception>
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
 		public void Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature) {
 			if ((ctx != null) && (ctx.Length > 255)) {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			if (private_key.Length != SecretKeyBytes) {
-				throw new CryptographicException($"Private key must be {SecretKeyBytes} bytes long");
+			if (private_key.Length != PrivateKeyBytes) {
+				throw new CryptographicException($"Private key must be {PrivateKeyBytes} bytes long");
 			}
 
 			ml_sign(out signature, message, ctx != null ? ctx : empty_ctx, private_key);
@@ -239,9 +242,9 @@ namespace PQnet {
 		/// <param name="error">Receives an error string on failure</param>
 		/// <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
 		public bool Sign(byte[] message, byte[] private_key, byte[] ctx, out byte[] signature, out string error) {
-			if (private_key.Length != SecretKeyBytes) {
+			if (private_key.Length != PrivateKeyBytes) {
 				signature = null;
-				error = $"Private key must be {SecretKeyBytes} bytes long";
+				error = $"Private key must be {PrivateKeyBytes} bytes long";
 				return false;
 			}
 
@@ -269,10 +272,10 @@ namespace PQnet {
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">Receives the signature</param>
 		/// <remarks>Uses an empty context string (ctx)</remarks>
-		/// <exception cref="CryptographicException">Private key length did not match the required <see cref="SecretKeyBytes"/></exception>
+		/// <exception cref="CryptographicException">Private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
 		public void SignHash(byte[] digest, byte[] private_key, PreHashFunction ph, out byte[] signature) {
-			if (private_key.Length != SecretKeyBytes) {
-				throw new CryptographicException($"Private key must be {SecretKeyBytes} bytes long");
+			if (private_key.Length != PrivateKeyBytes) {
+				throw new CryptographicException($"Private key must be {PrivateKeyBytes} bytes long");
 			}
 
 			signature = hash_ml_sign(private_key, digest, null, ph);
@@ -286,14 +289,14 @@ namespace PQnet {
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">Receives the signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="SecretKeyBytes"/></exception>
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="PrivateKeyBytes"/></exception>
 		public void SignHash(byte[] digest, byte[] private_key, byte[] ctx, PreHashFunction ph, out byte[] signature) {
 			if ((ctx != null) && (ctx.Length > 255)) {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			if (private_key.Length != SecretKeyBytes) {
-				throw new CryptographicException($"Private key must be {SecretKeyBytes} bytes long");
+			if (private_key.Length != PrivateKeyBytes) {
+				throw new CryptographicException($"Private key must be {PrivateKeyBytes} bytes long");
 			}
 
 			signature = hash_ml_sign(private_key, digest, ctx, ph);
@@ -316,9 +319,9 @@ namespace PQnet {
 				return false;
 			}
 
-			if (private_key.Length != SecretKeyBytes) {
+			if (private_key.Length != PrivateKeyBytes) {
 				signature = null;
-				error = $"Private key must be {SecretKeyBytes} bytes long";
+				error = $"Private key must be {PrivateKeyBytes} bytes long";
 				return false;
 			}
 
@@ -339,10 +342,10 @@ namespace PQnet {
 		/// <param name="public_key">The public key to use for verification</param>
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		/// <exception cref="CryptographicException">Public key length did not match the required <see cref="PublicKeybytes"/></exception>
+		/// <exception cref="CryptographicException">Public key length did not match the required <see cref="PublicKeyBytes"/></exception>
 		public bool Verify(byte[] message, byte[] public_key, byte[] signature) {
-			if (public_key.Length != PublicKeybytes) {
-				throw new CryptographicException($"Private key must be {SecretKeyBytes} bytes long");
+			if (public_key.Length != PublicKeyBytes) {
+				throw new CryptographicException($"Private key must be {PrivateKeyBytes} bytes long");
 			}
 
 			return ml_verify(signature, message, empty_ctx, public_key) == 0;
@@ -355,15 +358,15 @@ namespace PQnet {
 		/// <param name="public_key">The public key to use for verification</param>
 		/// <param name="ctx">The context string, or <c>null</c></param>
 		/// <param name="signature">The message signature</param>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="PublicKeybytes"/></exception>
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="PublicKeyBytes"/></exception>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
 		public bool Verify(byte[] message, byte[] public_key, byte[] ctx, byte[] signature) {
 			if ((ctx != null) && (ctx.Length > 255)) {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			if (public_key.Length != PublicKeybytes) {
-				throw new CryptographicException($"Public key must be {PublicKeybytes} bytes long");
+			if (public_key.Length != PublicKeyBytes) {
+				throw new CryptographicException($"Public key must be {PublicKeyBytes} bytes long");
 			}
 
 			return ml_verify(signature, message, ctx != null ? ctx : empty_ctx, public_key) == 0;
@@ -384,8 +387,8 @@ namespace PQnet {
 				return false;
 			}
 
-			if (public_key.Length != PublicKeybytes) {
-				error = $"Public key must be {PublicKeybytes} bytes long";
+			if (public_key.Length != PublicKeyBytes) {
+				error = $"Public key must be {PublicKeyBytes} bytes long";
 				return false;
 			}
 
@@ -405,10 +408,10 @@ namespace PQnet {
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		/// <exception cref="CryptographicException">The public key length did not match the required <see cref="PublicKeybytes"/></exception>
+		/// <exception cref="CryptographicException">The public key length did not match the required <see cref="PublicKeyBytes"/></exception>
 		public bool VerifyHash(byte[] digest, byte[] public_key, PreHashFunction ph, byte[] signature) {
-			if (public_key.Length != PublicKeybytes) {
-				throw new CryptographicException($"Public key must be {PublicKeybytes} bytes long");
+			if (public_key.Length != PublicKeyBytes) {
+				throw new CryptographicException($"Public key must be {PublicKeyBytes} bytes long");
 			}
 
 			return hash_ml_verify(digest, signature, null, ph, public_key);
@@ -423,14 +426,14 @@ namespace PQnet {
 		/// <param name="ph">The hash function used to the create the message digest</param>
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="PublicKeybytes"/></exception>
+		/// <exception cref="CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="PublicKeyBytes"/></exception>
 		public bool VerifyHash(byte[] digest, byte[] public_key, byte[] ctx, PreHashFunction ph, byte[] signature) {
 			if ((ctx != null) && (ctx.Length > 255)) {
 				throw new CryptographicException($"ctx must be not be longer than 255 bytes");
 			}
 
-			if (public_key.Length != PublicKeybytes) {
-				throw new CryptographicException($"Public key must be {PublicKeybytes} bytes long");
+			if (public_key.Length != PublicKeyBytes) {
+				throw new CryptographicException($"Public key must be {PublicKeyBytes} bytes long");
 			}
 
 			return hash_ml_verify(digest, signature, ctx, ph, public_key);
@@ -451,8 +454,8 @@ namespace PQnet {
 				error = $"ctx must be not be longer than 255 bytes";
 			}
 
-			if (public_key.Length != PublicKeybytes) {
-				error = $"Public key must be {PublicKeybytes} bytes long";
+			if (public_key.Length != PublicKeyBytes) {
+				error = $"Public key must be {PublicKeyBytes} bytes long";
 				return false;
 			}
 

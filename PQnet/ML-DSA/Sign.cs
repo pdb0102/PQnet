@@ -106,12 +106,12 @@ namespace PQnet {
 			/* Extract t1 and write public key */
 			polyveck_caddq(t1);
 			polyveck_power2round(t1, t0, t1);
-			pk = new byte[PublicKeybytes];
+			pk = new byte[PublicKeyBytes];
 			pack_pk(pk, rho, t1);
 
 			/* Compute H(rho, t1) and write secret key */
-			Shake.shake256(tr, TrBytes, pk, PublicKeybytes);
-			sk = new byte[SecretKeyBytes];
+			Shake.shake256(tr, TrBytes, pk, PublicKeyBytes);
+			sk = new byte[PrivateKeyBytes];
 			pack_sk(sk, rho, tr, key, t0, s1, s2);
 
 			return true;
@@ -466,7 +466,7 @@ namespace PQnet {
 			}
 
 			/* Compute CRH(H(rho, t1), pre, msg) */
-			Shake.shake256(mu, TrBytes, pk, PublicKeybytes);
+			Shake.shake256(mu, TrBytes, pk, PublicKeyBytes);
 			Shake.shake256_init(state);
 			Shake.shake256_absorb(state, mu, TrBytes);
 			Shake.shake256_absorb(state, pre, pre.Length);

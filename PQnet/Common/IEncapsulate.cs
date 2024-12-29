@@ -25,70 +25,55 @@ using System.Security.Cryptography;
 
 namespace PQnet {
 	/// <summary>
-	/// Base class for ML-KEM key encapsulation algorithms.
+	/// Interface for signature algorithms
 	/// </summary>
-	public abstract partial class MlKemBase : IEncapsulate {
+	public interface IEncapsulate {
+		/// <summary>
+		/// Gets the size, in bytes, of the public key
+		/// </summary>
+		int PublicKeyBytes { get; }
 
 		/// <summary>
-		/// Generates a ML-KEM key pair. Throws if an error occurs
+		/// Gets the size, in bytes, of the private key
+		/// </summary>
+		int PrivateKeyBytes { get; }
+
+		/// <summary>
+		/// Gets the size, in bytes, of the ciphertext
+		/// </summary>
+		int CiphertextBytes { get; }
+
+		/// <summary>
+		/// Gets name of the algorithm
+		/// </summary>
+		string Name { get; }
+
+		/// <summary>
+		/// Generates a pair. Throws if an error occurs
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
 		/// <exception cref="CryptographicException"></exception>
-		public void GenerateKeyPair(out byte[] public_key, out byte[] private_key) {
-			if (crypto_kem_keypair(out public_key, out private_key) != 0) {
-				throw new CryptographicException($"Key generation failed");
-			}
-		}
+		void GenerateKeyPair(out byte[] public_key, out byte[] private_key);
 
 		/// <summary>
-		/// Generates a ML-KEM key pair.
+		/// Generates a key pair.
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
 		/// <param name="error">Receives any error that occurred, or <c>null</c></param>
 		/// <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-		public bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, out string error) {
-			if (crypto_kem_keypair(out public_key, out private_key) == 0) {
-				error = null;
-				return true;
-			}
-			error = "Key generation failed";
-			return false;
-		}
+		bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, out string error);
 
 		/// <summary>
-		/// Generates a ML-KEM key pair.
+		/// Generates a key pair.
 		/// </summary>
 		/// <param name="public_key">Receives the public key</param>
 		/// <param name="private_key">Receives the private key</param>
-		/// <param name="seed">Optional seed ('d' || 'z') bytes for generation, or <c>null</c>.</param>
+		/// <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
 		/// <param name="error">Receives any error that occurred, or <c>null</c></param>
 		/// <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-		/// <remarks>
-		/// If a seed is provided, it must be of 2 *<see cref="SeedBytes"/> bytes length.
-		/// </remarks>
-		public bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, byte[] seed, out string error) {
-			if ((seed != null) && (seed.Length != (2 * SeedBytes))) {
-				public_key = null;
-				private_key = null;
-				error = $"{nameof(seed)} must be 2 * {SeedBytes} bytes long";
-				return false;
-			}
-			if (seed == null) {
-				if (crypto_kem_keypair(out public_key, out private_key) == 0) {
-					error = null;
-					return true;
-				}
-			} else {
-				if (crypto_kem_keypair_derand(out public_key, out private_key, seed) == 0) {
-					error = null;
-					return true;
-				}
-			}
-			error = "Key generation failed";
-			return false;
-		}
+		bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, byte[] seed, out string error);
 
 		/// <summary>
 		/// Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
@@ -97,12 +82,7 @@ namespace PQnet {
 		/// <param name="shared_secret_key">Receives the shared secret key</param>
 		/// <param name="ciphertext">Receives the ciphertet</param>
 		/// <exception cref="CryptographicException">The public (encapsulation) key length did not match the required <see cref="PublicKeyBytes"/></exception>
-		public void Encapsulate(byte[] public_key, out byte[] shared_secret_key, out byte[] ciphertext) {
-			if (public_key.Length != PrivateKeyBytes) {
-				throw new CryptographicException($"Public (encapsulation) key must be {PublicKeyBytes} bytes long");
-			}
-			crypto_kem_enc(out ciphertext, out shared_secret_key, public_key);
-		}
+		void Encapsulate(byte[] public_key, out byte[] shared_secret_key, out byte[] ciphertext);
 
 		/// <summary>
 		/// Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
@@ -112,19 +92,7 @@ namespace PQnet {
 		/// <param name="ciphertext">Receives the ciphertet</param>
 		/// <param name="error">Receives an error description, or <c>null</c></param>
 		/// <returns><c>true</c> on success, <c>false</c> otherwise</returns>
-		public bool Encapsulate(byte[] public_key, out byte[] shared_secret_key, out byte[] ciphertext, out string error) {
-			if (public_key.Length != PublicKeyBytes) {
-				shared_secret_key = null;
-				ciphertext = null;
-				error = $"Public (encapsulation) key must be {PublicKeyBytes} bytes long";
-				return false;
-			}
-
-			crypto_kem_enc(out ciphertext, out shared_secret_key, public_key);
-
-			error = null;
-			return true;
-		}
+		bool Encapsulate(byte[] public_key, out byte[] shared_secret_key, out byte[] ciphertext, out string error);
 
 		/// <summary>
 		/// Use the private (decapsulation) key to produce a shared secret key from a ciphertext
@@ -133,12 +101,7 @@ namespace PQnet {
 		/// <param name="ciphertext">The ciphertext</param>
 		/// <param name="shared_secret_key">Receives the shared_secret key</param>
 		/// <exception cref="CryptographicException">The private (decapsulation) key length did not match the required <see cref="PrivateKeyBytes"/></exception>
-		public void Decapsulate(byte[] private_key, byte[] ciphertext, out byte[] shared_secret_key) {
-			if (private_key.Length != PrivateKeyBytes) {
-				throw new CryptographicException($"Private (decapsulation) key must be {PrivateKeyBytes} long");
-			}
-			crypto_kem_dec(out shared_secret_key, ciphertext, private_key);
-		}
+		void Decapsulate(byte[] private_key, byte[] ciphertext, out byte[] shared_secret_key);
 
 		/// <summary>
 		/// Use the private (decapsulation) key to produce a shared secret key from a ciphertext
@@ -148,17 +111,6 @@ namespace PQnet {
 		/// <param name="shared_secret_key">Receives the shared_secret key</param>
 		/// <param name="error">Receives an error description, or <c>null</c></param>
 		/// <returns><c>true</c> on success, <c>false</c> otherwise</returns>
-		public bool Decapsulate(byte[] private_key, byte[] ciphertext, out byte[] shared_secret_key, out string error) {
-			if (private_key.Length != PrivateKeyBytes) {
-				shared_secret_key = null;
-				error = $"Private (decapsulation) key must be {PrivateKeyBytes} long";
-				return false;
-			}
-
-			crypto_kem_dec(out shared_secret_key, ciphertext, private_key);
-
-			error = null;
-			return true;
-		}
+		bool Decapsulate(byte[] private_key, byte[] ciphertext, out byte[] shared_secret_key, out string error);
 	}
 }

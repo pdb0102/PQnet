@@ -40,5 +40,12 @@ namespace PQnet {
 				return 5;
 			}
 		}
+
+		/// <inheritdoc/>
+		public override string Name {
+			get {
+				return "ML-KEM-1024";
+			}
+		}
 	}
 }
