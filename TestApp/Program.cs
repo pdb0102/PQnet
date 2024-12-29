@@ -76,3 +76,16 @@ slhDsaShake_256f.SignHash(digest, private_key, PreHashFunction.SHA256, out signa
 authentic = slhDsaShake_256f.VerifyHash(digest, public_key, PreHashFunction.SHA256, signature);
 
 Console.WriteLine($"Message is authentic: {authentic}");
+
+
+// Share a key
+MlKem1024 mlKem1024 = new MlKem1024();
+byte[] shared_secret_key;
+byte[] ciphertext;
+
+mlKem1024.GenerateKeyPair(out public_key, out private_key);
+mlKem1024.Encapsulate(public_key, out shared_secret_key, out ciphertext);
+
+// Decapsulate the shared secret key
+byte[] decapsulated_shared_secret_key;
+mlKem1024.Decapsulate(private_key, ciphertext, out decapsulated_shared_secret_key);
