@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System.Diagnostics;
+
 using PQnet.test.AVCP;
 
 namespace PQnet.test {
@@ -58,6 +60,8 @@ namespace PQnet.test {
 
 					CollectionAssert.AreEqual(test_case.EncapsulationKeyBytes, ek, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Encapsulation key mismatch");
 					CollectionAssert.AreEqual(test_case.DecapsulationKeyBytes, dk, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Decapsulation key mismatch");
+
+					Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Passed");
 				}
 			}
 		}
@@ -66,9 +70,8 @@ namespace PQnet.test {
 		public void TestAvcpEncapDecap() {
 			AcvpMlKemTestVectors<AcvpMlKemEncapDecapTestCase> test_vectors;
 			MlKemBase mlkem;
-			byte[] null_rnd;
-
-			null_rnd = new byte[32];
+			byte[] ct;
+			byte[] ss;
 
 			test_vectors = AcvpMlKem.LoadEncapDecapVectors("ML_KEM.encapDecap.prompt.json", "ML_KEM.encapDecap.expectedResults.json");
 
@@ -86,13 +89,16 @@ namespace PQnet.test {
 
 					switch (test_group.Function.ToLower()) {
 						case "encapsulation":
+							mlkem.crypto_kem_enc_derand(out ct, out ss, test_case.EncapsulationKeyBytes, test_case.RandomnessBytes);
+							CollectionAssert.AreEqual(test_case.CiphertextBytes, ct, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet} {test_group.Function}: Ciphertext mismatch");
+							CollectionAssert.AreEqual(test_case.SecretKeyBytes, ss, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet} {test_group.Function}: Secret Key mismatch");
 							break;
 						case "decapsulation":
+							mlkem.crypto_kem_dec(out ss, test_case.CiphertextBytes, test_group.DecapsulationKeyBytes);
+							CollectionAssert.AreEqual(test_case.SecretKeyBytes, ss, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet} {test_group.Function}: Secret Key mismatch");
 							break;
 					}
-
-					//mlkem.ml_sign_internal(out sig, test_case.MessageBytes, Array.Empty<byte>(), test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
-					// CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature mismatch");
+					Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet} {test_group.Function}: Passed");
 				}
 			}
 		}

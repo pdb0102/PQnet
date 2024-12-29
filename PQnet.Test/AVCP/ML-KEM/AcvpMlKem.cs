@@ -88,8 +88,15 @@ namespace PQnet.test.AVCP {
 					if (prompt.Tests[i].TcId != expected.Tests[j].TcId) {
 						continue;
 					}
-					prompt.Tests[i].EncryptedMessage = expected.Tests[j].EncryptedMessage;
-					prompt.Tests[i].EncapsulationKey = expected.Tests[j].EncapsulationKey;
+					if (prompt.Tests[i].SecretKey == null) {
+						prompt.Tests[i].SecretKey = expected.Tests[j].SecretKey;
+					}
+					if (prompt.Tests[i].Ciphertext == null) {
+						prompt.Tests[i].Ciphertext = expected.Tests[j].Ciphertext;
+					}
+					if (prompt.Tests[i].EncapsulationKey == null) {
+						prompt.Tests[i].EncapsulationKey = expected.Tests[j].EncapsulationKey;
+					}
 				}
 			}
 		}

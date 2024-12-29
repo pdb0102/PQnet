@@ -36,21 +36,21 @@ namespace PQnet.test.AVCP {
 		public int TcId { get; set; }
 
 		/// <summary>
-		/// The message to encrypt
+		/// Randomness
 		/// </summary>
 		[DataMember(Name = "m")]
-		public string Message { get; set; }
+		public string Randomness { get; set; }
 
 		/// <summary>
-		/// <see cref="Message"/> as a byte array
+		/// <see cref="Randomness"/> as a byte array
 		/// </summary>
 		[IgnoreDataMember]
-		public byte[] MessageBytes {
+		public byte[] RandomnessBytes {
 			get {
-				if (Message == null) {
+				if (Randomness == null) {
 					return null;
 				}
-				return Utilities.HexToBytes(Message, out _);
+				return Utilities.HexToBytes(Randomness, out _);
 			}
 		}
 
@@ -77,18 +77,37 @@ namespace PQnet.test.AVCP {
 		/// The encrypted message
 		/// </summary>
 		[DataMember(Name = "c")]
-		public string EncryptedMessage { get; set; }
+		public string Ciphertext { get; set; }
 
 		/// <summary>
-		/// <see cref="EncryptedMessage"/> as a byte array
+		/// <see cref="Ciphertext"/> as a byte array
 		/// </summary>
 		[IgnoreDataMember]
-		public byte[] EncryptedMessageBytes {
+		public byte[] CiphertextBytes {
 			get {
-				if (EncryptedMessage == null) {
+				if (Ciphertext == null) {
 					return null;
 				}
-				return Utilities.HexToBytes(EncryptedMessage, out _);
+				return Utilities.HexToBytes(Ciphertext, out _);
+			}
+		}
+
+		/// <summary>
+		/// The encrypted message
+		/// </summary>
+		[DataMember(Name = "k")]
+		public string SecretKey { get; set; }
+
+		/// <summary>
+		/// <see cref="SecretKey"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] SecretKeyBytes {
+			get {
+				if (SecretKey == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(SecretKey, out _);
 			}
 		}
 	}
