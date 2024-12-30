@@ -98,7 +98,7 @@ namespace PQnet {
 		/// <param name="ciphertext">Receives the ciphertet</param>
 		/// <exception cref="CryptographicException">The public (encapsulation) key length did not match the required <see cref="PublicKeyBytes"/></exception>
 		public void Encapsulate(byte[] public_key, out byte[] shared_secret_key, out byte[] ciphertext) {
-			if (public_key.Length != PrivateKeyBytes) {
+			if (public_key.Length != PublicKeyBytes) {
 				throw new CryptographicException($"Public (encapsulation) key must be {PublicKeyBytes} bytes long");
 			}
 			crypto_kem_enc(out ciphertext, out shared_secret_key, public_key);
