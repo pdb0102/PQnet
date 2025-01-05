@@ -1267,6 +1267,140 @@
             <param name="in_buf"></param>
             <param name="inlen"></param>
         </member>
+        <member name="T:PQnet.Digest.ShakeX4">
+            <summary>
+            A SIMD-optimized implementation of SHAKE128, SHAKE256, SHA3-256, and SHA3-512 that calculates 4 hashes in parallel.
+            </summary>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.AddBlock(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Add (in GC(2), using bitwise exclusive OR) the bytes of <paramref name="interleaved_data"/> to the state for all instances for <paramref name="length"/> bytes.
+            </summary>
+            <param name="interleaved_data">The interleaved data to consume</param>
+            <param name="interleaved_data_offset">The offset, in bytes, from the start of <paramref name="interleaved_data"/> to start consuming bytes</param>
+            <param name="length">The number of bytes of <paramref name="interleaved_data"/> to consume.</param>
+            <returns>The number of bytes processed</returns>
+            <remarks>
+            The interleaved data is structured as follows:
+            A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
+            and then the next 32 bytes for the next set of instances, repeating <see cref="F:PQnet.Digest.ShakeX4.lane_count"/> times
+            </remarks>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.AddByte(System.Int32,System.Int32,System.Byte)">
+            <summary>
+            Add (in GC(2), using bitwise exclusive OR) the byte <paramref name="data"/> to the state at <paramref name="state_offset"/>.
+            </summary>
+            <param name="instance">The instance to which to add the byte (0-3)</param>
+            <param name="data">The byte to consume</param>
+            <param name="state_offset">Offset, in bytes, within the state</param>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.AddByteAll(System.Int32,System.Byte)">
+            <summary>
+            Add (in GC(2), using bitwise exclusive OR) the byte <paramref name="data"/> to the state at <paramref name="state_offset"/>.
+            </summary>
+            <param name="data">The byte to consume</param>
+            <param name="state_offset">Offset, in bytes, within the state</param>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.AddBytes(System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Add (in GC(2), using bitwise exclusive OR) the bytes of <paramref name="data"/> to the state at <paramref name="state_offset"/> for <paramref name="length"/> bytes.
+            </summary>
+            <param name="instance">The instance to which to add the bytes (0-3)</param>
+            <param name="state_offset">Offset, in bytes, within the state</param>
+            <param name="data">The data to consume</param>
+            <param name="length">The number of bytes of <paramref name="data"/> to consume</param>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.AddBytesAll(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Add <paramref name="length"/> bytes from <paramref name="interleaved_data"/> to the state.
+            </summary>
+            <param name="interleaved_data"></param>
+            <param name="interleaved_data_offset"></param>
+            <param name="length"></param>
+            <returns>The number of consumed bytes</returns>
+            <remarks>
+            This method should not be called if length is a whole block or more.
+            </remarks>
+        </member>
+        <member name="F:PQnet.Digest.ShakeX4.Shake128Rate">
+            <summary>
+            The SHAKE128 lane size in bytes.
+            </summary>
+        </member>
+        <member name="F:PQnet.Digest.ShakeX4.Shake256Rate">
+            <summary>
+            The SHAKE256 lane size in bytes.
+            </summary>
+        </member>
+        <member name="F:PQnet.Digest.ShakeX4.Sha3_224Rate">
+            <summary>
+            The SHA3-224 lane size in bytes.
+            </summary>
+        </member>
+        <member name="F:PQnet.Digest.ShakeX4.Sha3_256Rate">
+            <summary>
+            The SHA3-256 lane size in bytes.
+            </summary>
+        </member>
+        <member name="F:PQnet.Digest.ShakeX4.Sha3_384Rate">
+            <summary>
+            The SHA3-384 lane size in bytes.
+            </summary>
+        </member>
+        <member name="F:PQnet.Digest.ShakeX4.Sha3_512Rate">
+            <summary>
+            The SHA3-512 lane size in bytes.
+            </summary>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.Shake128(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.Int32)">
+            <summary>
+            Calculate 4 SHAKE128 hashes in parallel.
+            </summary>
+            <param name="input1">The data to digest for hash 1</param>
+            <param name="input2">The data to digest for hash 2</param>
+            <param name="input3">The data to digest for hash 3</param>
+            <param name="input4">The data to digest for hash 4</param>
+            <param name="outlen">The desired length of the hash</param>
+            <returns>A 4 byte[] tuple with the calcuated hashes</returns>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.Shake256(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.Int32)">
+            <summary>
+            Calculate 4 SHAKE256 hashes in parallel.
+            </summary>
+            <param name="input1">The data to digest for hash 1</param>
+            <param name="input2">The data to digest for hash 2</param>
+            <param name="input3">The data to digest for hash 3</param>
+            <param name="input4">The data to digest for hash 4</param>
+            <param name="outlen">The desired length of the hash</param>
+            <returns>A 4 byte[] tuple with the calcuated hashes</returns>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.ExtractBytesAll(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Retrieve all states for all lanes
+            </summary>
+            <param name="output1">Buffer for output of the the first instance</param>
+            <param name="output2">Buffer for output of the the second instance</param>
+            <param name="output3">Buffer for output of the the third instance</param>
+            <param name="output4">Buffer for output of the the fourth instance</param>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.Fast_Block_Absorb(System.Byte[],System.Int32)">
+            <summary>
+            Loads 4 lanes of the state with the interleaved data, and permutes the state.
+            </summary>
+            <param name="interleaved_data">The interleaved data to consume</param>
+            <param name="length">The number of bytes to consume from <paramref name="interleaved_data"/></param>
+            <returns>The number of consumed bytes</returns>
+            <remarks>
+            The interleaved data is structured as follows:
+            A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
+            and then the next 32 bytes for the next set of instances, repeating <see cref="F:PQnet.Digest.ShakeX4.lane_count"/> times
+            </remarks>
+        </member>
+        <member name="M:PQnet.Digest.ShakeX4.PermuteAll_24rounds">
+            <summary>
+            Apply the Keccak permutation on all states in parallel.
+            </summary>
+        </member>
         <member name="T:PQnet.AddressType">
             <summary>
             FIPS 205 Section 4.2 - Enumeration of the different types of addresses used in the SLH-DSA algorithm.

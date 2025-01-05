@@ -13,10 +13,13 @@
     <Authors></Authors>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>C:\Projects\PQNet\Sandcastle\PQnet.xml</DocumentationFile>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SHA2\" />
+    <Compile Remove="SHA2\**" />
+    <EmbeddedResource Remove="SHA2\**" />
+    <None Remove="SHA2\**" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="PQnet.test" />
