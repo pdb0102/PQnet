@@ -38,7 +38,7 @@ namespace PQnet {
 		*              - uint8_t j: additional byte of input
 		**************************************************/
 
-		private void kyber_shake128_absorb(Shake.keccak_state state, byte[] seed, byte x, byte y) {
+		private void kyber_shake128_absorb(Shake.KeccakState state, byte[] seed, byte x, byte y) {
 			byte[] extseed;
 
 			extseed = new byte[KYBER_SYMBYTES + 2];
@@ -84,9 +84,9 @@ namespace PQnet {
 		*              - uint8_t nonce: single-byte nonce (public PRF input)
 		**************************************************/
 		private void kyber_shake256_rkprf(byte[] out_buf, Span<byte> key, byte[] input) {
-			Shake.keccak_state s;
+			Shake.KeccakState s;
 
-			s = new Shake.keccak_state();
+			s = new Shake.KeccakState();
 
 			Shake.shake256_init(s);
 			Shake.shake256_absorb(s, key.ToArray(), KYBER_SYMBYTES);

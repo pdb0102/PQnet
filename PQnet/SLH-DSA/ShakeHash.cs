@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Security.Cryptography;
-
 using PQnet.Digest;
 
 namespace PQnet {
@@ -65,8 +63,8 @@ namespace PQnet {
 			Array.Copy(adrs.Bytes, 0, data, pk_seed.Length, adrs.Bytes.Length);
 			Array.Copy(m_1, 0, data, pk_seed.Length + adrs.Bytes.Length, m_1.Length);
 
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, n);
+			if (System.Security.Cryptography.Shake256.IsSupported) {
+				return System.Security.Cryptography.Shake256.HashData(data, n);
 			} else {
 				byte[] outbuf;
 
@@ -104,8 +102,8 @@ namespace PQnet {
 			Array.Copy(pk_root, 0, data, r.Length + pk_seed.Length, pk_root.Length);
 			Array.Copy(m, 0, data, r.Length + pk_seed.Length + pk_root.Length, m.Length);
 
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, this.m);
+			if (System.Security.Cryptography.Shake256.IsSupported) {
+				return System.Security.Cryptography.Shake256.HashData(data, this.m);
 			} else {
 				byte[] outbuf;
 
@@ -130,8 +128,8 @@ namespace PQnet {
 			Array.Copy(adrs.Bytes, 0, data, pk_seed.Length, adrs.Bytes.Length);
 			Array.Copy(sk_seed, 0, data, pk_seed.Length + adrs.Bytes.Length, sk_seed.Length);
 
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, this.n);
+			if (System.Security.Cryptography.Shake256.IsSupported) {
+				return System.Security.Cryptography.Shake256.HashData(data, this.n);
 			} else {
 				byte[] outbuf;
 
@@ -155,8 +153,8 @@ namespace PQnet {
 			Array.Copy(sk_prf, data, sk_prf.Length);
 			Array.Copy(opt_rand, 0, data, sk_prf.Length, opt_rand.Length);
 			Array.Copy(m, 0, data, sk_prf.Length + opt_rand.Length, m.Length);
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, this.n);
+			if (System.Security.Cryptography.Shake256.IsSupported) {
+				return System.Security.Cryptography.Shake256.HashData(data, this.n);
 			} else {
 				byte[] outbuf;
 

@@ -168,10 +168,10 @@ namespace PQnet {
 			uint ctr;
 			int buflen;
 			byte[] buf;
-			Shake.keccak_state state;
+			Shake.KeccakState state;
 			int GEN_MATRIX_NBLOCKS;
 
-			state = new Shake.keccak_state();
+			state = new Shake.KeccakState();
 
 			GEN_MATRIX_NBLOCKS = ((12 * KYBER_N / 8 * (1 << 12) / KYBER_Q) + Shake.SHAKE128_RATE) / Shake.SHAKE128_RATE;
 

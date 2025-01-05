@@ -24,7 +24,7 @@
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
 using System.Diagnostics;
-using System.Security.Cryptography;
+//using System.Security.Cryptography;
 
 using PQnet.Digest;
 
@@ -152,7 +152,7 @@ namespace PQnet {
 			PolyVecK w0;
 			PolyVecK h;
 			Poly cp;
-			Shake.keccak_state state;
+			Shake.KeccakState state;
 
 			Debug.Assert(rnd.Length == RndBytes);
 
@@ -170,7 +170,7 @@ namespace PQnet {
 			w0 = new PolyVecK(K, N);
 			h = new PolyVecK(K, N);
 
-			state = new Shake.keccak_state();
+			state = new Shake.KeccakState();
 			seedbuf = new byte[(2 * SeedBytes) + TrBytes + (2 * CrhBytes)];
 
 			sig = new byte[SignatureBytes];
@@ -340,12 +340,12 @@ namespace PQnet {
 			switch (ph) {
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
-					ph_m = SHA256.Create().ComputeHash(m);
+					ph_m = System.Security.Cryptography.SHA256.Create().ComputeHash(m);
 					break;
 
 				case PreHashFunction.SHA512:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
-					ph_m = SHA512.Create().ComputeHash(m);
+					ph_m = System.Security.Cryptography.SHA512.Create().ComputeHash(m);
 					break;
 
 				case PreHashFunction.SHAKE128:
@@ -433,7 +433,7 @@ namespace PQnet {
 			PolyVecK t1;
 			PolyVecK w1;
 			PolyVecK h;
-			Shake.keccak_state state;
+			Shake.KeccakState state;
 
 			buf = new byte[K * PolyW1PackedBytes];
 			rho = new byte[SeedBytes];
@@ -451,7 +451,7 @@ namespace PQnet {
 			w1 = new PolyVecK(K, N);
 			h = new PolyVecK(K, N);
 
-			state = new Shake.keccak_state();
+			state = new Shake.KeccakState();
 
 			if (sig.Length != SignatureBytes) {
 				return -1;
@@ -567,11 +567,11 @@ namespace PQnet {
 			switch (ph) {
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
-					ph_m = SHA256.Create().ComputeHash(m);
+					ph_m = System.Security.Cryptography.SHA256.Create().ComputeHash(m);
 					break;
 				case PreHashFunction.SHA512:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
-					ph_m = SHA512.Create().ComputeHash(m);
+					ph_m = System.Security.Cryptography.SHA512.Create().ComputeHash(m);
 					break;
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
