@@ -244,9 +244,7 @@ namespace PQnet {
 			byte[] buf;
 
 			// FIXME - convert to span
-
-			buf = new byte[KYBER_ETA1 * KYBER_N / 4];
-			kyber_shake256_prf(buf, buf.Length, seed, nonce); //prf(buf, buf.Length, seed, nonce);
+			buf = kyber_shake256_prf(KYBER_ETA1 * KYBER_N / 4, seed, nonce); //prf(buf, buf.Length, seed, nonce);
 			poly_cbd_eta1(r, buf);
 		}
 
@@ -265,9 +263,7 @@ namespace PQnet {
 		private void poly_getnoise_eta2(Poly r, Span<byte> seed, byte nonce) {
 			byte[] buf;
 
-			buf = new byte[KYBER_ETA2 * KYBER_N / 4];
-
-			kyber_shake256_prf(buf, buf.Length, seed, nonce); //prf(buf, buf.Length, seed, nonce);
+			buf = kyber_shake256_prf(KYBER_ETA2 * KYBER_N / 4, seed, nonce); //prf(buf, buf.Length, seed, nonce);
 			poly_cbd_eta2(r, buf);
 		}
 

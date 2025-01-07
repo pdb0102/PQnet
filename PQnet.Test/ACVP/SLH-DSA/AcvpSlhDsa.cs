@@ -21,7 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Reflection;
 using System.Runtime.Serialization.Json;
 
 namespace PQnet.test.AVCP {
@@ -30,8 +29,8 @@ namespace PQnet.test.AVCP {
 			AcvpSlhDsaTestVectors<AcvpSlhDsaKeyGenTestCase> prompt;
 			AcvpSlhDsaTestVectors<AcvpSlhDsaKeyGenTestCase> expected;
 
-			prompt = DeserializeVectors<AcvpSlhDsaKeyGenTestCase>(LoadFile(prompt_resouce));
-			expected = DeserializeVectors<AcvpSlhDsaKeyGenTestCase>(LoadFile(expected_resource));
+			prompt = DeserializeVectors<AcvpSlhDsaKeyGenTestCase>(Utilities.LoadFile(prompt_resouce));
+			expected = DeserializeVectors<AcvpSlhDsaKeyGenTestCase>(Utilities.LoadFile(expected_resource));
 
 			// Fiddle them together
 			for (int i = 0; i < prompt.TestGroups.Count; i++) {
@@ -49,8 +48,8 @@ namespace PQnet.test.AVCP {
 			AcvpSlhDsaTestVectors<AcvpSlhDsaSigGenTestCase> prompt;
 			AcvpSlhDsaTestVectors<AcvpSlhDsaSigGenTestCase> expected;
 
-			prompt = DeserializeVectors<AcvpSlhDsaSigGenTestCase>(LoadFile(prompt_resouce));
-			expected = DeserializeVectors<AcvpSlhDsaSigGenTestCase>(LoadFile(expected_resource));
+			prompt = DeserializeVectors<AcvpSlhDsaSigGenTestCase>(Utilities.LoadFile(prompt_resouce));
+			expected = DeserializeVectors<AcvpSlhDsaSigGenTestCase>(Utilities.LoadFile(expected_resource));
 
 			// Fiddle them together
 			for (int i = 0; i < prompt.TestGroups.Count; i++) {
@@ -68,8 +67,8 @@ namespace PQnet.test.AVCP {
 			AcvpSlhDsaTestVectors<AcvpSlhDsaSigVerTestCase> prompt;
 			AcvpSlhDsaTestVectors<AcvpSlhDsaSigVerTestCase> expected;
 
-			prompt = DeserializeVectors<AcvpSlhDsaSigVerTestCase>(LoadFile(prompt_resouce));
-			expected = DeserializeVectors<AcvpSlhDsaSigVerTestCase>(LoadFile(expected_resource));
+			prompt = DeserializeVectors<AcvpSlhDsaSigVerTestCase>(Utilities.LoadFile(prompt_resouce));
+			expected = DeserializeVectors<AcvpSlhDsaSigVerTestCase>(Utilities.LoadFile(expected_resource));
 
 			// Fiddle them together
 			for (int i = 0; i < prompt.TestGroups.Count; i++) {
@@ -138,26 +137,5 @@ namespace PQnet.test.AVCP {
 				return null;
 			}
 		}
-
-		public static byte[] LoadFile(string fileName) {
-			Assembly assembly;
-			List<string> resources;
-
-			assembly = Assembly.GetExecutingAssembly();
-			resources = new List<string>(assembly.GetManifestResourceNames());
-			for (int i = 0; i < resources.Count; i++) {
-				if (resources[i].EndsWith(fileName)) {
-					using (Stream stream = assembly.GetManifestResourceStream(resources[i])) {
-						using (MemoryStream ms = new MemoryStream()) {
-							stream.CopyTo(ms);
-							return ms.ToArray();
-						}
-					}
-				}
-			}
-			Assert.Fail($"Failed to find embedded file: {fileName}");
-			return null;
-		}
-
 	}
 }

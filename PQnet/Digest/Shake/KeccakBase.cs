@@ -337,10 +337,11 @@ namespace PQnet.Digest {
 		/// <summary>
 		/// Initializes the Keccak state
 		/// </summary>
-		protected void Init() {
+		public virtual void Init() {
 			for (int i = 0; i < 25; i++) {
 				state[i] = 0;
 			}
+			pos = 0;
 		}
 
 		/// <summary>
@@ -350,7 +351,7 @@ namespace PQnet.Digest {
 		/// <param name="inlen">The number of bytes to absorb from <paramref name="inlen"/></param>
 		/// <returns>The new position in the current block</returns>
 		/// <remarks>Updates the position in the current block</remarks>
-		public int Absorb(byte[] in_buf, int inlen) {
+		public virtual int Absorb(byte[] in_buf, int inlen) {
 			int in_buf_pos;
 			int i;
 
@@ -378,10 +379,11 @@ namespace PQnet.Digest {
 		/// <summary>
 		/// Finalizes the absorb step
 		/// </summary>
-		/// <remarks>This method absorbs the prefix (domain separation byte) and end-marker into the state</remarks>
-		public void FinalizeAbsorb() {
+		/// <remarks>This method absorbs the prefix (domain separation byte) and end-marker into the state. Updates the position to the end of the current block.</remarks>
+		public virtual void FinalizeAbsorb() {
 			state[pos / 8] ^= (ulong)prefix << (8 * (pos % 8));
 			state[(rate / 8) - 1] ^= 1UL << 63;
+			pos = rate;
 		}
 
 		/// <summary>
@@ -391,7 +393,7 @@ namespace PQnet.Digest {
 		/// <param name="out_buf_pos">The index into <paramref name="out_buf"/> where to start storing squeezed bytes</param>
 		/// <param name="outlen">The number of bytes to squeeze out</param>
 		/// <returns>The new position in current block</returns>
-		public int Squeeze(byte[] out_buf, int out_buf_pos, int outlen) {
+		public virtual int Squeeze(byte[] out_buf, int out_buf_pos, int outlen) {
 			int i;
 
 			Debug.Assert(out_buf.Length >= outlen);
@@ -417,7 +419,7 @@ namespace PQnet.Digest {
 		/// <param name="in_buf">The data to absorb</param>
 		/// <param name="inlen">The number of bytes to absorb from <paramref name="in_buf"/></param>
 		/// <remarks>Updates the position in the current block to the end of the block</remarks>
-		public void AbsorbOnce(byte[] in_buf, int inlen) {
+		public virtual void AbsorbOnce(byte[] in_buf, int inlen) {
 			int offset;
 			int i;
 
@@ -452,7 +454,7 @@ namespace PQnet.Digest {
 		/// <param name="nblocks"></param>
 		/// <returns>Number of bytes stored in <paramref name="out_buf"/></returns>
 		/// <remarks>Starts squeezing at the beginning of the current block (assumes nothing has been squeezed from the current block yet). Can be called multiple times.</remarks>
-		public int SqueezeBlocks(byte[] out_buf, int out_buf_pos, int nblocks) {
+		public virtual int SqueezeBlocks(byte[] out_buf, int out_buf_pos, int nblocks) {
 			int offset;
 
 			offset = 0;
@@ -473,5 +475,34 @@ namespace PQnet.Digest {
 
 			return offset;
 		}
+
+		/// <summary>
+		/// One-shot compute of the hash of the input data
+		/// </summary>
+		/// <param name="out_buf">The buffer receiving the hash</param>
+		/// <param name="outlen">The desired length of the hash</param>
+		/// <param name="input">The data for which to compute the hash</param>
+		/// <param name="inlen">The number of bytes to consume from <paramref name="input"/></param>
+		/// <returns>The SHAKE hash for <paramref name="input"/></returns>
+		/// <remarks>Resets any existing state on input</remarks>
+		public virtual void Hash(byte[] out_buf, int outlen, byte[] input, int inlen) {
+			int blocks;
+
+			Init();
+
+			AbsorbOnce(input, inlen);
+
+			blocks = outlen / rate;
+			if (blocks > 0) {
+				int out_pos;
+
+				out_pos = SqueezeBlocks(out_buf, 0, blocks);
+				Squeeze(out_buf, out_pos, outlen - out_pos);
+				return;
+			}
+
+			Squeeze(out_buf, 0, outlen);
+		}
+
 	}
 }

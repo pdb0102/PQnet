@@ -74,7 +74,7 @@ namespace PQnet {
 			Array.Copy(seed, 0, seedbuf, 0, seed.Length);
 			seedbuf[SeedBytes + 0] = (byte)K;
 			seedbuf[SeedBytes + 1] = (byte)L;
-			Shake.shake256(seedbuf, (2 * SeedBytes) + CrhBytes, seedbuf, SeedBytes + 2);
+			new Shake256().Hash(seedbuf, (2 * SeedBytes) + CrhBytes, seedbuf, SeedBytes + 2);
 			rho = seedbuf;
 
 			rhoprime = new byte[CrhBytes];
@@ -110,7 +110,7 @@ namespace PQnet {
 			pack_pk(pk, rho, t1);
 
 			/* Compute H(rho, t1) and write secret key */
-			Shake.shake256(tr, TrBytes, pk, PublicKeyBytes);
+			new Shake256().Hash(tr, TrBytes, pk, PublicKeyBytes);
 			sk = new byte[PrivateKeyBytes];
 			pack_sk(sk, rho, tr, key, t0, s1, s2);
 
@@ -152,7 +152,7 @@ namespace PQnet {
 			PolyVecK w0;
 			PolyVecK h;
 			Poly cp;
-			Shake.KeccakState state;
+			Shake256 shake256;
 
 			Debug.Assert(rnd.Length == RndBytes);
 
@@ -170,7 +170,7 @@ namespace PQnet {
 			w0 = new PolyVecK(K, N);
 			h = new PolyVecK(K, N);
 
-			state = new Shake.KeccakState();
+			shake256 = new Shake256();
 			seedbuf = new byte[(2 * SeedBytes) + TrBytes + (2 * CrhBytes)];
 
 			sig = new byte[SignatureBytes];
@@ -182,20 +182,19 @@ namespace PQnet {
 			unpack_sk(rho, tr, key, t0, s1, s2, sk);
 
 			/* Compute mu = CRH(tr, pre, msg) */
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, tr, TrBytes);
-			Shake.shake256_absorb(state, pre, pre.Length);
-			Shake.shake256_absorb(state, m, m.Length);
-			Shake.shake256_finalize(state);
-			Shake.shake256_squeeze(mu, 0, CrhBytes, state);
+			shake256.Absorb(tr, TrBytes);
+			shake256.Absorb(pre, pre.Length);
+			shake256.Absorb(m, m.Length);
+			shake256.FinalizeAbsorb();
+			shake256.Squeeze(mu, 0, CrhBytes);
 
 			/* Compute rhoprime = CRH(key, rnd, mu) */
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, key, SeedBytes);
-			Shake.shake256_absorb(state, rnd, RndBytes);
-			Shake.shake256_absorb(state, mu, CrhBytes);
-			Shake.shake256_finalize(state);
-			Shake.shake256_squeeze(rhoprime, 0, CrhBytes, state);
+			shake256.Init();
+			shake256.Absorb(key, SeedBytes);
+			shake256.Absorb(rnd, RndBytes);
+			shake256.Absorb(mu, CrhBytes);
+			shake256.FinalizeAbsorb();
+			shake256.Squeeze(rhoprime, 0, CrhBytes);
 
 			/* Expand matrix and transform vectors */
 			polyvec_matrix_expand(mat, rho);
@@ -219,11 +218,11 @@ namespace PQnet {
 			polyveck_decompose(w1, w0, w1);
 			polyveck_pack_w1(sig, w1);
 
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, mu, CrhBytes);
-			Shake.shake256_absorb(state, sig, K * PolyW1PackedBytes);
-			Shake.shake256_finalize(state);
-			Shake.shake256_squeeze(sig, 0, CTildeBytes, state);
+			shake256.Init();
+			shake256.Absorb(mu, CrhBytes);
+			shake256.Absorb(sig, K * PolyW1PackedBytes);
+			shake256.FinalizeAbsorb();
+			shake256.Squeeze(sig, 0, CTildeBytes);
 			poly_challenge(cp, sig);
 			poly_ntt(cp);
 
@@ -433,7 +432,7 @@ namespace PQnet {
 			PolyVecK t1;
 			PolyVecK w1;
 			PolyVecK h;
-			Shake.KeccakState state;
+			Shake256 shake256;
 
 			buf = new byte[K * PolyW1PackedBytes];
 			rho = new byte[SeedBytes];
@@ -451,7 +450,7 @@ namespace PQnet {
 			w1 = new PolyVecK(K, N);
 			h = new PolyVecK(K, N);
 
-			state = new Shake.KeccakState();
+			shake256 = new Shake256();
 
 			if (sig.Length != SignatureBytes) {
 				return -1;
@@ -466,13 +465,13 @@ namespace PQnet {
 			}
 
 			/* Compute CRH(H(rho, t1), pre, msg) */
-			Shake.shake256(mu, TrBytes, pk, PublicKeyBytes);
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, mu, TrBytes);
-			Shake.shake256_absorb(state, pre, pre.Length);
-			Shake.shake256_absorb(state, m, m.Length);
-			Shake.shake256_finalize(state);
-			Shake.shake256_squeeze(mu, 0, CrhBytes, state);
+			shake256.Hash(mu, TrBytes, pk, PublicKeyBytes);
+			shake256.Init();
+			shake256.Absorb(mu, TrBytes);
+			shake256.Absorb(pre, pre.Length);
+			shake256.Absorb(m, m.Length);
+			shake256.FinalizeAbsorb();
+			shake256.Squeeze(mu, 0, CrhBytes);
 
 			/* Matrix-vector multiplication; compute Az - c2^dt1 */
 			poly_challenge(cp, c);
@@ -496,11 +495,11 @@ namespace PQnet {
 			polyveck_pack_w1(buf, w1);
 
 			/* Call random oracle and verify challenge */
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, mu, CrhBytes);
-			Shake.shake256_absorb(state, buf, K * PolyW1PackedBytes);
-			Shake.shake256_finalize(state);
-			Shake.shake256_squeeze(c2, 0, CTildeBytes, state);
+			shake256.Init();
+			shake256.Absorb(mu, CrhBytes);
+			shake256.Absorb(buf, K * PolyW1PackedBytes);
+			shake256.FinalizeAbsorb();
+			shake256.Squeeze(c2, 0, CTildeBytes);
 			for (int i = 0; i < CTildeBytes; i++) {
 				if (c[i] != c2[i]) {
 					return -1;

@@ -168,30 +168,30 @@ namespace PQnet {
 			uint ctr;
 			int buflen;
 			byte[] buf;
-			Shake.KeccakState state;
+			Shake128 shake128;
 			int GEN_MATRIX_NBLOCKS;
 
-			state = new Shake.KeccakState();
+			shake128 = new Shake128();
 
-			GEN_MATRIX_NBLOCKS = ((12 * KYBER_N / 8 * (1 << 12) / KYBER_Q) + Shake.SHAKE128_RATE) / Shake.SHAKE128_RATE;
+			GEN_MATRIX_NBLOCKS = ((12 * KYBER_N / 8 * (1 << 12) / KYBER_Q) + Shake128.Shake128Rate) / Shake128.Shake128Rate;
 
-			buf = new byte[GEN_MATRIX_NBLOCKS * Shake.SHAKE128_RATE];
+			buf = new byte[GEN_MATRIX_NBLOCKS * Shake128.Shake128Rate];
 
 			for (int i = 0; i < KYBER_K; i++) {
 				for (int j = 0; j < KYBER_K; j++) {
 					if (transposed) {
-						kyber_shake128_absorb(state, seed, (byte)i, (byte)j); //xof_absorb(&state, seed, i, j);
+						kyber_shake128_absorb(shake128, seed, (byte)i, (byte)j); //xof_absorb(&state, seed, i, j);
 					} else {
-						kyber_shake128_absorb(state, seed, (byte)j, (byte)i); // xof_absorb(&state, seed, j, i);
+						kyber_shake128_absorb(shake128, seed, (byte)j, (byte)i); // xof_absorb(&state, seed, j, i);
 					}
 
-					Shake.shake128_squeezeblocks(buf, 0, GEN_MATRIX_NBLOCKS, state); // xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
-					buflen = GEN_MATRIX_NBLOCKS * Shake.SHAKE128_RATE;
+					shake128.SqueezeBlocks(buf, 0, GEN_MATRIX_NBLOCKS); // xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
+					buflen = GEN_MATRIX_NBLOCKS * Shake128.Shake128Rate;
 					ctr = rej_uniform(a[i].vec[j].coeffs, 0, KYBER_N, buf, buflen);
 
 					while (ctr < KYBER_N) {
-						Shake.shake128_squeezeblocks(buf, 0, 1, state); //xof_squeezeblocks(buf, 1, &state);
-						buflen = Shake.SHAKE128_RATE;
+						shake128.SqueezeBlocks(buf, 0, 1); //xof_squeezeblocks(buf, 1, &state);
+						buflen = Shake128.Shake128Rate;
 						ctr += rej_uniform(a[i].vec[j].coeffs, (int)ctr, (int)(KYBER_N - ctr), buf, buflen);
 					}
 				}
@@ -236,7 +236,7 @@ namespace PQnet {
 			Array.Copy(coins, buf, KYBER_SYMBYTES);
 
 			buf[KYBER_SYMBYTES] = (byte)KYBER_K;
-			Shake.sha3_512(out buf, buf, KYBER_SYMBYTES + 1);
+			buf = Sha3_512.ComputeHash(buf, KYBER_SYMBYTES + 1);
 
 			publicseed = new byte[KYBER_SYMBYTES];
 			Array.Copy(buf, publicseed, KYBER_SYMBYTES);

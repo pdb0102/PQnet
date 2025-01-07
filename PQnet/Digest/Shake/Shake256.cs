@@ -27,10 +27,15 @@ namespace PQnet.Digest {
 	/// </summary>
 	public class Shake256 : KeccakBase {
 		/// <summary>
+		/// The rate of the SHAKE-256 algorithm
+		/// </summary>
+		public const int Shake256Rate = 136;
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="Shake256"/> class.
 		/// </summary>
 		public Shake256() {
-			base.rate = 136;
+			base.rate = Shake256Rate;
 			base.prefix = 0x1f;
 		}
 
@@ -40,7 +45,7 @@ namespace PQnet.Digest {
 		/// <param name="input">The data for which to compute the hash</param>
 		/// <param name="outlen">The desired length of the hash</param>
 		/// <returns>The SHAKE-256 hash for <paramref name="input"/></returns>
-		public static byte[] HashData(byte[] input, int outlen = 136) {
+		public static byte[] HashData(byte[] input, int outlen = Shake256Rate) {
 			Shake256 shake;
 			byte[] result;
 			int blocks;

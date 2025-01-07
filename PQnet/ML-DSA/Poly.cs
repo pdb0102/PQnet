@@ -300,15 +300,15 @@ namespace PQnet {
 			int ctr;
 			int buflen;
 			byte[] buf;
-			Shake.KeccakState state;
+			Shake128 shake128;
 
 			buflen = POLY_UNIFORM_NBLOCKS * STREAM128_BLOCKBYTES;
 			buf = new byte[(POLY_UNIFORM_NBLOCKS * STREAM128_BLOCKBYTES) + 2];
 
-			state = new Shake.KeccakState();
+			shake128 = new Shake128();
 
-			dilithium_shake128_stream_init(state, seed, nonce);
-			Shake.shake128_squeezeblocks(buf, 0, POLY_UNIFORM_NBLOCKS, state);
+			dilithium_shake128_stream_init(shake128, seed, nonce);
+			shake128.SqueezeBlocks(buf, 0, POLY_UNIFORM_NBLOCKS);
 
 			ctr = rej_uniform(a.coeffs, 0, N, buf, buflen);
 
@@ -318,7 +318,7 @@ namespace PQnet {
 					buf[i] = buf[buflen - off + i];
 				}
 
-				Shake.shake128_squeezeblocks(buf, off, 1, state);
+				shake128.SqueezeBlocks(buf, off, 1);
 				buflen = STREAM128_BLOCKBYTES + off;
 				ctr += rej_uniform(a.coeffs, ctr, N - ctr, buf, buflen);
 			}
@@ -390,21 +390,21 @@ namespace PQnet {
 			byte[] buf;
 			int buflen;
 			int ctr;
-			Shake.KeccakState state;
+			Shake256 shake256;
 
 			Debug.Assert(seed.Length == CrhBytes);
 
-			state = new Shake.KeccakState();
+			shake256 = new Shake256();
 			buflen = POLY_UNIFORM_ETA_NBLOCKS * STREAM256_BLOCKBYTES;
 			buf = new byte[POLY_UNIFORM_ETA_NBLOCKS * STREAM256_BLOCKBYTES];
 
-			dilithium_shake256_stream_init(state, seed, nonce);
-			Shake.shake256_squeezeblocks(buf, 0, POLY_UNIFORM_ETA_NBLOCKS, state);
+			dilithium_shake256_stream_init(shake256, seed, nonce);
+			shake256.SqueezeBlocks(buf, 0, POLY_UNIFORM_ETA_NBLOCKS);
 
 			ctr = rej_eta(a.coeffs, 0, N, buf, buflen);
 
 			while (ctr < N) {
-				Shake.shake256_squeezeblocks(buf, 0, 1, state);
+				shake256.SqueezeBlocks(buf, 0, 1);
 				ctr += rej_eta(a.coeffs, ctr, N - ctr, buf, STREAM256_BLOCKBYTES);
 			}
 		}
@@ -422,15 +422,15 @@ namespace PQnet {
 		**************************************************/
 		private void poly_uniform_gamma1(Poly a, byte[] seed, ushort nonce) {
 			byte[] buf;
-			Shake.KeccakState state;
+			Shake256 shake256;
 
 			Debug.Assert(seed.Length == CrhBytes);
 
-			state = new Shake.KeccakState();
+			shake256 = new Shake256();
 			buf = new byte[POLY_UNIFORM_GAMMA1_NBLOCKS * STREAM256_BLOCKBYTES];
 
-			dilithium_shake256_stream_init(state, seed, nonce);
-			Shake.shake256_squeezeblocks(buf, 0, POLY_UNIFORM_GAMMA1_NBLOCKS, state);
+			dilithium_shake256_stream_init(shake256, seed, nonce);
+			shake256.SqueezeBlocks(buf, 0, POLY_UNIFORM_GAMMA1_NBLOCKS);
 			polyz_unpack(a, buf, 0);
 		}
 
@@ -448,15 +448,14 @@ namespace PQnet {
 			uint b, pos;
 			byte[] buf;
 			ulong signs;
-			buf = new byte[Shake.SHAKE256_RATE];
-			Shake.KeccakState state;
+			buf = new byte[Shake256.Shake256Rate];
+			Shake256 shake256;
 
-			state = new Shake.KeccakState();
-
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, seed, CTildeBytes);
-			Shake.shake256_finalize(state);
-			Shake.shake256_squeezeblocks(buf, 0, 1, state);
+			shake256 = new Shake256();
+			shake256.Init();
+			shake256.Absorb(seed, CTildeBytes);
+			shake256.FinalizeAbsorb();
+			shake256.SqueezeBlocks(buf, 0, 1);
 
 			signs = 0;
 			for (int i = 0; i < 8; i++) {
@@ -469,8 +468,8 @@ namespace PQnet {
 			}
 			for (int i = N - Tau; i < N; i++) {
 				do {
-					if (pos >= Shake.SHAKE256_RATE) {
-						Shake.shake256_squeezeblocks(buf, 0, 1, state);
+					if (pos >= Shake256.Shake256Rate) {
+						shake256.SqueezeBlocks(buf, 0, 1);
 						pos = 0;
 					}
 

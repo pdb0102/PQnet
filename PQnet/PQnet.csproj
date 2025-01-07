@@ -21,6 +21,10 @@
     <EmbeddedResource Remove="SHA2\**" />
     <None Remove="SHA2\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Digest\Fips202.cs" />
+  </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="PQnet.test" />
     <InternalsVisibleTo Include="TestApp" />
@@ -34,5 +38,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="Digest\Fips202.cs" />
   </ItemGroup>
 </Project>

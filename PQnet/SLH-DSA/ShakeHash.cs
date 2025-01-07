@@ -66,11 +66,7 @@ namespace PQnet {
 			if (System.Security.Cryptography.Shake256.IsSupported) {
 				return System.Security.Cryptography.Shake256.HashData(data, n);
 			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[n];
-				Shake.shake256(outbuf, n, data, data.Length);
-				return outbuf;
+				return Shake256.HashData(data, this.n);
 			}
 		}
 
@@ -105,11 +101,7 @@ namespace PQnet {
 			if (System.Security.Cryptography.Shake256.IsSupported) {
 				return System.Security.Cryptography.Shake256.HashData(data, this.m);
 			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[this.m];
-				Shake.shake256(outbuf, this.m, data, data.Length);
-				return outbuf;
+				return Shake256.HashData(data, this.m);
 			}
 		}
 
@@ -131,11 +123,7 @@ namespace PQnet {
 			if (System.Security.Cryptography.Shake256.IsSupported) {
 				return System.Security.Cryptography.Shake256.HashData(data, this.n);
 			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[n];
-				Shake.shake256(outbuf, n, data, data.Length);
-				return outbuf;
+				return Shake256.HashData(data, this.n);
 			}
 		}
 
@@ -156,11 +144,7 @@ namespace PQnet {
 			if (System.Security.Cryptography.Shake256.IsSupported) {
 				return System.Security.Cryptography.Shake256.HashData(data, this.n);
 			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[n];
-				Shake.shake256(outbuf, n, data, data.Length);
-				return outbuf;
+				return Shake256.HashData(data, this.n);
 			}
 		}
 

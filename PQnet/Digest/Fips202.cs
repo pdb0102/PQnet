@@ -21,9 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-
 namespace PQnet.Digest {
 	/// <summary>
 	/// Implements the SHA-3 and SHAKE hash functions.

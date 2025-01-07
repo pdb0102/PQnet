@@ -65,5 +65,38 @@ namespace PQnet.Digest {
 
 			return result;
 		}
+
+		/// <summary>
+		/// Compute the SHA3-512 hash of the input data
+		/// </summary>
+		/// <param name="input">The data for which to compute the hash</param>
+		/// <param name="inlen">The number of bytes to absorb from <paramref name="input"/></param>
+		/// <returns>The SHA3-512 hash for <paramref name="input"/></returns>
+		public static byte[] ComputeHash(byte[] input, int inlen) {
+			Sha3_512 shake;
+			byte[] result;
+			int blocks;
+			int outlen;
+
+			outlen = 64;
+
+			shake = new Sha3_512();
+			result = new byte[outlen];
+
+			shake.AbsorbOnce(input, inlen);
+
+			blocks = outlen / shake.rate;
+			if (blocks > 0) {
+				int out_pos;
+
+				out_pos = shake.SqueezeBlocks(result, 0, blocks);
+				shake.Squeeze(result, out_pos, outlen - out_pos);
+				return result;
+			}
+
+			shake.Squeeze(result, 0, outlen);
+
+			return result;
+		}
 	}
 }

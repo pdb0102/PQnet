@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System.Reflection;
+
 namespace PQnet.test.AVCP {
 
 	internal class Utilities {
@@ -78,6 +80,26 @@ namespace PQnet.test.AVCP {
 
 			error = null;
 			return bytes;
+		}
+
+		public static byte[] LoadFile(string fileName) {
+			Assembly assembly;
+			List<string> resources;
+
+			assembly = Assembly.GetExecutingAssembly();
+			resources = new List<string>(assembly.GetManifestResourceNames());
+			for (int i = 0; i < resources.Count; i++) {
+				if (resources[i].EndsWith(fileName)) {
+					using (Stream stream = assembly.GetManifestResourceStream(resources[i])) {
+						using (MemoryStream ms = new MemoryStream()) {
+							stream.CopyTo(ms);
+							return ms.ToArray();
+						}
+					}
+				}
+			}
+			Assert.Fail($"Failed to find embedded file: {fileName}");
+			return null;
 		}
 
 	}

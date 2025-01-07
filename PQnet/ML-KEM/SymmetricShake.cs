@@ -38,7 +38,7 @@ namespace PQnet {
 		*              - uint8_t j: additional byte of input
 		**************************************************/
 
-		private void kyber_shake128_absorb(Shake.KeccakState state, byte[] seed, byte x, byte y) {
+		private void kyber_shake128_absorb(Shake128 shake128, byte[] seed, byte x, byte y) {
 			byte[] extseed;
 
 			extseed = new byte[KYBER_SYMBYTES + 2];
@@ -47,7 +47,7 @@ namespace PQnet {
 			extseed[KYBER_SYMBYTES + 0] = x;
 			extseed[KYBER_SYMBYTES + 1] = y;
 
-			Shake.shake128_absorb_once(state, extseed, extseed.Length);
+			shake128.AbsorbOnce(extseed, extseed.Length);
 		}
 
 		/*************************************************
@@ -61,7 +61,7 @@ namespace PQnet {
 		*              - const uint8_t *key: pointer to the key (of length KYBER_SYMBYTES)
 		*              - uint8_t nonce: single-byte nonce (public PRF input)
 		**************************************************/
-		private void kyber_shake256_prf(byte[] out_buf, int outlen, Span<byte> key, byte nonce) {
+		private byte[] kyber_shake256_prf(int outlen, Span<byte> key, byte nonce) {
 			byte[] extkey;
 
 			extkey = new byte[KYBER_SYMBYTES + 1];
@@ -69,7 +69,7 @@ namespace PQnet {
 			key.Slice(0, KYBER_SYMBYTES).CopyTo(extkey);
 			extkey[KYBER_SYMBYTES] = nonce;
 
-			Shake.shake256(out_buf, outlen, extkey, extkey.Length);
+			return Shake256.HashData(extkey, outlen);
 		}
 
 		/*************************************************
@@ -84,15 +84,14 @@ namespace PQnet {
 		*              - uint8_t nonce: single-byte nonce (public PRF input)
 		**************************************************/
 		private void kyber_shake256_rkprf(byte[] out_buf, Span<byte> key, byte[] input) {
-			Shake.KeccakState s;
+			Shake256 shake256;
 
-			s = new Shake.KeccakState();
+			shake256 = new Shake256();
 
-			Shake.shake256_init(s);
-			Shake.shake256_absorb(s, key.ToArray(), KYBER_SYMBYTES);
-			Shake.shake256_absorb(s, input, KYBER_CIPHERTEXTBYTES);
-			Shake.shake256_finalize(s);
-			Shake.shake256_squeeze(out_buf, 0, KYBER_SSBYTES, s);
+			shake256.Absorb(key.ToArray(), KYBER_SYMBYTES);
+			shake256.Absorb(input, KYBER_CIPHERTEXTBYTES);
+			shake256.FinalizeAbsorb();
+			shake256.Squeeze(out_buf, 0, KYBER_SSBYTES);
 		}
 	}
 }

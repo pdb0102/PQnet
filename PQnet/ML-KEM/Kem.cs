@@ -50,7 +50,7 @@ namespace PQnet {
 			indcpa_keypair_derand(pk, sk, coins);
 			Array.Copy(pk, 0, sk, KYBER_INDCPA_SECRETKEYBYTES, KYBER_PUBLICKEYBYTES);
 
-			Shake.sha3_256(out hash, pk, KYBER_PUBLICKEYBYTES); // hash_h(sk + KYBER_SECRETKEYBYTES - (2 * KYBER_SYMBYTES), pk, KYBER_PUBLICKEYBYTES);
+			hash = Sha3_256.ComputeHash(pk, KYBER_PUBLICKEYBYTES); // hash_h(sk + KYBER_SECRETKEYBYTES - (2 * KYBER_SYMBYTES), pk, KYBER_PUBLICKEYBYTES);
 			Array.Copy(hash, 0, sk, KYBER_SECRETKEYBYTES - (2 * KYBER_SYMBYTES), hash.Length);
 
 			/* Value z for pseudo-random output on reject */
@@ -115,9 +115,9 @@ namespace PQnet {
 			Array.Copy(coins, buf, KYBER_SYMBYTES);
 
 			/* Multitarget countermeasure for coins + contributory KEM */
-			Shake.sha3_256(out hash, pk, KYBER_PUBLICKEYBYTES); //(hash_h(buf + KYBER_SYMBYTES, pk, KYBER_PUBLICKEYBYTES);
+			hash = Sha3_256.ComputeHash(pk, KYBER_PUBLICKEYBYTES); //(hash_h(buf + KYBER_SYMBYTES, pk, KYBER_PUBLICKEYBYTES);
 			Array.Copy(hash, 0, buf, KYBER_SYMBYTES, KYBER_SYMBYTES);
-			Shake.sha3_512(out kr, buf, 2 * KYBER_SYMBYTES); //hash_g(kr, buf, 2 * KYBER_SYMBYTES);
+			kr = Sha3_512.ComputeHash(buf, 2 * KYBER_SYMBYTES); //hash_g(kr, buf, 2 * KYBER_SYMBYTES);
 
 			/* coins are in kr+KYBER_SYMBYTES */
 			ct = new byte[KYBER_CIPHERTEXTBYTES];
@@ -198,7 +198,7 @@ namespace PQnet {
 
 			/* Multitarget countermeasure for coins + contributory KEM */
 			Array.Copy(sk, KYBER_SECRETKEYBYTES - (2 * KYBER_SYMBYTES), buf, KYBER_SYMBYTES, KYBER_SYMBYTES);
-			Shake.sha3_512(out kr, buf, 2 * KYBER_SYMBYTES); // hash_g(kr, buf, 2 * KYBER_SYMBYTES);
+			kr = Sha3_512.ComputeHash(buf, 2 * KYBER_SYMBYTES); // hash_g(kr, buf, 2 * KYBER_SYMBYTES);
 
 			/* coins are in kr+KYBER_SYMBYTES */
 			indcpa_enc(cmp, buf, new Span<byte>(sk).Slice(KYBER_INDCPA_SECRETKEYBYTES), new Span<byte>(kr).Slice(KYBER_SYMBYTES));
