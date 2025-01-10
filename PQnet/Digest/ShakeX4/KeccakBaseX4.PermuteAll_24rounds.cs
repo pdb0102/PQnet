@@ -25,7 +25,7 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		/// <summary>
 		/// Apply the Keccak permutation on all states in parallel.
 		/// </summary>

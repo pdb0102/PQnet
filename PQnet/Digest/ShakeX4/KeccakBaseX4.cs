@@ -1,6 +1,6 @@
 ﻿// MIT License
 // 
-// Copyright (c) 2025 Peter Dennis Bartok 
+// Copyright (c) 2024 Peter Dennis Bartok 
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,48 +21,51 @@
 // SOFTWARE.
 //
 
+using System.Runtime.Intrinsics.Arm;
+using System.Runtime.Intrinsics.X86;
+
 namespace PQnet.Digest {
 	/// <summary>
-	/// Implementation of SHAKE-128 Hash Algorithm
+	/// A SIMD-optimized implementation of the Keccak algorithm that calculates 4 hashes in parallel.
 	/// </summary>
-	public class Shake128 : KeccakBase {
+	public partial class KeccakBaseX4 {
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Shake128"/> class.
+		/// The SHAKE128 lane size in bytes.
 		/// </summary>
-		public Shake128() {
-			base.rate = Shake128Rate;
-			base.prefix = 0x1f;
-		}
+		public const int Shake128Rate = 168;
 
 		/// <summary>
-		/// Compute the SHAKE-128 hash of the input data
+		/// The SHAKE256 lane size in bytes.
 		/// </summary>
-		/// <param name="input">The data for which to compute the hash</param>
-		/// <param name="outlen">The desired length of the hash</param>
-		/// <returns>The SHAKE-128 hash for <paramref name="input"/></returns>
-		public static byte[] HashData(byte[] input, int outlen = Shake128Rate) {
-			Shake128 shake;
-			byte[] result;
-			int blocks;
+		public const int Shake256Rate = 136;
 
+		/// <summary>
+		/// The SHA3-224 lane size in bytes.
+		/// </summary>
+		public const int Sha3_224Rate = 144;
 
-			shake = new Shake128();
-			result = new byte[outlen];
+		/// <summary>
+		/// The SHA3-256 lane size in bytes.
+		/// </summary>
+		public const int Sha3_256Rate = 136;
 
-			shake.AbsorbOnce(input, input.Length);
+		/// <summary>
+		/// The SHA3-384 lane size in bytes.
+		/// </summary>
+		public const int Sha3_384Rate = 104;
 
-			blocks = outlen / shake.rate;
-			if (blocks > 0) {
-				int out_pos;
+		/// <summary>
+		/// The SHA3-512 lane size in bytes.
+		/// </summary>
+		public const int Sha3_512Rate = 72;
 
-				out_pos = shake.SqueezeBlocks(result, 0, blocks);
-				shake.Squeeze(result, out_pos, outlen - out_pos);
-				return result;
+		/// <summary>
+		/// Indicates if the SIMD-optimized SHAKE128, SHAKE256, SHA3-256, and SHA3-512 are supported.
+		/// </summary>
+		public static bool IsSupported {
+			get {
+				return Avx2.IsSupported || ArmBase.IsSupported; // Being an optimist and assuming I'll get to ARM as well?
 			}
-
-			shake.Squeeze(result, 0, outlen);
-
-			return result;
 		}
 	}
 }

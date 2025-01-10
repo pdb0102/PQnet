@@ -24,7 +24,7 @@
 using System.Runtime.Intrinsics;
 
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		private static Vector256<byte> rho8 = Vector256.Create(0x0605040302010007u, 0x0E0D0C0B0A09080F, 0x1615141312111017, 0x1E1D1C1B1A19181F).AsByte();
 		private static Vector256<byte> rho56 = Vector256.Create(0x0007060504030201u, 0x080F0E0D0C0B0A09, 0x1017161514131211, 0x181F1E1D1C1B1A19).AsByte();
 

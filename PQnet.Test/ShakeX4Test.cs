@@ -52,13 +52,13 @@ namespace PQnet.test {
 
 		[TestMethod]
 		public void Test24RoundPermutation() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 
 			if (!Avx2.IsSupported) {
 				Assert.Inconclusive("AVX2 not supported");
 			}
 
-			shake = new ShakeX4();
+			shake = new KeccakBaseX4();
 			for (int i = 0; i < 25; i++) {
 				shake.state[i] = Vector256.Create(pre_rounds[i], pre_rounds[i], pre_rounds[i], pre_rounds[i]);
 			}
@@ -109,14 +109,14 @@ namespace PQnet.test {
 		};
 		[TestMethod]
 		public void TestAddBytesFullBlock() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 
 			if (!Avx2.IsSupported) {
 				Assert.Inconclusive("AVX2 not supported");
 			}
 
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_bytes_state[s], pre_add_bytes_state[s], pre_add_bytes_state[s], pre_add_bytes_state[s]);
 				}
@@ -137,14 +137,14 @@ namespace PQnet.test {
 
 		[TestMethod]
 		public void TestAddBytesOneByteShortOfFullBlock() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 
 			if (!Avx2.IsSupported) {
 				Assert.Inconclusive("AVX2 not supported");
 			}
 
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_bytes_state[s], pre_add_bytes_state[s], pre_add_bytes_state[s], pre_add_bytes_state[s]);
 				}
@@ -189,14 +189,14 @@ namespace PQnet.test {
 
 		[TestMethod]
 		public void TestAddBytesWithOffset() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 
 			if (!Avx2.IsSupported) {
 				Assert.Inconclusive("AVX2 not supported");
 			}
 
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_bytes_at_offset_14_state[s], pre_add_bytes_at_offset_14_state[s], pre_add_bytes_at_offset_14_state[s], pre_add_bytes_at_offset_14_state[s]);
 				}
@@ -212,7 +212,7 @@ namespace PQnet.test {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_bytes_at_offset_14_state[s], pre_add_bytes_at_offset_14_state[s], pre_add_bytes_at_offset_14_state[s], pre_add_bytes_at_offset_14_state[s]);
 				}
@@ -262,7 +262,7 @@ namespace PQnet.test {
 
 		[TestMethod]
 		public void TestAddByte() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 
 			if (!Avx2.IsSupported) {
 				Assert.Inconclusive("AVX2 not supported");
@@ -270,7 +270,7 @@ namespace PQnet.test {
 
 			// Offset 88
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_single_byte_state[s], pre_add_single_byte_state[s], pre_add_single_byte_state[s], pre_add_single_byte_state[s]);
 				}
@@ -287,7 +287,7 @@ namespace PQnet.test {
 
 			// Offset 87
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_single_byte_state[s], pre_add_single_byte_state[s], pre_add_single_byte_state[s], pre_add_single_byte_state[s]);
 				}
@@ -304,7 +304,7 @@ namespace PQnet.test {
 
 			// Offset 83
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(pre_add_single_byte_state[s], pre_add_single_byte_state[s], pre_add_single_byte_state[s], pre_add_single_byte_state[s]);
 				}
@@ -369,7 +369,7 @@ namespace PQnet.test {
 
 		[TestMethod]
 		public void TestExtractBytes() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 			byte[] output_buffer;
 
 			if (!Avx2.IsSupported) {
@@ -378,7 +378,7 @@ namespace PQnet.test {
 
 			// Offset 0	- starts and ends on ulong boundary
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(i == 0 ? pre_extract_bytes[s] : 0, i == 1 ? pre_extract_bytes[s] : 0, i == 2 ? pre_extract_bytes[s] : 0, i == 3 ? pre_extract_bytes[s] : 0);
 				}
@@ -400,7 +400,7 @@ namespace PQnet.test {
 
 			// Offset 1	- 7 bytes from first ulong, 1 byte from last ulong
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(i == 0 ? pre_extract_bytes[s] : 0, i == 1 ? pre_extract_bytes[s] : 0, i == 2 ? pre_extract_bytes[s] : 0, i == 3 ? pre_extract_bytes[s] : 0);
 				}
@@ -422,7 +422,7 @@ namespace PQnet.test {
 
 			// Offset 5 - 3 bytes from first ulong, 5 bytes from last ulong
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(i == 0 ? pre_extract_bytes[s] : 0, i == 1 ? pre_extract_bytes[s] : 0, i == 2 ? pre_extract_bytes[s] : 0, i == 3 ? pre_extract_bytes[s] : 0);
 				}
@@ -444,7 +444,7 @@ namespace PQnet.test {
 
 			// Offset 5, length 59 - 3 bytes from first ulong, ends on ulong boundary
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(i == 0 ? pre_extract_bytes[s] : 0, i == 1 ? pre_extract_bytes[s] : 0, i == 2 ? pre_extract_bytes[s] : 0, i == 3 ? pre_extract_bytes[s] : 0);
 				}
@@ -466,7 +466,7 @@ namespace PQnet.test {
 
 			// Offset 8, length 61 - starts on ulong boundary, ends 3 bytes from end of ulong boundary
 			for (int i = 0; i < 4; i++) {
-				shake = new ShakeX4();
+				shake = new KeccakBaseX4();
 				for (int s = 0; s < 25; s++) {
 					shake.state[s] = Vector256.Create(i == 0 ? pre_extract_bytes[s] : 0, i == 1 ? pre_extract_bytes[s] : 0, i == 2 ? pre_extract_bytes[s] : 0, i == 3 ? pre_extract_bytes[s] : 0);
 				}
@@ -519,7 +519,7 @@ namespace PQnet.test {
 
 		[TestMethod]
 		public void TestFastBlockAbsorb() {
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 			byte[] test_data;
 			int offset;
 			int ret;
@@ -528,7 +528,7 @@ namespace PQnet.test {
 				Assert.Inconclusive("AVX2 not supported");
 			}
 
-			shake = new ShakeX4(136, 256, 0x1f);
+			shake = new KeccakBaseX4(136, 256, 0x1f);
 
 			offset = 0;
 			test_data = new byte[136 * 4];
@@ -559,7 +559,7 @@ namespace PQnet.test {
 			byte[] output2;
 			byte[] output3;
 			byte[] output4;
-			ShakeX4 shake;
+			KeccakBaseX4 shake;
 			int s;
 			byte[] expected1;
 			byte[] expected2;
@@ -571,7 +571,7 @@ namespace PQnet.test {
 				Assert.Inconclusive("AVX2 not supported");
 			}
 
-			shake = new ShakeX4(136, 256, 0x1f);
+			shake = new KeccakBaseX4(136, 256, 0x1f);
 
 			output1 = new byte[136];
 			output2 = new byte[136];
@@ -599,7 +599,7 @@ namespace PQnet.test {
 				s += 32;
 			}
 
-			shake.ExtractBytesAll(output1, output2, output3, output4);
+			shake.ExtractBytesAll(output1, output2, output3, output4, 0);
 
 
 			CollectionAssert.AreEqual(expected1, output1, "Output 1 did not match");

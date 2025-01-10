@@ -21,37 +21,46 @@
 // SOFTWARE.
 //
 
+using System.Diagnostics;
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		/// <summary>
-		/// Loads 4 lanes of the state with the interleaved data, and permutes the state.
+		/// Add <paramref name="length"/> bytes from <paramref name="interleaved_data"/> to the state.
 		/// </summary>
-		/// <param name="interleaved_data">The interleaved data to consume</param>
-		/// <param name="length">The number of bytes to consume from <paramref name="interleaved_data"/></param>
+		/// <param name="interleaved_data"></param>
+		/// <param name="interleaved_data_offset"></param>
+		/// <param name="length"></param>
 		/// <returns>The number of consumed bytes</returns>
 		/// <remarks>
-		/// The interleaved data is structured as follows:
-		/// A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
-		/// and then the next 32 bytes for the next set of instances, repeating <see cref="lane_count"/> times
+		/// This method should not be called if length is a whole block or more.
 		/// </remarks>
-		internal int Fast_Block_Absorb(byte[] interleaved_data, int length) {
-			if (lane_count == 21) {
-				// FIXME
-				return -1;
-			} else {
-				int processed_bytes;
-				int data_left;
+		internal int AddBytesAll(byte[] interleaved_data, int interleaved_data_offset, int length) {
+			Vector256<ulong> v;
+			int offset;
+			int lane;
 
-				processed_bytes = 0;
-				data_left = length;
-				while (data_left >= lane_count * parallelism * 8) {
-					processed_bytes += AddBlock(interleaved_data, processed_bytes, lane_count * parallelism * 8);
-					PermuteAll_24rounds();
-					data_left -= lane_count * parallelism * 8;
-				}
-				return processed_bytes;
+			offset = interleaved_data_offset;
+
+			Debug.Assert(length < 8 * parallelism * lane_count, "Should not call this method for a whole block");
+			Debug.Assert(length >= parallelism * length / 32, "Not enough data for a whole lane to process");
+
+			lane = 0;
+
+			// Interleaved data is 4 sets of 8 bytes each even if the input was partial
+			while (length > 0) {
+				// Load the 4 sets of ulong data
+				v = Vector256.LoadUnsafe(ref interleaved_data[offset]).AsUInt64();
+
+				state[lane] = Avx2.Xor(state[lane], v);
+				offset += parallelism * 8;    // 4 instances, 8 bytes each
+				lane++;
+				length -= 8;
 			}
-		}
 
+			return lane * 8 * 4;
+		}
 	}
 }

@@ -23,44 +23,72 @@
 
 namespace PQnet.Digest {
 	/// <summary>
-	/// Implementation of SHAKE-128 Hash Algorithm
+	/// Implementation of SHA3-384 Hash Algorithm
 	/// </summary>
-	public class Shake128 : KeccakBase {
+	public class Sha3_384 : KeccakBase {
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Shake128"/> class.
+		/// Initializes a new instance of the <see cref="Sha3_384"/> class.
 		/// </summary>
-		public Shake128() {
-			base.rate = Shake128Rate;
-			base.prefix = 0x1f;
+		public Sha3_384() {
+			base.rate = Sha3_384Rate;
+			base.prefix = 0x06;
 		}
 
 		/// <summary>
-		/// Compute the SHAKE-128 hash of the input data
+		/// Compute the SHA3-384 hash of the input data
 		/// </summary>
 		/// <param name="input">The data for which to compute the hash</param>
-		/// <param name="outlen">The desired length of the hash</param>
-		/// <returns>The SHAKE-128 hash for <paramref name="input"/></returns>
-		public static byte[] HashData(byte[] input, int outlen = Shake128Rate) {
-			Shake128 shake;
+		/// <returns>The SHA3-384 hash for <paramref name="input"/></returns>
+		public static byte[] ComputeHash(byte[] input) {
+			Sha3_384 shake;
 			byte[] result;
 			int blocks;
 
-
-			shake = new Shake128();
-			result = new byte[outlen];
+			shake = new Sha3_384();
+			result = new byte[48];
 
 			shake.AbsorbOnce(input, input.Length);
 
-			blocks = outlen / shake.rate;
+			blocks = 48 / shake.rate;
 			if (blocks > 0) {
 				int out_pos;
 
 				out_pos = shake.SqueezeBlocks(result, 0, blocks);
-				shake.Squeeze(result, out_pos, outlen - out_pos);
+				shake.Squeeze(result, out_pos, 48 - out_pos);
 				return result;
 			}
 
-			shake.Squeeze(result, 0, outlen);
+			shake.Squeeze(result, 0, 48);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Compute the SHA3-384 hash of the input data
+		/// </summary>
+		/// <param name="input">The data for which to compute the hash</param>
+		/// <param name="inlen">The number of bytes to absorb from <paramref name="input"/></param>
+		/// <returns>The SHA3-384 hash for <paramref name="input"/></returns>
+		public static byte[] ComputeHash(byte[] input, int inlen) {
+			Sha3_384 shake;
+			byte[] result;
+			int blocks;
+
+			shake = new Sha3_384();
+			result = new byte[48];
+
+			shake.AbsorbOnce(input, inlen);
+
+			blocks = 48 / shake.rate;
+			if (blocks > 0) {
+				int out_pos;
+
+				out_pos = shake.SqueezeBlocks(result, 0, blocks);
+				shake.Squeeze(result, out_pos, 48 - out_pos);
+				return result;
+			}
+
+			shake.Squeeze(result, 0, 48);
 
 			return result;
 		}

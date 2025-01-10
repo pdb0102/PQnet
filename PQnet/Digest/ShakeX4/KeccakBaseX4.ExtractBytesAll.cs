@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		/// <summary>
 		/// Retrieve all states for all lanes
 		/// </summary>
@@ -33,7 +33,8 @@ namespace PQnet.Digest {
 		/// <param name="output2">Buffer for output of the the second instance</param>
 		/// <param name="output3">Buffer for output of the the third instance</param>
 		/// <param name="output4">Buffer for output of the the fourth instance</param>
-		internal int ExtractBytesAll(byte[] output1, byte[] output2, byte[] output3, byte[] output4) {
+		/// <param name="output_offset">The offset into ouputx to start writing the extracted bytes</param>
+		internal int ExtractBytesAll(byte[] output1, byte[] output2, byte[] output3, byte[] output4, int output_offset) {
 			Span<byte> span1;
 			Span<byte> span2;
 			Span<byte> span3;
@@ -50,10 +51,10 @@ namespace PQnet.Digest {
 			span3 = output3.AsSpan();
 			span4 = output4.AsSpan();
 			for (int i = 0; i < lane_count; i++) {
-				Unsafe.WriteUnaligned(ref span1[i << 3], state[i][0]);
-				Unsafe.WriteUnaligned(ref span2[i << 3], state[i][1]);
-				Unsafe.WriteUnaligned(ref span3[i << 3], state[i][2]);
-				Unsafe.WriteUnaligned(ref span4[i << 3], state[i][3]);
+				Unsafe.WriteUnaligned(ref span1[output_offset + (i << 3)], state[i][0]);
+				Unsafe.WriteUnaligned(ref span2[output_offset + (i << 3)], state[i][1]);
+				Unsafe.WriteUnaligned(ref span3[output_offset + (i << 3)], state[i][2]);
+				Unsafe.WriteUnaligned(ref span4[output_offset + (i << 3)], state[i][3]);
 				output_length += 8;
 			}
 

@@ -27,11 +27,6 @@ namespace PQnet.Digest {
 	/// </summary>
 	public class Shake256 : KeccakBase {
 		/// <summary>
-		/// The rate of the SHAKE-256 algorithm
-		/// </summary>
-		public const int Shake256Rate = 136;
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="Shake256"/> class.
 		/// </summary>
 		public Shake256() {

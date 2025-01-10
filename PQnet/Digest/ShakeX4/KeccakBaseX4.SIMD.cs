@@ -21,25 +21,7 @@
 // SOFTWARE.
 //
 
-using System.Runtime.Intrinsics;
-using System.Runtime.Intrinsics.X86;
-
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
-		/// <summary>
-		/// Add (in GC(2), using bitwise exclusive OR) the byte <paramref name="data"/> to the state at <paramref name="state_offset"/>.
-		/// </summary>
-		/// <param name="data">The byte to consume</param>
-		/// <param name="state_offset">Offset, in bytes, within the state</param>
-		public void AddByteAll(int state_offset, byte data) {
-			int lane_position;
-			ulong consume;
-
-			lane_position = state_offset / 8;
-
-			consume = (ulong)data << ((state_offset & 7) << 3); // data << ((state_offset % 8) * 8)
-
-			state[lane_position] = Avx2.Xor(state[lane_position], Vector256.Create(consume, consume, consume, consume));
-		}
+	public partial class KeccakBaseX4 {
 	}
 }

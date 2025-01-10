@@ -25,44 +25,39 @@ namespace PQnet.Digest {
 	/// <summary>
 	/// Implementation of SHAKE-128 Hash Algorithm
 	/// </summary>
-	public class Shake128 : KeccakBase {
+	public class Shake256x4 : KeccakBaseX4 {
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Shake128"/> class.
+		/// Initializes a new instance of the <see cref="Shake256x4"/> class.
 		/// </summary>
-		public Shake128() {
-			base.rate = Shake128Rate;
-			base.prefix = 0x1f;
+		public Shake256x4() : base(Shake256Rate, 256, 0x1f) {
 		}
 
 		/// <summary>
-		/// Compute the SHAKE-128 hash of the input data
+		/// Calculate 4 SHAKE256 hashes in parallel.
 		/// </summary>
-		/// <param name="input">The data for which to compute the hash</param>
+		/// <param name="input1">The data to digest for hash 1</param>
+		/// <param name="input2">The data to digest for hash 2</param>
+		/// <param name="input3">The data to digest for hash 3</param>
+		/// <param name="input4">The data to digest for hash 4</param>
 		/// <param name="outlen">The desired length of the hash</param>
-		/// <returns>The SHAKE-128 hash for <paramref name="input"/></returns>
-		public static byte[] HashData(byte[] input, int outlen = Shake128Rate) {
-			Shake128 shake;
-			byte[] result;
-			int blocks;
+		/// <returns>Tuple with four SHAKE-128 hashes for <paramref name="input1"/>, <paramref name="input2"/>, <paramref name="input3"/> and <paramref name="input4"/></returns>
+		public static Tuple<byte[], byte[], byte[], byte[]> HashData(byte[] input1, byte[] input2, byte[] input3, byte[] input4, int outlen = 136) {
+			KeccakBaseX4 shake;
+			byte[] output1;
+			byte[] output2;
+			byte[] output3;
+			byte[] output4;
 
+			shake = new KeccakBaseX4(KeccakBaseX4.Shake256Rate, 256, 0x1F);
 
-			shake = new Shake128();
-			result = new byte[outlen];
+			output1 = new byte[outlen];
+			output2 = new byte[outlen];
+			output3 = new byte[outlen];
+			output4 = new byte[outlen];
 
-			shake.AbsorbOnce(input, input.Length);
+			shake.Sponge(input1, input2, input3, input4, output1, output2, output3, output4, outlen);
 
-			blocks = outlen / shake.rate;
-			if (blocks > 0) {
-				int out_pos;
-
-				out_pos = shake.SqueezeBlocks(result, 0, blocks);
-				shake.Squeeze(result, out_pos, outlen - out_pos);
-				return result;
-			}
-
-			shake.Squeeze(result, 0, outlen);
-
-			return result;
+			return new Tuple<byte[], byte[], byte[], byte[]>(output1, output2, output3, output4);
 		}
 	}
 }

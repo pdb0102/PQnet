@@ -24,7 +24,7 @@
 using System.Runtime.CompilerServices;
 
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		internal void ExtractBytes(int instance, int state_offset, byte[] output, int output_offset, int length) {
 			int lane_position;
 			int output_index;

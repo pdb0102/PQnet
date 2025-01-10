@@ -21,41 +21,37 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
-using System.Runtime.Intrinsics;
-using System.Runtime.Intrinsics.X86;
-
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		/// <summary>
-		/// Add (in GC(2), using bitwise exclusive OR) the bytes of <paramref name="interleaved_data"/> to the state for all instances for <paramref name="length"/> bytes.
+		/// Loads 4 lanes of the state with the interleaved data, and permutes the state.
 		/// </summary>
 		/// <param name="interleaved_data">The interleaved data to consume</param>
-		/// <param name="interleaved_data_offset">The offset, in bytes, from the start of <paramref name="interleaved_data"/> to start consuming bytes</param>
-		/// <param name="length">The number of bytes of <paramref name="interleaved_data"/> to consume.</param>
-		/// <returns>The number of bytes processed</returns>
+		/// <param name="length">The number of bytes to consume from <paramref name="interleaved_data"/></param>
+		/// <returns>The number of consumed bytes</returns>
 		/// <remarks>
 		/// The interleaved data is structured as follows:
 		/// A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
 		/// and then the next 32 bytes for the next set of instances, repeating <see cref="lane_count"/> times
 		/// </remarks>
-		public int AddBlock(byte[] interleaved_data, int interleaved_data_offset, int length) {
-			Vector256<ulong> v;
-			int offset;
+		internal int Fast_Block_Absorb(byte[] interleaved_data, int length) {
+			if (lane_count == 21) {
+				// FIXME
+				return -1;
+			} else {
+				int processed_bytes;
+				int data_left;
 
-			offset = interleaved_data_offset;
-
-			Debug.Assert(length >= 8 * parallelism * lane_count, "Not enough data for a whole block to process");
-
-			for (int i = 0; i < lane_count; i++) {
-				// Load the 4 sets of ulong data
-				v = Vector256.LoadUnsafe(ref interleaved_data[offset]).AsUInt64();
-
-				state[i] = Avx2.Xor(state[i], v);
-				offset += parallelism * 8;    // 4 instances, 8 bytes each
+				processed_bytes = 0;
+				data_left = length;
+				while (data_left >= lane_count * parallelism * 8) {
+					processed_bytes += AddBlock(interleaved_data, processed_bytes, lane_count * parallelism * 8);
+					PermuteAll_24rounds();
+					data_left -= lane_count * parallelism * 8;
+				}
+				return processed_bytes;
 			}
-
-			return 8 * parallelism * lane_count;
 		}
+
 	}
 }

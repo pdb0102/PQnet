@@ -30,7 +30,7 @@ namespace PQnet.Digest {
 		/// Initializes a new instance of the <see cref="Sha3_256"/> class.
 		/// </summary>
 		public Sha3_256() {
-			base.rate = 136;
+			base.rate = Sha3_256Rate;
 			base.prefix = 0x06;
 		}
 
@@ -43,25 +43,22 @@ namespace PQnet.Digest {
 			Sha3_256 shake;
 			byte[] result;
 			int blocks;
-			int outlen;
-
-			outlen = 32;
 
 			shake = new Sha3_256();
-			result = new byte[outlen];
+			result = new byte[32];
 
 			shake.AbsorbOnce(input, input.Length);
 
-			blocks = outlen / shake.rate;
+			blocks = 32 / shake.rate;
 			if (blocks > 0) {
 				int out_pos;
 
 				out_pos = shake.SqueezeBlocks(result, 0, blocks);
-				shake.Squeeze(result, out_pos, outlen - out_pos);
+				shake.Squeeze(result, out_pos, 32 - out_pos);
 				return result;
 			}
 
-			shake.Squeeze(result, 0, outlen);
+			shake.Squeeze(result, 0, 32);
 
 			return result;
 		}
@@ -76,25 +73,22 @@ namespace PQnet.Digest {
 			Sha3_256 shake;
 			byte[] result;
 			int blocks;
-			int outlen;
-
-			outlen = 32;
 
 			shake = new Sha3_256();
-			result = new byte[outlen];
+			result = new byte[32];
 
 			shake.AbsorbOnce(input, inlen);
 
-			blocks = outlen / shake.rate;
+			blocks = 32 / shake.rate;
 			if (blocks > 0) {
 				int out_pos;
 
 				out_pos = shake.SqueezeBlocks(result, 0, blocks);
-				shake.Squeeze(result, out_pos, outlen - out_pos);
+				shake.Squeeze(result, out_pos, 32 - out_pos);
 				return result;
 			}
 
-			shake.Squeeze(result, 0, outlen);
+			shake.Squeeze(result, 0, 32);
 
 			return result;
 		}

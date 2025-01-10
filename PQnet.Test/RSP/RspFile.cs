@@ -78,13 +78,14 @@ namespace PQnet.test {
 
 		private static Regex min_regex = new Regex(@"\[Minimum Output Length \(bits\)\s*=\s*(?<val>\d*)\]", RegexOptions.Multiline | RegexOptions.Compiled);
 		private static Regex max_regex = new Regex(@"\[Maximum Output Length \(bits\)\s*=\s*(?<val>\d*)\]", RegexOptions.Multiline | RegexOptions.Compiled);
-		private static Regex msg_regex = new Regex(@"Msg\s=\s(?<msg>[a-zA-Z0-9]*)", RegexOptions.Multiline | RegexOptions.Compiled);
-		private static Regex counts_regex = new Regex(@"COUNT\s*=\s*(?<count>\d*).*Outputlen\s*=\s*(?<outlen>\d*).*Output\s*=\s*(?<output>[a-fA-F0-9]*)", RegexOptions.Compiled);
+		private static Regex msg_regex = new Regex(@"(Msg|Seed)\s=\s(?<msg>[a-zA-Z0-9]*)", RegexOptions.Multiline | RegexOptions.Compiled);
+		private static Regex counts_regex = new Regex(@"COUNT\s*=\s*(?<count>\d*).*(Outputlen\s*=\s*(?<outlen>\d*).*Output\s*=\s*(?<output>[a-fA-F0-9]*)|MD\s*=\s*(?<output>[a-fA-F0-9]*))", RegexOptions.Compiled);
 		public static MonteCarlo LoadMonteCarlo(string resource) {
 			byte[] file_data;
 			string file_text;
 			MonteCarlo result;
 			MatchCollection matches;
+			Match m;
 
 			file_data = Utilities.LoadFile(resource);
 			file_text = Encoding.ASCII.GetString(file_data);
@@ -92,9 +93,18 @@ namespace PQnet.test {
 
 			result = new MonteCarlo();
 
-			result.MininumLength = int.Parse(min_regex.Match(file_text).Groups["val"].Value);
-			result.MaximumLength = int.Parse(max_regex.Match(file_text).Groups["val"].Value);
-			result.Msg = msg_regex.Match(file_text).Groups["msg"].Value;
+			m = min_regex.Match(file_text);
+			if (m.Success) {
+				result.MininumLength = int.Parse(m.Groups["val"].Value);
+			}
+			m = max_regex.Match(file_text);
+			if (m.Success) {
+				result.MaximumLength = int.Parse(m.Groups["val"].Value);
+			}
+			m = msg_regex.Match(file_text);
+			if (m.Success) {
+				result.Msg = m.Groups["msg"].Value;
+			}
 
 			// Horrible, but I'm lazy and it's only a test
 			file_text = file_text.Replace('\n', ' ').Replace('\r', ' ').Replace("COUNT", "\r\nCOUNT");
@@ -103,7 +113,7 @@ namespace PQnet.test {
 			foreach (Match match in matches) {
 				result.Counts.Add(new MonteCarlo.CountEntry(
 					int.Parse(match.Groups["count"].Value),
-					int.Parse(match.Groups["outlen"].Value),
+					int.Parse(match.Groups["outlen"].Success ? match.Groups["outlen"].Value : "0"),
 					match.Groups["output"].Value
 				));
 			}
@@ -111,8 +121,8 @@ namespace PQnet.test {
 			return result;
 		}
 
-		private static Regex output_len_regex = new Regex(@"\[Outputlen\s*=\s*(?<val>\d*)\]", RegexOptions.Multiline | RegexOptions.Compiled);
-		private static Regex test_regex = new Regex(@"Len\s*=\s*(?<len>\d*).*Msg\s*=\s*(?<msg>[a-fA-F0-9]*).*Output\s*=\s*(?<output>[a-fA-F0-9]*)", RegexOptions.Compiled);
+		private static Regex output_len_regex = new Regex(@"\[(Outputlen|L)\s*=\s*(?<val>\d*)\]", RegexOptions.Multiline | RegexOptions.Compiled);
+		private static Regex test_regex = new Regex(@"Len\s*=\s*(?<len>\d*).*Msg\s*=\s*(?<msg>[a-fA-F0-9]*).*(Output|MD)\s*=\s*(?<output>[a-fA-F0-9]*)", RegexOptions.Compiled);
 		public static Hash LoadHash(string resource) {
 			byte[] file_data;
 			string file_text;

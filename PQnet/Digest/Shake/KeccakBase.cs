@@ -35,6 +35,37 @@ namespace PQnet.Digest {
 
 		private const int TotalRounds = 24;
 
+		/// <summary>
+		/// The SHAKE-128 lane size in bytes.
+		/// </summary>
+		public const int Shake128Rate = 168;
+
+		/// <summary>
+		/// The SHAKE-256 lane size in bytes.
+		/// </summary>
+		public const int Shake256Rate = 136;
+
+		/// <summary>
+		/// The SHA3-224 lane size in bytes.
+		/// </summary>
+		public const int Sha3_224Rate = 144;
+
+		/// <summary>
+		/// The SHA3-256 lane size in bytes.
+		/// </summary>
+		public const int Sha3_256Rate = 136;
+
+		/// <summary>
+		/// The SHA3-384 lane size in bytes.
+		/// </summary>
+		public const int Sha3_384Rate = 104;
+
+		/// <summary>
+		/// The SHA3-512 lane size in bytes.
+		/// </summary>
+		public const int Sha3_512Rate = 72;
+
+
 		/* Keccak round constants */
 		private static readonly ulong[] KeccakF_RoundConstants = new ulong[]{
 			0x0000000000000001UL, 0x0000000000008082UL, 0x800000000000808aUL, 0x8000000080008000UL,
@@ -75,7 +106,7 @@ namespace PQnet.Digest {
 		/// <summary>
 		/// Perform the Keccak F1600 permutation on the state
 		/// </summary>
-		protected void StatePermute() {
+		public void StatePermute() {
 			ulong Aba, Abe, Abi, Abo, Abu;
 			ulong Aga, Age, Agi, Ago, Agu;
 			ulong Aka, Ake, Aki, Ako, Aku;

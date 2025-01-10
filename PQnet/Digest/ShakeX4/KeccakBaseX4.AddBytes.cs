@@ -25,7 +25,7 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		/// <summary>
 		/// Add (in GC(2), using bitwise exclusive OR) the bytes of <paramref name="data"/> to the state at <paramref name="state_offset"/> for <paramref name="length"/> bytes.
 		/// </summary>

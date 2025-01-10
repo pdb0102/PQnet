@@ -24,7 +24,7 @@
 using System.Runtime.Intrinsics;
 
 namespace PQnet.Digest {
-	public partial class ShakeX4 {
+	public partial class KeccakBaseX4 {
 		private const int parallelism = 4;
 		private const int width = 1600;
 		private const int lane_size = 8;    // bytes, sizeof(ulong)
@@ -41,7 +41,7 @@ namespace PQnet.Digest {
 		private byte suffix;
 		internal Vector256<ulong>[] state;  // internal for testing
 
-		internal ShakeX4() {
+		internal KeccakBaseX4() {
 			state = new Vector256<ulong>[25];
 
 			for (int i = 0; i < 25; i++) {
@@ -55,7 +55,7 @@ namespace PQnet.Digest {
 			}
 		}
 
-		internal ShakeX4(int rate_in_bytes, int security, byte suffix) : this() {
+		internal KeccakBaseX4(int rate_in_bytes, int security, byte suffix) : this() {
 			this.rate_in_bytes = rate_in_bytes;
 			this.security = security;
 			this.suffix = suffix;
@@ -69,14 +69,22 @@ namespace PQnet.Digest {
 			this.capacity_in_lanes = capacity_in_bytes / lane_size;
 		}
 
-		internal bool Sponge(byte[] input1, byte[] input2, byte[] input3, byte[] input4, byte[] output1, byte[] output2, byte[] output3, byte[] output4, int output_length) {
+		internal bool Sponge(byte[] input1, byte[] input2, byte[] input3, byte[] input4, byte[] output1, byte[] output2, byte[] output3, byte[] output4, int output_length, int input_length = -1) {
 			byte[] interleaved_data;
 			int input_consumed;
 			int input_left;
 			int processed;
 			int output_index;
 
-			if (input1.Length != input2.Length || input1.Length != input3.Length || input1.Length != input4.Length) {
+			if (input_length == -1) {
+				input_length = input1.Length;
+			} else {
+				if (input_length > input1.Length) {
+					return false;
+				}
+			}
+
+			if (input_length > input2.Length || input_length > input3.Length || input_length > input4.Length) {
 				return false;
 			}
 
@@ -92,11 +100,11 @@ namespace PQnet.Digest {
 			}
 
 			input_consumed = 0;
-			input_left = input1.Length;
+			input_left = input_length;
 
-			interleaved_data = CombineArrays(input1, input2, input3, input4);
+			interleaved_data = InterleaveArrays(input1, input2, input3, input4, input_length);
 
-			if (((rate_in_bytes % (width / 200)) == 0) && (input1.Length >= rate_in_bytes)) {
+			if (((rate_in_bytes % (width / 200)) == 0) && (input_length >= rate_in_bytes)) {
 				// Fast path
 				processed = Fast_Block_Absorb(interleaved_data, interleaved_data.Length);
 				input_left -= processed;
@@ -129,7 +137,7 @@ namespace PQnet.Digest {
 			output_index = 0;
 
 			while (output_length > rate_in_bytes) {
-				output_index += ExtractBytesAll(output1, output2, output3, output4);
+				output_index += ExtractBytesAll(output1, output2, output3, output4, output_index);
 				PermuteAll_24rounds();
 				output_length -= rate_in_bytes;
 			}
@@ -144,7 +152,17 @@ namespace PQnet.Digest {
 			return true;
 		}
 
-		private static byte[] CombineArrays(byte[] input1, byte[] input2, byte[] input3, byte[] input4) {
+
+		/// <summary>
+		/// Interleave four byte arrays into a single one for use by <see cref="KeccakBaseX4"/>
+		/// </summary>
+		/// <param name="input1">The first array</param>
+		/// <param name="input2">The second array</param>
+		/// <param name="input3">The third array</param>
+		/// <param name="input4">The fourth array</param>
+		/// <param name="input_length">The maximum bytes to take from the input</param>
+		/// <returns>An interleaved array, with 8 bytes from the first input, 8 from the second, third and fourth, then the next 8 bytes from the first, and so on</returns>
+		public static byte[] InterleaveArrays(byte[] input1, byte[] input2, byte[] input3, byte[] input4, int input_length = -1) {
 			Span<byte> temp = stackalloc byte[16];
 			Span<byte> span1;
 			Span<byte> span2;
@@ -165,7 +183,12 @@ namespace PQnet.Digest {
 			byte[] result;
 
 
-			maxLength = Math.Max(Math.Max(input1.Length, input2.Length), Math.Max(input3.Length, input4.Length));
+			if (input_length == -1) {
+				maxLength = Math.Max(Math.Max(input1.Length, input2.Length), Math.Max(input3.Length, input4.Length));
+			} else {
+				maxLength = Math.Min(input_length, Math.Max(Math.Max(input1.Length, input2.Length), Math.Max(input3.Length, input4.Length)));
+			}
+
 			paddedLength = (maxLength + 7) & ~7; // Round up to the nearest multiple of 8
 			totalLength = paddedLength * 4;
 			result = new byte[totalLength];
