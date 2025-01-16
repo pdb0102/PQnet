@@ -33,7 +33,7 @@ namespace PQnet.Digest {
 		/// <param name="interleaved_data">The interleaved data to consume</param>
 		/// <param name="interleaved_data_offset">The offset, in bytes, from the start of <paramref name="interleaved_data"/> to start consuming bytes</param>
 		/// <param name="length">The number of bytes of <paramref name="interleaved_data"/> to consume.</param>
-		/// <returns>The number of bytes processed</returns>
+		/// <returns>The number of bytes processed from <paramref name="interleaved_data"/></returns>
 		/// <remarks>
 		/// The interleaved data is structured as follows:
 		/// A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
@@ -55,7 +55,7 @@ namespace PQnet.Digest {
 				offset += parallelism * 8;    // 4 instances, 8 bytes each
 			}
 
-			return 8 * parallelism * lane_count;
+			return 8 * lane_count * parallelism;
 		}
 	}
 }

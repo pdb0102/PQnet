@@ -327,7 +327,7 @@
             <param name="interleaved_data">The interleaved data to consume</param>
             <param name="interleaved_data_offset">The offset, in bytes, from the start of <paramref name="interleaved_data"/> to start consuming bytes</param>
             <param name="length">The number of bytes of <paramref name="interleaved_data"/> to consume.</param>
-            <returns>The number of bytes processed</returns>
+            <returns>The number of bytes processed from <paramref name="interleaved_data"/></returns>
             <remarks>
             The interleaved data is structured as follows:
             A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
@@ -421,7 +421,7 @@
             </summary>
             <param name="interleaved_data">The interleaved data to consume</param>
             <param name="length">The number of bytes to consume from <paramref name="interleaved_data"/></param>
-            <returns>The number of consumed bytes</returns>
+            <returns>The number of consumed bytes per lane</returns>
             <remarks>
             The interleaved data is structured as follows:
             A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 

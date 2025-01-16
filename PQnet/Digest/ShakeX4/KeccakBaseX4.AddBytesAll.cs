@@ -60,7 +60,7 @@ namespace PQnet.Digest {
 				length -= 8;
 			}
 
-			return lane * 8 * 4;
+			return lane * 8 * parallelism;
 		}
 	}
 }

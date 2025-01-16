@@ -21,7 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace PQnet.Digest {
@@ -41,8 +40,18 @@ namespace PQnet.Digest {
 			Span<byte> span4;
 			int output_length;
 
-			Debug.Assert(output1.Length >= rate_in_bytes, "Output array too small");
-			Debug.Assert((output1.Length == output2.Length) && (output1.Length == output3.Length) && (output1.Length == output3.Length), "Output arrays not same size");
+			if (output_offset + rate_in_bytes > output1.Length) {
+				throw new ArgumentException("Output array 1 too small", nameof(output1));
+			}
+			if (output_offset + rate_in_bytes > output2.Length) {
+				throw new ArgumentException("Output array 2 too small", nameof(output2));
+			}
+			if (output_offset + rate_in_bytes > output3.Length) {
+				throw new ArgumentException("Output array 3 too small", nameof(output3));
+			}
+			if (output_offset + rate_in_bytes > output4.Length) {
+				throw new ArgumentException("Output array 4 too small", nameof(output4));
+			}
 
 			output_length = 0;
 

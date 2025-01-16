@@ -1,141 +1,177 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System.Diagnostics;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-
+﻿using PQnet;
 using PQnet.Digest;
 
-using TestApp;
 
-void Shake128NistMonteCarloVectors() {
-	Shake128 shake128;
-	string msg_txt;
-	byte[] msg;
-	byte[] output;
-	byte[] reference;
-	int len;
-	int outlen;
-	int max_outlen;
-	int min_outlen;
-	int range;
+namespace TestApp {
+	class Program {
+		static void Main(string[] args) {
+			byte[] seed;
+			byte[] meh;
+			byte[][] shake_out;
+			byte[][] po;
+			byte[] final_single;
+			byte[] final_x4;
+			KeccakBase[] shake_base;
+			KeccakBase shake_final;
+			KeccakBaseX4 shake_parallel_base;
 
-	msg_txt = "c8b310cb97efa3855434998fa81c7674";
-	min_outlen = 128 / 8;
-	max_outlen = 1120 / 8;
 
-	shake128 = new Shake128();
+			bool use_256 = false;
+			int absorb_length = 1000;
+			int squeeze_length = 1000;
+			int iterations = 2;
 
-	output = new byte[256];
-	reference = new byte[256];
+			Rng.randombytes(out seed, absorb_length);
+			seed = new byte[absorb_length];
 
-	msg = msg_txt.HexToBytes();
-	Array.Copy(msg, output, msg.Length);
+			meh = new byte[Math.Max(absorb_length, squeeze_length)];
 
-	outlen = max_outlen;
-	range = max_outlen - min_outlen + 1;
-
-	for (int j = 0; j < 100; j++) {
-		for (int i = 1; i < 1001; i++) {
-			len = outlen;
-
-			shake128.Init();
-			shake128.AbsorbOnce(output, 16);
-			shake128.Squeeze(output, 0, len);
-			if (len < 16) {
-				Array.Fill(output, (byte)0, 16 - len, len - 16);
+			if (!use_256) {
+				shake_out = new byte[4][];
+				po = new byte[4][];
+				shake_base = new Shake128[4];
+				shake_final = new Shake128();
+				for (int i = 0; i < 4; i++) {
+					shake_base[i] = new Shake128();
+					shake_out[i] = new byte[squeeze_length];
+					po[i] = new byte[squeeze_length];
+				}
+				shake_parallel_base = new Shake128x4();
+			} else {
+				shake_out = new byte[4][];
+				po = new byte[4][];
+				shake_base = new Shake256[4];
+				shake_final = new Shake256();
+				for (int i = 0; i < 4; i++) {
+					shake_base[i] = new Shake256();
+					shake_out[i] = new byte[squeeze_length];
+					po[i] = new byte[squeeze_length];
+				}
+				shake_parallel_base = new Shake256x4();
 			}
-			outlen = min_outlen + (((output[len - 2] << 8) + output[len - 1]) % range);
-			Console.WriteLine($"loop = {i}\nOutputlen = {len * 8}\nOutput = {output.ToHexString(0, len)}");
+
+			for (int i = 0; i < iterations; i++) {
+				shake_base[0].Init();
+				shake_base[0].Absorb(i == 0 ? seed : shake_out[3], absorb_length);
+				shake_base[0].FinalizeAbsorb();
+				shake_base[0].Squeeze(shake_out[0], 0, squeeze_length);
+				shake_base[1].Init();
+				shake_base[1].Absorb(shake_out[0], absorb_length);
+				shake_base[1].FinalizeAbsorb();
+				shake_base[1].Squeeze(shake_out[1], 0, squeeze_length);
+				shake_base[2].Init();
+				shake_base[2].Absorb(shake_out[1], absorb_length);
+				shake_base[2].FinalizeAbsorb();
+				shake_base[2].Squeeze(shake_out[2], 0, squeeze_length);
+				shake_base[3].Init();
+				shake_base[3].Absorb(shake_out[2], absorb_length);
+				shake_base[3].FinalizeAbsorb();
+				shake_base[3].Squeeze(shake_out[3], 0, squeeze_length);
+			}
+
+			shake_final.Absorb(shake_out[0], squeeze_length);
+			shake_final.Absorb(shake_out[1], squeeze_length);
+			shake_final.Absorb(shake_out[2], squeeze_length);
+			shake_final.Absorb(shake_out[3], squeeze_length);
+			shake_final.FinalizeAbsorb();
+
+			final_single = new byte[squeeze_length];
+			shake_final.Squeeze(final_single, 0, squeeze_length);
+
+			for (int i = 0; i < iterations; i++) {
+				shake_parallel_base.Reset();
+				shake_parallel_base.Sponge(i == 0 ? seed : po[3], seed, seed, seed, po[0], meh, meh, meh, squeeze_length, absorb_length);
+
+#if DEBUG
+				Console.WriteLine("First squeeze comparison:");
+				for (int x = 0; x < shake_base[0].states.Count; x++) {
+					if (shake_parallel_base.states0.Count <= x) {
+						continue;
+					}
+					if (!Shake256.CompareStates(shake_base[0].states[x], shake_parallel_base.states0[x])) {
+						Console.WriteLine($"States differ at {x}");
+					}
+				}
+#endif
+				shake_parallel_base.Reset();
+				shake_parallel_base.Sponge(seed, po[0], seed, seed, meh, po[1], meh, meh, squeeze_length, absorb_length);
+
+#if DEBUG
+				Console.WriteLine("Second squeeze comparison:");
+				for (int x = 0; x < shake_base[1].states.Count; x++) {
+					if (shake_parallel_base.states1.Count <= x) {
+						Console.WriteLine($"Skipping state {x}");
+						continue;
+					}
+					if (!Shake256.CompareStates(shake_base[1].states[x], shake_parallel_base.states1[x])) {
+						Console.WriteLine($"States differ at {x}");
+					}
+				}
+#endif
+
+				shake_parallel_base.Reset();
+				shake_parallel_base.Sponge(seed, seed, po[1], seed, meh, meh, po[2], meh, squeeze_length, absorb_length);
+
+#if DEBUG
+				Console.WriteLine("Third squeeze comparison:");
+				for (int x = 0; x < shake_base[2].states.Count; x++) {
+					if (shake_parallel_base.states2.Count <= x) {
+						Console.WriteLine($"Skipping state {x}");
+						continue;
+					}
+					if (!Shake256.CompareStates(shake_base[2].states[x], shake_parallel_base.states2[x])) {
+						Console.WriteLine($"States differ at {x}");
+					}
+				}
+#endif
+
+				shake_parallel_base.Reset();
+				shake_parallel_base.Sponge(seed, seed, seed, po[2], meh, meh, meh, po[3], squeeze_length, absorb_length);
+
+#if DEBUG
+				Console.WriteLine("Fourth squeeze comparison:");
+				for (int x = 0; x < shake_base[3].states.Count; x++) {
+					if (shake_parallel_base.states0.Count <= x) {
+						Console.WriteLine($"Skipping state {x}");
+						continue;
+					}
+					if (!Shake256.CompareStates(shake_base[3].states[x], shake_parallel_base.states3[x])) {
+						Console.WriteLine($"States differ at {x}");
+					}
+				}
+#endif
+				shake_parallel_base.Reset();
+			}
+
+			shake_parallel_base.Reset();
+			final_x4 = new byte[squeeze_length * 4];
+			meh = new byte[squeeze_length * 4];
+			Array.Copy(po[0], 0, final_x4, 0, squeeze_length);
+			Array.Copy(po[1], 0, final_x4, squeeze_length, squeeze_length);
+			Array.Copy(po[2], 0, final_x4, squeeze_length * 2, squeeze_length);
+			Array.Copy(po[3], 0, final_x4, squeeze_length * 3, squeeze_length);
+
+			shake_parallel_base.Sponge(final_x4, meh, meh, meh, final_x4, meh, meh, meh, squeeze_length, squeeze_length * 4);
+
+#if DEBUG
+			Console.WriteLine("Final squeeze comparison:");
+			for (int x = 0; x < shake_final.states.Count; x++) {
+				if (shake_parallel_base.states0.Count <= x) {
+					Console.WriteLine($"Skipping state {x}");
+					continue;
+				}
+				if (!Shake256.CompareStates(shake_final.states[x], shake_parallel_base.states0[x])) {
+					Console.WriteLine($"States differ at {x}");
+				}
+			}
+#endif
+
+			for (int i = 0; i < squeeze_length; i++) {
+				if (final_single[i] != final_x4[i]) {
+					Console.WriteLine($"Mismatch at {i}");
+					break;
+				}
+			}
 		}
 	}
-
-
 }
-
-Shake128NistMonteCarloVectors();
-Console.WriteLine($"Supported: {Avx2.X64.IsSupported}");
-
-byte[] test;
-test = Encoding.ASCII.GetBytes("test");
-Tuple<byte[], byte[], byte[], byte[]> hash;
-
-byte[] ss = Sha3_512.ComputeHash(test);
-byte[] old;
-old = PQnet.Digest.Sha3_512.ComputeHash(test, 4);
-
-Stopwatch timer;
-
-timer = Stopwatch.StartNew();
-hash = Shake256x4.HashData(test, test, test, test, 64);
-timer.Stop();
-Console.WriteLine($"Shake256 x 4: {timer.ElapsedTicks} ticks");
-
-timer = Stopwatch.StartNew();
-hash = Shake256x4.HashData(test, test, test, test, 64);
-timer.Stop();
-Console.WriteLine($"Shake256 x 4: {timer.ElapsedTicks} ticks");
-
-timer = Stopwatch.StartNew();
-hash = Shake256x4.HashData(test, test, test, test, 64);
-timer.Stop();
-Console.WriteLine($"Shake256 x 4: {timer.ElapsedTicks} ticks");
-
-byte[] fips;
-
-#if not
-fips = new byte[64];
-PQnet.Digest.Shake.shake256(fips, 64, test, 4);
-ShakeX4 shake;
-byte[] data1 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
-byte[] data2 = { 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-byte[] data3 = { 3, 3, 3, 3, 3, 3, 3, 3, 3 };
-byte[] data4 = { 4, 4, 4, 4, 4, 4, 4, 4, 4 };
-
-Vector256<byte> b = Vector256.LoadUnsafe(ref data1[0]);
-string code = GenerateKeccak.GenerateRounds24();
-code = GenerateKeccak.GenerateProcessFullLane();
-
-shake = new ShakeX4();
-
-shake.PermuteAll_24rounds();
-
-#if not
-state = new Sha256Parallel8.SHA256state();
-Sha256Parallel8.sha256_init8x(state);
-
-byte[] message;
-byte[] in0;
-byte[] in1;
-byte[] in2;
-byte[] in3;
-byte[] in4;
-byte[] in5;
-byte[] in6;
-byte[] in7;
-
-in0 = Encoding.UTF8.GetBytes("1234");
-in1 = in0;
-in2 = in0;
-in3 = in0;
-in4 = in0;
-in5 = in0;
-in6 = in0;
-in7 = in0;
-
-byte[] out0;
-byte[] out1;
-byte[] out2;
-byte[] out3;
-byte[] out4;
-byte[] out5;
-byte[] out6;
-byte[] out7;
-
-Sha256Parallel8.perform_sha256x8(out out0, out out1, out out2, out out3, out out4, out out5, out out6, out out7, in0, in1, in2, in3, in4, in5, in6, in7);
-
-Console.WriteLine($"Out0: {out0.ToHexString()}");
-Console.WriteLine($"SHA2: {SHA256.Create().ComputeHash(in0).ToHexString()}");
-
-
-#endif
-#endif

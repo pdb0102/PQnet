@@ -81,6 +81,11 @@ namespace PQnet.Digest {
 		/// </summary>
 		protected ulong[] state;
 
+#if DEBUG
+		internal List<ulong[]> states = new List<ulong[]>();
+#endif
+
+
 		/// <summary>
 		/// Position in current block
 		/// </summary>
@@ -119,7 +124,10 @@ namespace PQnet.Digest {
 			ulong Eka, Eke, Eki, Eko, Eku;
 			ulong Ema, Eme, Emi, Emo, Emu;
 			ulong Esa, Ese, Esi, Eso, Esu;
-
+#if DEBUG
+			DumpState(out ulong[] dump_state);
+			states.Add(dump_state);
+#endif
 			Aba = state[0];
 			Abe = state[1];
 			Abi = state[2];
@@ -534,6 +542,30 @@ namespace PQnet.Digest {
 
 			Squeeze(out_buf, 0, outlen);
 		}
+
+#if DEBUG
+		internal void DumpState(out ulong[] dump_states) {
+			dump_states = new ulong[25];
+
+			for (int i = 0; i < 25; i++) {
+				dump_states[i] = state[i];
+			}
+		}
+
+		internal static bool CompareStates(ulong[] state1, ulong[] state2) {
+			bool ret;
+
+			ret = true;
+			for (int i = 0; i < 25; i++) {
+				if (state1[i] != state2[i]) {
+					Console.WriteLine($"State[0x{i:x}] mismatch: {state1[i]:X16} != {state2[i]:X16}");
+					ret = false;
+				}
+			}
+			return ret;
+		}
+#endif
+
 
 	}
 }

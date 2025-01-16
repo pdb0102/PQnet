@@ -252,10 +252,10 @@ namespace PQnet.test {
 		[DataRow(256, null, DisplayName = "SHA3-256 Parallel")]
 		[DataRow(384, null, DisplayName = "SHA3-384 Parallel")]
 		[DataRow(512, null, DisplayName = "SHA3-512 Parallel")]
-		[DataRow(224, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f", DisplayName = "SHA3-224 Parallel seeded")]
-		[DataRow(256, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f", DisplayName = "SHA3-256 Parallel seeded")]
-		[DataRow(384, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f", DisplayName = "SHA3-384 Parallel seeded")]
-		[DataRow(512, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f", DisplayName = "SHA3-512 Parallel seeded")]
+		[DataRow(224, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d", DisplayName = "SHA3-224 Parallel seeded")]
+		[DataRow(256, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102", DisplayName = "SHA3-256 Parallel seeded")]
+		[DataRow(384, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f01020102030405060708090a0b0c0d0e0f10", DisplayName = "SHA3-384 Parallel seeded")]
+		[DataRow(512, "0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f01020102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102", DisplayName = "SHA3-512 Parallel seeded")]
 		public void Sha3_256_VS_Parallel_StaticAPI(int size, string seed_string) {
 			byte[] one;
 			byte[] two;
@@ -312,24 +312,36 @@ namespace PQnet.test {
 		}
 
 		[TestMethod]
-		[DataRow(true, 100, 2000, 1, DisplayName = "SHAKE128 Parallel 1 Iteration")]
+		[DataRow(false, 100, 2000, 1, DisplayName = "SHAKE128 Parallel 100 in, 2000 out, 1 Iteration")]
+		[DataRow(false, 100, 2000, 10, DisplayName = "SHAKE128 Parallel 100 in, 2000 out, 10 Iterations")]
+		[DataRow(true, 100, 2000, 1, DisplayName = "SHAKE256 Parallel 100 in, 2000 out, 1 Iteration")]
+		[DataRow(true, 100, 2000, 10, DisplayName = "SHAKE256 Parallel 100 in, 2000 out, 10 Iterations")]
+		[DataRow(false, 1000, 1000, 1, DisplayName = "SHAKE128 Parallel 1000 in, 1000 out, 1 Iteration")]
+		[DataRow(false, 1000, 1000, 10, DisplayName = "SHAKE128 Parallel 1000 in, 1000 out, 10 Iterations")]
+		[DataRow(true, 1000, 1000, 1, DisplayName = "SHAKE256 Parallel 1000 in, 1000 out, 1 Iteration")]
+		[DataRow(true, 1000, 1000, 10, DisplayName = "SHAKE256 Parallel 1000 in, 1000 out, 10 Iterations")]
 		public void Shake_VS_Parallel(bool use_256, int absorb_length, int squeeze_length, int iterations) {
 			byte[] seed;
 			byte[] meh;
 			byte[][] shake_out;
 			byte[][] po;
 			KeccakBase[] shake_base;
+			KeccakBase shake_final;
 			KeccakBaseX4 shake_parallel_base;
+			byte[] final_single;
+			byte[] final_input;
+			byte[] final_x4;
 
-			//Rng.randombytes(out seed, absorb_length);
+			Rng.randombytes(out seed, absorb_length);
 			seed = new byte[absorb_length];
 
-			meh = new byte[squeeze_length];
+			meh = new byte[Math.Max(absorb_length, squeeze_length)];
 
 			if (!use_256) {
 				shake_out = new byte[4][];
 				po = new byte[4][];
 				shake_base = new Shake128[4];
+				shake_final = new Shake128();
 				for (int i = 0; i < 4; i++) {
 					shake_base[i] = new Shake128();
 					shake_out[i] = new byte[squeeze_length];
@@ -340,6 +352,7 @@ namespace PQnet.test {
 				shake_out = new byte[4][];
 				po = new byte[4][];
 				shake_base = new Shake256[4];
+				shake_final = new Shake256();
 				for (int i = 0; i < 4; i++) {
 					shake_base[i] = new Shake256();
 					shake_out[i] = new byte[squeeze_length];
@@ -350,36 +363,59 @@ namespace PQnet.test {
 
 			shake_base[0].Absorb(seed, absorb_length);
 			for (int i = 0; i < iterations; i++) {
+				shake_base[0].Init();
+				shake_base[0].Absorb(i == 0 ? seed : shake_out[3], absorb_length);
 				shake_base[0].FinalizeAbsorb();
 				shake_base[0].Squeeze(shake_out[0], 0, squeeze_length);
+				shake_base[1].Init();
 				shake_base[1].Absorb(shake_out[0], absorb_length);
 				shake_base[1].FinalizeAbsorb();
 				shake_base[1].Squeeze(shake_out[1], 0, squeeze_length);
+				shake_base[2].Init();
 				shake_base[2].Absorb(shake_out[1], absorb_length);
 				shake_base[2].FinalizeAbsorb();
 				shake_base[2].Squeeze(shake_out[2], 0, squeeze_length);
+				shake_base[3].Init();
 				shake_base[3].Absorb(shake_out[2], absorb_length);
 				shake_base[3].FinalizeAbsorb();
 				shake_base[3].Squeeze(shake_out[3], 0, squeeze_length);
-				shake_base[0].Absorb(shake_out[3], absorb_length);
 			}
-			shake_base[3].FinalizeAbsorb();
-			shake_base[3].Squeeze(shake_out[0], 0, squeeze_length);
+
+			shake_final.Absorb(shake_out[0], squeeze_length);
+			shake_final.Absorb(shake_out[1], squeeze_length);
+			shake_final.Absorb(shake_out[2], squeeze_length);
+			shake_final.Absorb(shake_out[3], squeeze_length);
+			shake_final.FinalizeAbsorb();
+
+			final_single = new byte[squeeze_length];
+			shake_final.Squeeze(final_single, 0, squeeze_length);
 
 			for (int i = 0; i < iterations; i++) {
-				shake_parallel_base.Sponge(seed, seed, seed, seed, po[0], po[0], po[0], po[0], squeeze_length, absorb_length);
 				shake_parallel_base.Reset();
-				//shake_parallel_base.Sponge(seed, po[0], seed, seed, meh, po[1], meh, meh, squeeze_length, absorb_length);
-				shake_parallel_base.Sponge(po[0], po[0], po[0], po[0], po[1], po[1], po[1], po[1], squeeze_length, absorb_length);
+				shake_parallel_base.Sponge(i == 0 ? seed : po[3], seed, seed, seed, po[0], meh, meh, meh, squeeze_length, absorb_length);
+
+				shake_parallel_base.Reset();
+				shake_parallel_base.Sponge(seed, po[0], seed, seed, meh, po[1], meh, meh, squeeze_length, absorb_length);
+
 				shake_parallel_base.Reset();
 				shake_parallel_base.Sponge(seed, seed, po[1], seed, meh, meh, po[2], meh, squeeze_length, absorb_length);
+
 				shake_parallel_base.Reset();
 				shake_parallel_base.Sponge(seed, seed, seed, po[2], meh, meh, meh, po[3], squeeze_length, absorb_length);
-				shake_parallel_base.Reset();
 			}
-			shake_parallel_base.Sponge(po[3], seed, seed, seed, po[0], po[1], po[2], po[3], squeeze_length, absorb_length);
 
-			CollectionAssert.AreEqual(shake_out[0], po[0], $"Parallel Tasks result wrong");
+			final_input = new byte[squeeze_length * 4];
+			final_x4 = new byte[squeeze_length];
+			meh = new byte[squeeze_length * 4];
+			Array.Copy(po[0], 0, final_input, 0, squeeze_length);
+			Array.Copy(po[1], 0, final_input, squeeze_length, squeeze_length);
+			Array.Copy(po[2], 0, final_input, squeeze_length * 2, squeeze_length);
+			Array.Copy(po[3], 0, final_input, squeeze_length * 3, squeeze_length);
+
+			shake_parallel_base.Reset();
+			shake_parallel_base.Sponge(final_input, meh, meh, meh, final_x4, meh, meh, meh, squeeze_length, squeeze_length * 4);
+
+			CollectionAssert.AreEqual(final_single, final_x4, $"Parallel Tasks result wrong");
 
 		}
 	}

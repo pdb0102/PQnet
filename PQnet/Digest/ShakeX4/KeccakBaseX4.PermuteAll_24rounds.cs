@@ -49,6 +49,20 @@ namespace PQnet.Digest {
 			Vector256<ulong> Ema, Eme, Emi, Emo, Emu;
 			Vector256<ulong> Esa, Ese, Esi, Eso, Esu;
 
+#if DEBUG
+			ulong[] dumped_state;
+
+			DumpState(0, out dumped_state);
+			states0.Add(dumped_state);
+			DumpState(1, out dumped_state);
+			states1.Add(dumped_state);
+
+			DumpState(2, out dumped_state);
+			states2.Add(dumped_state);
+
+			DumpState(3, out dumped_state);
+			states3.Add(dumped_state);
+#endif
 			Aba = state[0];
 			Abe = state[1];
 			Abi = state[2];

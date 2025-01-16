@@ -41,6 +41,13 @@ namespace PQnet.Digest {
 		private byte suffix;
 		internal Vector256<ulong>[] state;  // internal for testing
 
+#if DEBUG
+		internal List<ulong[]> states0 = new List<ulong[]>();
+		internal List<ulong[]> states1 = new List<ulong[]>();
+		internal List<ulong[]> states2 = new List<ulong[]>();
+		internal List<ulong[]> states3 = new List<ulong[]>();
+#endif
+
 		internal KeccakBaseX4() {
 			state = new Vector256<ulong>[25];
 
@@ -53,6 +60,12 @@ namespace PQnet.Digest {
 			for (int i = 0; i < 25; i++) {
 				state[i] = Vector256<ulong>.Zero;
 			}
+#if DEBUG
+			states0 = new List<ulong[]>();
+			states1 = new List<ulong[]>();
+			states2 = new List<ulong[]>();
+			states3 = new List<ulong[]>();
+#endif
 		}
 
 		internal KeccakBaseX4(int rate_in_bytes, int security, byte suffix) : this() {
@@ -73,6 +86,7 @@ namespace PQnet.Digest {
 			byte[] interleaved_data;
 			int input_consumed;
 			int input_left;
+			int interleaved_input_left;
 			int processed;
 			int output_index;
 
@@ -100,24 +114,26 @@ namespace PQnet.Digest {
 			}
 
 			input_consumed = 0;
-			input_left = input_length;
+			interleaved_input_left = input_length << 2; // * parallelism;
 
 			interleaved_data = InterleaveArrays(input1, input2, input3, input4, input_length);
 
 			if (((rate_in_bytes % (width / 200)) == 0) && (input_length >= rate_in_bytes)) {
 				// Fast path
 				processed = Fast_Block_Absorb(interleaved_data, interleaved_data.Length);
-				input_left -= processed;
+				interleaved_input_left -= processed;
 				input_consumed += processed;
 			}
 
 			// Absorb the data in rate-sized chunks
-			while (input_left >= rate_in_bytes) {
+			while (interleaved_input_left >= (rate_in_bytes << 2 /* * parallelism */)) {
 				processed = AddBytesAll(interleaved_data, input_consumed, rate_in_bytes);
 				PermuteAll_24rounds();
-				input_left -= processed;
+				interleaved_input_left -= processed;
 				input_consumed += processed;
 			}
+
+			input_left = interleaved_input_left >> 2;// / parallelism;
 
 			// Absorb the remaining data
 			AddBytesAll(interleaved_data, input_consumed, input_left);
@@ -152,7 +168,6 @@ namespace PQnet.Digest {
 			return true;
 		}
 
-
 		/// <summary>
 		/// Interleave four byte arrays into a single one for use by <see cref="KeccakBaseX4"/>
 		/// </summary>
@@ -173,10 +188,7 @@ namespace PQnet.Digest {
 			Vector128<byte> v2;
 			Vector128<byte> v3;
 			Vector128<byte> v4;
-			int remaining1;
-			int remaining2;
-			int remaining3;
-			int remaining4;
+			int remaining;
 			int maxLength;
 			int paddedLength;
 			int totalLength;
@@ -202,13 +214,13 @@ namespace PQnet.Digest {
 			int resultIndex = 0;
 			for (int i = 0; i < paddedLength; i += 8) {
 				// Copy 8 bytes from each input array to the result array using SIMD
-				remaining1 = span1.Length - i;
-				if (remaining1 >= 8) {
+				remaining = maxLength - i;
+				if (remaining >= 8) {
 					v1 = Vector128.LoadUnsafe(ref span1[i]);
 					v1.StoreUnsafe(ref resultSpan[resultIndex]);
-				} else if (remaining1 > 0) {
-					span1.Slice(i, remaining1).CopyTo(temp);
-					temp.Slice(remaining1).Clear();
+				} else if (remaining > 0) {
+					span1.Slice(i, remaining).CopyTo(temp);
+					temp.Slice(remaining).Clear();
 					v1 = Vector128.LoadUnsafe(ref temp[0]);
 					v1.StoreUnsafe(ref resultSpan[resultIndex]);
 				} else {
@@ -216,13 +228,12 @@ namespace PQnet.Digest {
 				}
 				resultIndex += 8;
 
-				remaining2 = span2.Length - i;
-				if (remaining2 >= 8) {
+				if (remaining >= 8) {
 					v2 = Vector128.LoadUnsafe(ref span2[i]);
 					v2.StoreUnsafe(ref resultSpan[resultIndex]);
-				} else if (remaining2 > 0) {
-					span2.Slice(i, remaining2).CopyTo(temp);
-					temp.Slice(remaining2).Clear();
+				} else if (remaining > 0) {
+					span2.Slice(i, remaining).CopyTo(temp);
+					temp.Slice(remaining).Clear();
 					v2 = Vector128.LoadUnsafe(ref temp[0]);
 					v2.StoreUnsafe(ref resultSpan[resultIndex]);
 				} else {
@@ -230,13 +241,12 @@ namespace PQnet.Digest {
 				}
 				resultIndex += 8;
 
-				remaining3 = span3.Length - i;
-				if (remaining3 >= 8) {
+				if (remaining >= 8) {
 					v3 = Vector128.LoadUnsafe(ref span3[i]);
 					v3.StoreUnsafe(ref resultSpan[resultIndex]);
-				} else if (remaining3 > 0) {
-					span3.Slice(i, remaining3).CopyTo(temp);
-					temp.Slice(remaining3).Clear();
+				} else if (remaining > 0) {
+					span3.Slice(i, remaining).CopyTo(temp);
+					temp.Slice(remaining).Clear();
 					v3 = Vector128.LoadUnsafe(ref temp[0]);
 					v3.StoreUnsafe(ref resultSpan[resultIndex]);
 				} else {
@@ -244,13 +254,12 @@ namespace PQnet.Digest {
 				}
 				resultIndex += 8;
 
-				remaining4 = span4.Length - i;
-				if (remaining4 >= 8) {
+				if (remaining >= 8) {
 					v4 = Vector128.LoadUnsafe(ref span4[i]);
 					v4.StoreUnsafe(ref resultSpan[resultIndex]);
-				} else if (remaining4 > 0) {
-					span4.Slice(i, remaining4).CopyTo(temp);
-					temp.Slice(remaining4).Clear();
+				} else if (remaining > 0) {
+					span4.Slice(i, remaining).CopyTo(temp);
+					temp.Slice(remaining).Clear();
 					v4 = Vector128.LoadUnsafe(ref temp[0]);
 					v4.StoreUnsafe(ref resultSpan[resultIndex]);
 				} else {
@@ -262,5 +271,14 @@ namespace PQnet.Digest {
 			return result;
 		}
 
+#if DEBUG
+		internal void DumpState(int lane, out ulong[] states) {
+			states = new ulong[25];
+
+			for (int i = 0; i < 25; i++) {
+				states[i] = state[i][lane];
+			}
+		}
+#endif
 	}
 }

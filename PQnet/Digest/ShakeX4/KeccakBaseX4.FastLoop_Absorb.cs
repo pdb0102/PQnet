@@ -28,29 +28,33 @@ namespace PQnet.Digest {
 		/// </summary>
 		/// <param name="interleaved_data">The interleaved data to consume</param>
 		/// <param name="length">The number of bytes to consume from <paramref name="interleaved_data"/></param>
-		/// <returns>The number of consumed bytes</returns>
+		/// <returns>The number of consumed bytes per lane</returns>
 		/// <remarks>
 		/// The interleaved data is structured as follows:
 		/// A ulong (8 bytes) for instance 0, followed by a ulong (8 bytes) for instance 1, followed by a ulong (8 bytes) for instance 2, followed by a ulong (8 bytes) for instance 3, 
 		/// and then the next 32 bytes for the next set of instances, repeating <see cref="lane_count"/> times
 		/// </remarks>
 		internal int Fast_Block_Absorb(byte[] interleaved_data, int length) {
+#if AddDirectRoundsCode
 			if (lane_count == 21) {
 				// FIXME
 				return -1;
 			} else {
-				int processed_bytes;
-				int data_left;
+#endif
+			int processed_bytes;
+			int data_left;
 
-				processed_bytes = 0;
-				data_left = length;
-				while (data_left >= lane_count * parallelism * 8) {
-					processed_bytes += AddBlock(interleaved_data, processed_bytes, lane_count * parallelism * 8);
-					PermuteAll_24rounds();
-					data_left -= lane_count * parallelism * 8;
-				}
-				return processed_bytes;
+			processed_bytes = 0;
+			data_left = length;
+			while (data_left >= lane_count * parallelism * 8) {
+				processed_bytes += AddBlock(interleaved_data, processed_bytes, lane_count * parallelism * 8);
+				PermuteAll_24rounds();
+				data_left -= lane_count * parallelism * 8;
 			}
+			return processed_bytes;
+#if AddDirectRoundsCode
+		}
+#endif
 		}
 
 	}
