@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net48</TargetFrameworks>
     <RootNamespace>mldsa_net.test</RootNamespace>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -100,6 +100,10 @@
     <Folder Include="Vectors\cSHAKE-256\" />
     <Folder Include="Vectors\SHA2-512\" />
     <Folder Include="Vectors\SHA2-256\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+	<Compile Remove="ShakeX4Test.cs" />	
   </ItemGroup>
 
   <ItemGroup>

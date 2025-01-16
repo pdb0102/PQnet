@@ -70,7 +70,13 @@ namespace PQnet.test {
 					shake.AbsorbOnce(output, 16);
 					shake.Squeeze(output, 0, len);
 					if (len < 16) {
+#if !NET48
 						Array.Fill(output, (byte)0, len, 16 - len);
+#else
+					   	for (int k = len; k < 16; k++) {
+							output[k] = 0;
+						}
+#endif
 					}
 					outlen = min_outlen + (((output[len - 2] << 8) + output[len - 1]) % range);
 				}
@@ -247,6 +253,7 @@ namespace PQnet.test {
 			}
 		}
 
+#if !NET48
 		[TestMethod]
 		[DataRow(224, null, DisplayName = "SHA3-224 Parallel")]
 		[DataRow(256, null, DisplayName = "SHA3-256 Parallel")]
@@ -418,5 +425,6 @@ namespace PQnet.test {
 			CollectionAssert.AreEqual(final_single, final_x4, $"Parallel Tasks result wrong");
 
 		}
+#endif
 	}
 }
