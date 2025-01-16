@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+
 namespace PQnet.Digest {
 	/// <summary>
 	/// Implementation of SHAKE-128 Hash Algorithm

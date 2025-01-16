@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+
 namespace PQnet.Digest {
 	/// <summary>
 	/// Implementation of SHA3-384 Hash Algorithm

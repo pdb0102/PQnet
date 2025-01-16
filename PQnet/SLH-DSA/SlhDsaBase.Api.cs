@@ -21,6 +21,7 @@
 // SOFTWARE.
 //
 
+using System;
 using System.Security.Cryptography;
 
 namespace PQnet {

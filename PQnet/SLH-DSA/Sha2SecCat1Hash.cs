@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace PQnet {
@@ -58,7 +60,13 @@ namespace PQnet {
 			Array.Copy(adrs.Bytes, 0, data, pk_seed.Length + fill.Length, adrs.Bytes.Length);
 			Array.Copy(m_1, 0, data, pk_seed.Length + fill.Length + adrs.Bytes.Length, m_1.Length);
 
+#if !NET48
 			outbuf = SHA256.HashData(data);
+#else
+			using (SHA256Cng SHA256 = new SHA256Cng()) {
+				outbuf = SHA256.ComputeHash(data);
+			}
+#endif
 			Array.Resize(ref outbuf, n);
 
 			return outbuf;
@@ -79,7 +87,13 @@ namespace PQnet {
 			Array.Copy(pk_root, 0, data, r.Length + pk_seed.Length, pk_root.Length);
 			Array.Copy(m, 0, data, r.Length + pk_seed.Length + pk_root.Length, m.Length);
 
+#if !NET48
 			hash = SHA256.HashData(data);
+#else
+			using (SHA256Cng SHA256 = new SHA256Cng()) {
+				hash = SHA256.ComputeHash(data);
+			}
+#endif
 
 			// Now prepare the input for the MGF1 function
 			data = new byte[r.Length + pk_seed.Length + hash.Length];
@@ -102,7 +116,13 @@ namespace PQnet {
 			Array.Copy(opt_rand, 0, data, 0, opt_rand.Length);
 			Array.Copy(m, 0, data, opt_rand.Length, m.Length);
 
+#if !NET48
 			outbuf = HMACSHA256.HashData(sk_prf, data);
+#else
+			using (HMACSHA256 hmac = new HMACSHA256(sk_prf)) {
+				outbuf = hmac.ComputeHash(data);
+			}
+#endif
 			Array.Resize(ref outbuf, n);
 
 			return outbuf;
@@ -120,9 +140,16 @@ namespace PQnet {
 			Array.Copy(mgf_seed, mgf, mgf_seed.Length);
 
 			t = new List<byte>();
+#if NET48
+			using (SHA256Cng SHA256 = new SHA256Cng())
+#endif
 			for (uint c = 0; c < (32 + m); c++) {
 				Utility.toByte(c, mgf, mgf.Length - 4);
+#if !NET48
 				t.AddRange(SHA256.HashData(mgf));
+#else
+				t.AddRange(SHA256.ComputeHash(mgf));
+#endif
 			}
 			t.RemoveRange(m, t.Count - m);
 			return t.ToArray();

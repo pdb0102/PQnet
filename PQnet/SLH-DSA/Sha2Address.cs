@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+
 namespace PQnet {
 	/// <summary>
 	/// FIPS 205 Section 11.2 ADRS Implementation for SHA2

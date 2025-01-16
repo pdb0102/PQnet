@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+
 namespace PQnet {
 	public abstract partial class MlKemBase {
 		private class Polyvec {

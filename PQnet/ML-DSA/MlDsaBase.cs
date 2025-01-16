@@ -23,6 +23,7 @@
 
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
+using System;
 using System.Security.Cryptography;
 
 namespace PQnet {

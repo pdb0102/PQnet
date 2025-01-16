@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+
 using PQnet.Digest;
 
 namespace PQnet {
