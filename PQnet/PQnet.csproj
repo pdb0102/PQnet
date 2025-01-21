@@ -1,35 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <AssemblyVersion>0.5</AssemblyVersion>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Description></Description>
-    <Title>PQ</Title>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/pdb0102/PQNet</RepositoryUrl>
-    <Authors></Authors>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>C:\Projects\PQNet\Sandcastle\PQnet.xml</DocumentationFile>
+	<TargetFrameworks>net8.0;net48</TargetFrameworks>
+	<Nullable>disable</Nullable>
+	<AssemblyVersion>0.5</AssemblyVersion>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<Description></Description>
+	<Title>PQ</Title>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<RepositoryUrl>https://github.com/pdb0102/PQNet</RepositoryUrl>
+	<Authors></Authors>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<DocumentationFile>C:\Projects\PQNet\Sandcastle\PQnet.xml</DocumentationFile>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SHA2\" />
+	<Compile Remove="SHA2\**" />
+	<EmbeddedResource Remove="SHA2\**" />
+	<None Remove="SHA2\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Compile Remove="Digest\Fips202.cs" />
   </ItemGroup>
   <ItemGroup>
-    <InternalsVisibleTo Include="PQnet.test" />
-    <InternalsVisibleTo Include="TestApp" />
+	<InternalsVisibleTo Include="PQnet.test" />
+	<InternalsVisibleTo Include="TestApp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\README.md" Link="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+	<None Include="..\LICENSE">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+	<None Include="..\README.md" Link="README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+	<None Include="Digest\Fips202.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+	<Compile Remove="Digest\ShakeX4\**" />	
+	<Compile Remove="Digest\Sha256Avx.cs" />	
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="System.Memory" Version="4.6.0" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net48</TargetFrameworks>
     <RootNamespace>mldsa_net.test</RootNamespace>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -19,6 +19,26 @@
     <None Remove="Vectors\ML-KEM\encapDecap\prompt.json" />
     <None Remove="Vectors\ML-KEM\keyGen\expectedResults.json" />
     <None Remove="Vectors\ML-KEM\keyGen\prompt.json" />
+    <None Remove="Vectors\SHAKE\SHA3_224LongMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_224Monte.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_224ShortMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_256LongMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_256Monte.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_256ShortMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_384LongMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_384Monte.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_384ShortMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_512LongMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_512Monte.rsp" />
+    <None Remove="Vectors\SHAKE\SHA3_512ShortMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE128LongMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE128Monte.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE128ShortMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE128VariableOut.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE256LongMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE256Monte.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE256ShortMsg.rsp" />
+    <None Remove="Vectors\SHAKE\SHAKE256VariableOut.rsp" />
     <None Remove="Vectors\SLH-DSA\keyGen\expectedResults.json" />
     <None Remove="Vectors\SLH-DSA\keyGen\prompt.json" />
     <None Remove="Vectors\SLH-DSA\sigGen\expectedResults.json" />
@@ -43,6 +63,26 @@
     <EmbeddedResource Include="Vectors\ML-KEM\encapDecap\prompt.json" />
     <EmbeddedResource Include="Vectors\ML-KEM\keyGen\expectedResults.json" />
     <EmbeddedResource Include="Vectors\ML-KEM\keyGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_224LongMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_224Monte.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_224ShortMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_256LongMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_256Monte.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_256ShortMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_384LongMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_384Monte.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_384ShortMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_512LongMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_512Monte.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHA3_512ShortMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE128LongMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE128Monte.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE128ShortMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE128VariableOut.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE256LongMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE256Monte.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE256ShortMsg.rsp" />
+    <EmbeddedResource Include="Vectors\SHAKE\SHAKE256VariableOut.rsp" />
     <EmbeddedResource Include="Vectors\SLH-DSA\keyGen\expectedResults.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\keyGen\prompt.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\sigGen\expectedResults.json" />
@@ -60,6 +100,10 @@
     <Folder Include="Vectors\cSHAKE-256\" />
     <Folder Include="Vectors\SHA2-512\" />
     <Folder Include="Vectors\SHA2-256\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+	<Compile Remove="ShakeX4Test.cs" />	
   </ItemGroup>
 
   <ItemGroup>

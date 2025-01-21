@@ -21,7 +21,7 @@
 // SOFTWARE.
 //
 
-using System.Security.Cryptography;
+using System;
 
 using PQnet.Digest;
 
@@ -65,15 +65,7 @@ namespace PQnet {
 			Array.Copy(adrs.Bytes, 0, data, pk_seed.Length, adrs.Bytes.Length);
 			Array.Copy(m_1, 0, data, pk_seed.Length + adrs.Bytes.Length, m_1.Length);
 
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, n);
-			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[n];
-				Shake.shake256(outbuf, n, data, data.Length);
-				return outbuf;
-			}
+			return Shake256.HashData(data, this.n);
 		}
 
 		/// <summary>
@@ -104,15 +96,7 @@ namespace PQnet {
 			Array.Copy(pk_root, 0, data, r.Length + pk_seed.Length, pk_root.Length);
 			Array.Copy(m, 0, data, r.Length + pk_seed.Length + pk_root.Length, m.Length);
 
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, this.m);
-			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[this.m];
-				Shake.shake256(outbuf, this.m, data, data.Length);
-				return outbuf;
-			}
+			return Shake256.HashData(data, this.m);
 		}
 
 		/// <summary>
@@ -130,15 +114,7 @@ namespace PQnet {
 			Array.Copy(adrs.Bytes, 0, data, pk_seed.Length, adrs.Bytes.Length);
 			Array.Copy(sk_seed, 0, data, pk_seed.Length + adrs.Bytes.Length, sk_seed.Length);
 
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, this.n);
-			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[n];
-				Shake.shake256(outbuf, n, data, data.Length);
-				return outbuf;
-			}
+			return Shake256.HashData(data, this.n);
 		}
 
 		/// <summary>
@@ -155,15 +131,7 @@ namespace PQnet {
 			Array.Copy(sk_prf, data, sk_prf.Length);
 			Array.Copy(opt_rand, 0, data, sk_prf.Length, opt_rand.Length);
 			Array.Copy(m, 0, data, sk_prf.Length + opt_rand.Length, m.Length);
-			if (Shake256.IsSupported) {
-				return Shake256.HashData(data, this.n);
-			} else {
-				byte[] outbuf;
-
-				outbuf = new byte[n];
-				Shake.shake256(outbuf, n, data, data.Length);
-				return outbuf;
-			}
+			return Shake256.HashData(data, this.n);
 		}
 
 		/// <summary>

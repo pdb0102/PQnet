@@ -30,70 +30,70 @@ namespace PQnet {
 		/// Clone the address
 		/// </summary>
 		/// <returns></returns>
-		public IAddress Clone();
+		IAddress Clone();
 
 		/// <summary>
 		/// The the layer value
 		/// </summary>
 		/// <param name="layer"></param>
-		public void SetLayerAddress(uint layer);
+		void SetLayerAddress(uint layer);
 
 		/// <summary>
 		/// Set the tree value
 		/// </summary>
 		/// <param name="tree"></param>
-		public void SetTreeAddress(ulong tree);
+		void SetTreeAddress(ulong tree);
 
 		/// <summary>
 		/// Set the type and clear the rest of the address
 		/// </summary>
 		/// <param name="type"></param>
-		public void SetTypeAndClear(AddressType type);
+		void SetTypeAndClear(AddressType type);
 
 		/// <summary>
 		/// Set the key pair value
 		/// </summary>
 		/// <param name="keyPair"></param>
-		public void SetKeyPairAddress(uint keyPair);
+		void SetKeyPairAddress(uint keyPair);
 
 		/// <summary>
 		/// Set the chain value
 		/// </summary>
 		/// <param name="chain"></param>
-		public void SetChainAddress(uint chain);
+		void SetChainAddress(uint chain);
 
 		/// <summary>
 		/// Set the tree height
 		/// </summary>
 		/// <param name="treeHeight"></param>
-		public void SetTreeHeight(uint treeHeight);
+		void SetTreeHeight(uint treeHeight);
 
 		/// <summary>
 		/// Set the hash
 		/// </summary>
 		/// <param name="hash"></param>
-		public void SetHashAddress(uint hash);
+		void SetHashAddress(uint hash);
 
 		/// <summary>
 		/// Set the tree index
 		/// </summary>
 		/// <param name="treeIndex"></param>
-		public void SetTreeIndex(uint treeIndex);
+		void SetTreeIndex(uint treeIndex);
 
 		/// <summary>
 		/// Get the tree index
 		/// </summary>
-		public uint TreeIndex { get; }
+		uint TreeIndex { get; }
 
 		/// <summary>
 		/// Get the key pair value
 		/// </summary>
-		public uint KeyPairAddress { get; }
+		uint KeyPairAddress { get; }
 
 		/// <summary>
 		/// The the full address
 		/// </summary>
-		public byte[] Bytes { get; }
+		byte[] Bytes { get; }
 	}
 
 }

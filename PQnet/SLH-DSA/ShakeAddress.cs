@@ -21,6 +21,8 @@
 // SOFTWARE.
 //
 
+using System;
+
 namespace PQnet {
 	/// <summary>
 	/// FIPS 205 Section 4.3 ADRS Implement for SHAKE

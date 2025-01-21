@@ -23,42 +23,36 @@
 
 // Ported from the reference implementation found at https://www.pq-crystals.org/dilithium/
 
-using System.Diagnostics;
-
 using PQnet.Digest;
 
 namespace PQnet {
 	public abstract partial class MlDsaBase {
-		private const int STREAM128_BLOCKBYTES = Shake.SHAKE128_RATE;
-		private const int STREAM256_BLOCKBYTES = Shake.SHAKE256_RATE;
+		private const int STREAM128_BLOCKBYTES = Shake128.Shake128Rate;
+		private const int STREAM256_BLOCKBYTES = Shake256.Shake256Rate;
 
-		private void dilithium_shake128_stream_init(Shake.keccak_state state, byte[] seed, ushort nonce) {
+		private void dilithium_shake128_stream_init(Shake128 shake128, byte[] seed, ushort nonce) {
 			byte[] t;
 
 			t = new byte[2];
 			t[0] = (byte)(nonce & 0xff);
 			t[1] = (byte)(nonce >> 8);
 
-			Debug.Assert(seed.Length >= SeedBytes);
-
-			Shake.shake128_init(state);
-			Shake.shake128_absorb(state, seed, SeedBytes);
-			Shake.shake128_absorb(state, t, 2);
-			Shake.shake128_finalize(state);
+			shake128.Absorb(seed, SeedBytes);
+			shake128.Absorb(t, 2);
+			shake128.FinalizeAbsorb();
 		}
 
 
-		void dilithium_shake256_stream_init(Shake.keccak_state state, byte[] seed, ushort nonce) {
+		void dilithium_shake256_stream_init(Shake256 shake256, byte[] seed, ushort nonce) {
 			byte[] t;
 
 			t = new byte[2];
 			t[0] = (byte)(nonce & 0xff);
 			t[1] = (byte)(nonce >> 8);
 
-			Shake.shake256_init(state);
-			Shake.shake256_absorb(state, seed, CrhBytes);
-			Shake.shake256_absorb(state, t, 2);
-			Shake.shake256_finalize(state);
+			shake256.Absorb(seed, CrhBytes);
+			shake256.Absorb(t, 2);
+			shake256.FinalizeAbsorb();
 		}
 	}
 }

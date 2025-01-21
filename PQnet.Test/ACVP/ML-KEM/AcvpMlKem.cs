@@ -21,7 +21,6 @@
 // SOFTWARE.
 //
 
-using System.Reflection;
 using System.Runtime.Serialization.Json;
 
 namespace PQnet.test.AVCP {
@@ -30,8 +29,8 @@ namespace PQnet.test.AVCP {
 			AcvpMlKemTestVectors<AcvpMlKemKeyGenTestCase> prompt;
 			AcvpMlKemTestVectors<AcvpMlKemKeyGenTestCase> expected;
 
-			prompt = DeserializeVectors<AcvpMlKemKeyGenTestCase>(LoadFile(prompt_resouce));
-			expected = DeserializeVectors<AcvpMlKemKeyGenTestCase>(LoadFile(expected_resource));
+			prompt = DeserializeVectors<AcvpMlKemKeyGenTestCase>(Utilities.LoadFile(prompt_resouce));
+			expected = DeserializeVectors<AcvpMlKemKeyGenTestCase>(Utilities.LoadFile(expected_resource));
 
 			// Fiddle them together
 			for (int i = 0; i < prompt.TestGroups.Count; i++) {
@@ -49,8 +48,8 @@ namespace PQnet.test.AVCP {
 			AcvpMlKemTestVectors<AcvpMlKemEncapDecapTestCase> prompt;
 			AcvpMlKemTestVectors<AcvpMlKemEncapDecapTestCase> expected;
 
-			prompt = DeserializeVectors<AcvpMlKemEncapDecapTestCase>(LoadFile(prompt_resouce));
-			expected = DeserializeVectors<AcvpMlKemEncapDecapTestCase>(LoadFile(expected_resource));
+			prompt = DeserializeVectors<AcvpMlKemEncapDecapTestCase>(Utilities.LoadFile(prompt_resouce));
+			expected = DeserializeVectors<AcvpMlKemEncapDecapTestCase>(Utilities.LoadFile(expected_resource));
 
 			// Fiddle them together
 			for (int i = 0; i < prompt.TestGroups.Count; i++) {
@@ -113,26 +112,5 @@ namespace PQnet.test.AVCP {
 				return null;
 			}
 		}
-
-		public static byte[] LoadFile(string fileName) {
-			Assembly assembly;
-			List<string> resources;
-
-			assembly = Assembly.GetExecutingAssembly();
-			resources = new List<string>(assembly.GetManifestResourceNames());
-			for (int i = 0; i < resources.Count; i++) {
-				if (resources[i].EndsWith(fileName)) {
-					using (Stream stream = assembly.GetManifestResourceStream(resources[i])) {
-						using (MemoryStream ms = new MemoryStream()) {
-							stream.CopyTo(ms);
-							return ms.ToArray();
-						}
-					}
-				}
-			}
-			Assert.Fail($"Failed to find embedded file: {fileName}");
-			return null;
-		}
-
 	}
 }

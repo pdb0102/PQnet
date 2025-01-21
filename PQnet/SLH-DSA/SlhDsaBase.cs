@@ -21,8 +21,12 @@
 // SOFTWARE.
 //
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
+
+using PQnet.Digest;
 
 namespace PQnet {
 	public abstract partial class SlhDsaBase : ISecurityCategory {
@@ -74,7 +78,11 @@ namespace PQnet {
 
 			w = 1 << lg_w;
 			len1 = ((8 * n) + (lg_w - 1)) / lg_w;
+#if !NET48
 			len2 = ((int)Math.Log2(len1 * (w - 1)) / lg_w) + 1;
+#else
+			len2 = ((int)Math.Log(len1 * (w - 1), 2) / lg_w) + 1;
+#endif
 			len = len1 + len2;
 
 			SeedBytes = 3 * n;
@@ -924,12 +932,24 @@ namespace PQnet {
 			switch (ph) {
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
-					ph_m = SHA256.Create().ComputeHash(m);
+#if !NET48
+					ph_m = System.Security.Cryptography.SHA256.HashData(m);
+#else
+					using (System.Security.Cryptography.SHA256Cng SHA256 = new System.Security.Cryptography.SHA256Cng()) {
+						ph_m = SHA256.ComputeHash(m);
+					}
+#endif
 					break;
 
 				case PreHashFunction.SHA512:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
-					ph_m = SHA512.Create().ComputeHash(m);
+#if !NET48
+					ph_m = System.Security.Cryptography.SHA256.HashData(m);
+#else
+					using (System.Security.Cryptography.SHA512Cng SHA512 = new System.Security.Cryptography.SHA512Cng()) {
+						ph_m = SHA512.ComputeHash(m);
+					}
+#endif
 					break;
 
 				case PreHashFunction.SHAKE128:
@@ -1011,11 +1031,23 @@ namespace PQnet {
 			switch (ph) {
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
-					ph_m = SHA256.Create().ComputeHash(m);
+#if !NET48
+					ph_m = System.Security.Cryptography.SHA256.HashData(m);
+#else
+					using (System.Security.Cryptography.SHA256Cng SHA256 = new System.Security.Cryptography.SHA256Cng()) {
+						ph_m = SHA256.ComputeHash(m);
+					}
+#endif
 					break;
 				case PreHashFunction.SHA512:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
-					ph_m = SHA512.Create().ComputeHash(m);
+#if !NET48
+					ph_m = System.Security.Cryptography.SHA256.HashData(m);
+#else
+					using (System.Security.Cryptography.SHA512Cng SHA512 = new System.Security.Cryptography.SHA512Cng()) {
+						ph_m = SHA512.ComputeHash(m);
+					}
+#endif
 					break;
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };

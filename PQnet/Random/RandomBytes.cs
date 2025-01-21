@@ -36,7 +36,14 @@ namespace PQnet {
 		/// <param name="outlen">The number of bytes to generate</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void randombytes(out byte[] out_buffer, int outlen) {
+#if !NET48
 			out_buffer = RandomNumberGenerator.GetBytes(outlen);
+#else
+			out_buffer = new byte[outlen];
+			using (RandomNumberGenerator rng = RandomNumberGenerator.Create()) {
+				rng.GetBytes(out_buffer);
+			}	
+#endif
 		}
 	}
 }
