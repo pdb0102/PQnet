@@ -930,13 +930,27 @@ namespace PQnet {
 			}
 
 			switch (ph) {
+				case PreHashFunction.SHA224:
+					throw new NotImplementedException("Not yet implemented");
+
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
 #if !NET48
 					ph_m = System.Security.Cryptography.SHA256.HashData(m);
 #else
-					using (System.Security.Cryptography.SHA256Cng SHA256 = new System.Security.Cryptography.SHA256Cng()) {
-						ph_m = SHA256.ComputeHash(m);
+					using (System.Security.Cryptography.SHA256Cng SHA = new System.Security.Cryptography.SHA256Cng()) {
+						ph_m = SHA.ComputeHash(m);
+					}
+#endif
+					break;
+
+				case PreHashFunction.SHA384:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02 };
+#if !NET48
+					ph_m = System.Security.Cryptography.SHA384.HashData(m);
+#else
+					using (System.Security.Cryptography.SHA384Cng SHA = new System.Security.Cryptography.SHA384Cng()) {
+						ph_m = SHA.ComputeHash(m);
 					}
 #endif
 					break;
@@ -944,12 +958,32 @@ namespace PQnet {
 				case PreHashFunction.SHA512:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
 #if !NET48
-					ph_m = System.Security.Cryptography.SHA256.HashData(m);
+					ph_m = System.Security.Cryptography.SHA512.HashData(m);
 #else
-					using (System.Security.Cryptography.SHA512Cng SHA512 = new System.Security.Cryptography.SHA512Cng()) {
-						ph_m = SHA512.ComputeHash(m);
+					using (System.Security.Cryptography.SHA512Cng SHA = new System.Security.Cryptography.SHA512Cng()) {
+						ph_m = SHA.ComputeHash(m);
 					}
 #endif
+					break;
+
+				case PreHashFunction.SHA3_224:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x07 };
+					ph_m = Sha3_224.ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA3_256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x08 };
+					ph_m = Sha3_256.ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA3_384:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x09 };
+					ph_m = Sha3_384.ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA3_512:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0a };
+					ph_m = Sha3_512.ComputeHash(m);
 					break;
 
 				case PreHashFunction.SHAKE128:

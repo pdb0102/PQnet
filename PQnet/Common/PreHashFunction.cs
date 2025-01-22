@@ -29,14 +29,44 @@ namespace PQnet {
 	/// </summary>
 	public enum PreHashFunction {
 		/// <summary>
-		/// SHA-256
+		/// SHA-224
+		/// </summary>
+		SHA224,
+
+		/// <summary>
+		/// SHA-512
 		/// </summary>
 		SHA256,
+
+		/// <summary>
+		/// SHA-256
+		/// </summary>
+		SHA384,
 
 		/// <summary>
 		/// SHA-512
 		/// </summary>
 		SHA512,
+
+		/// <summary>
+		/// SHA3-224
+		/// </summary>
+		SHA3_224,
+
+		/// <summary>
+		/// SHA3-512
+		/// </summary>
+		SHA3_256,
+
+		/// <summary>
+		/// SHA3-256
+		/// </summary>
+		SHA3_384,
+
+		/// <summary>
+		/// SHA3-512
+		/// </summary>
+		SHA3_512,
 
 		/// <summary>
 		/// SHAKE-128

@@ -21,6 +21,10 @@
 // SOFTWARE.
 //
 
+#if !NET48
+using System.Runtime.Intrinsics.X86;
+#endif
+
 using PQnet.Digest;
 
 namespace PQnet.test {
@@ -271,6 +275,10 @@ namespace PQnet.test {
 			byte[] seed;
 			Tuple<byte[], byte[], byte[], byte[]> parallel_all;
 
+			if (!Avx2.IsSupported) {
+				Assert.Inconclusive("AVX2 not supported");
+			}
+
 			if (seed_string == null) {
 				Rng.randombytes(out seed, size / 8);
 			} else {
@@ -338,6 +346,10 @@ namespace PQnet.test {
 			byte[] final_single;
 			byte[] final_input;
 			byte[] final_x4;
+
+			if (!Avx2.IsSupported) {
+				Assert.Inconclusive("AVX2 not supported");
+			}
 
 			Rng.randombytes(out seed, absorb_length);
 			seed = new byte[absorb_length];
