@@ -88,6 +88,26 @@ namespace PQnet {
 		}
 
 		/// <summary>
+		/// Derive an SLH-DSA public key from a private key
+		/// </summary>
+		/// <param name="private_key">The private key</param>
+		/// <param name="public_key">Receives the public key</param>
+		/// <param name="error">Receives an error that occurred, or <c>null</c></param>
+		/// <returns><c>true</c> if the key was successfully returned, <c>false</c> otherwise</returns>
+		public bool DerivePublicFromPrivateKey(byte[] private_key, out byte[] public_key, out string error) {
+			if (private_key.Length != PrivateKeyBytes) {
+				public_key = null;
+				error = $"Private key must be {PrivateKeyBytes} bytes long";
+				return false;
+			}
+
+			public_key = new byte[n * 2];
+			Array.Copy(private_key, n * 2, public_key, 0, n * 2);
+			error = null;
+			return true;
+		}
+
+		/// <summary>
 		/// Generate a pure ML-DSA signature
 		/// </summary>
 		/// <param name="message">The message to sign</param>

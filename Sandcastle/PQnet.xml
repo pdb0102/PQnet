@@ -295,7 +295,17 @@
              FIPS 205 Section 10.2.2 
             </summary>
         </member>
+        <member name="F:PQnet.PreHashFunction.SHA224">
+            <summary>
+            SHA-224
+            </summary>
+        </member>
         <member name="F:PQnet.PreHashFunction.SHA256">
+            <summary>
+            SHA-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA384">
             <summary>
             SHA-256
             </summary>
@@ -303,6 +313,26 @@
         <member name="F:PQnet.PreHashFunction.SHA512">
             <summary>
             SHA-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_224">
+            <summary>
+            SHA3-224
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_256">
+            <summary>
+            SHA3-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_384">
+            <summary>
+            SHA3-256
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_512">
+            <summary>
+            SHA3-512
             </summary>
         </member>
         <member name="F:PQnet.PreHashFunction.SHAKE128">
@@ -2099,6 +2129,15 @@
             <remarks>
             If <paramref name="seed"/> is provided, it must be exactly <see cref="P:PQnet.SlhDsaBase.SeedBytes"/> bytes long.
             </remarks>
+        </member>
+        <member name="M:PQnet.SlhDsaBase.DerivePublicFromPrivateKey(System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Derive an SLH-DSA public key from a private key
+            </summary>
+            <param name="private_key">The private key</param>
+            <param name="public_key">Receives the public key</param>
+            <param name="error">Receives an error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key was successfully returned, <c>false</c> otherwise</returns>
         </member>
         <member name="M:PQnet.SlhDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
             <summary>

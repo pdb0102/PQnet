@@ -118,6 +118,38 @@ namespace PQnet.test {
 			}
 		}
 
+
+		[TestMethod]
+		[DataRow("SLH-DSA-SHA2-128s")]
+		[DataRow("SLH-DSA-SHA2-128f")]
+		[DataRow("SLH-DSA-SHA2-192s")]
+		[DataRow("SLH-DSA-SHA2-192f")]
+		[DataRow("SLH-DSA-SHA2-256s")]
+		[DataRow("SLH-DSA-SHA2-256f")]
+		[DataRow("SLH-DSA-SHAKE-128s")]
+		[DataRow("SLH-DSA-SHAKE-128f")]
+		[DataRow("SLH-DSA-SHAKE-192s")]
+		[DataRow("SLH-DSA-SHAKE-192f")]
+		[DataRow("SLH-DSA-SHAKE-256s")]
+		[DataRow("SLH-DSA-SHAKE-256f")]
+		public void TestPublicKeyExtraction(string parameter_set) {
+			SlhDsaBase slhdsa;
+			byte[] private_key;
+			byte[] public_key;
+			byte[] derived_public_key;
+			string error;
+			bool success;
+
+			slhdsa = GetAlgorithm(parameter_set, false);
+			success = slhdsa.GenerateKeyPair(out public_key, out private_key, out error);
+			Assert.IsTrue(success, $"Key generation failed for {parameter_set}; {error}");
+
+			success = slhdsa.DerivePublicFromPrivateKey(private_key, out derived_public_key, out _);
+			Assert.IsTrue(success, $"Public key derivation failed for {parameter_set}; {error}");
+
+			CollectionAssert.AreEqual(public_key, derived_public_key, $"Derive public key mismatch for {parameter_set}");
+		}
+
 		private SlhDsaBase GetAlgorithm(string parameter_set, bool deterministic) {
 			switch (parameter_set) {
 				case "SLH-DSA-SHA2-128s":
