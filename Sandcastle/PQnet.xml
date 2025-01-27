@@ -4,346 +4,11 @@
         <name>PQnet</name>
     </assembly>
     <members>
-        <member name="T:PQnet.IEncapsulate">
-            <summary>
-            Interface for signature algorithms
-            </summary>
-        </member>
-        <member name="P:PQnet.IEncapsulate.PublicKeyBytes">
-            <summary>
-            Gets the size, in bytes, of the public key
-            </summary>
-        </member>
-        <member name="P:PQnet.IEncapsulate.PrivateKeyBytes">
-            <summary>
-            Gets the size, in bytes, of the private key
-            </summary>
-        </member>
-        <member name="P:PQnet.IEncapsulate.CiphertextBytes">
-            <summary>
-            Gets the size, in bytes, of the ciphertext
-            </summary>
-        </member>
-        <member name="P:PQnet.IEncapsulate.Name">
-            <summary>
-            Gets name of the algorithm
-            </summary>
-        </member>
-        <member name="M:PQnet.IEncapsulate.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
-            <summary>
-            Generates a pair. Throws if an error occurs
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
-        </member>
-        <member name="M:PQnet.IEncapsulate.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
-            <summary>
-            Generates a key pair.
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <param name="error">Receives any error that occurred, or <c>null</c></param>
-            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.IEncapsulate.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
-            <summary>
-            Generates a key pair.
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
-            <param name="error">Receives any error that occurred, or <c>null</c></param>
-            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.IEncapsulate.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@)">
-            <summary>
-            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
-            </summary>
-            <param name="public_key">The public (encapsulation) key to use</param>
-            <param name="shared_secret_key">Receives the shared secret key</param>
-            <param name="ciphertext">Receives the ciphertet</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">The public (encapsulation) key length did not match the required <see cref="P:PQnet.IEncapsulate.PublicKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.IEncapsulate.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@,System.String@)">
-            <summary>
-            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
-            </summary>
-            <param name="public_key">The public (encapsulation) key to use</param>
-            <param name="shared_secret_key">Receives the shared secret key</param>
-            <param name="ciphertext">Receives the ciphertet</param>
-            <param name="error">Receives an error description, or <c>null</c></param>
-            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.IEncapsulate.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@)">
-            <summary>
-            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
-            </summary>
-            <param name="private_key">The private (decapsulation) key to use</param>
-            <param name="ciphertext">The ciphertext</param>
-            <param name="shared_secret_key">Receives the shared_secret key</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">The private (decapsulation) key length did not match the required <see cref="P:PQnet.IEncapsulate.PrivateKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.IEncapsulate.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
-            <summary>
-            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
-            </summary>
-            <param name="private_key">The private (decapsulation) key to use</param>
-            <param name="ciphertext">The ciphertext</param>
-            <param name="shared_secret_key">Receives the shared_secret key</param>
-            <param name="error">Receives an error description, or <c>null</c></param>
-            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
-        </member>
-        <member name="T:PQnet.ISecurityCategory">
-            <summary>
-            Interface for cryptographic algorithms to indicate the NIST security category.
-            </summary>
-        </member>
-        <member name="P:PQnet.ISecurityCategory.NistSecurityCategory">
-            <summary>
-            Gets the NIST security category of the cryptographic algorithm.
-            </summary>
-        </member>
-        <member name="T:PQnet.ISignature">
-            <summary>
-            Interface for signature algorithms
-            </summary>
-        </member>
-        <member name="P:PQnet.ISignature.PublicKeyBytes">
-            <summary>
-            Gets the size, in bytes, of the public key
-            </summary>
-        </member>
-        <member name="P:PQnet.ISignature.PrivateKeyBytes">
-            <summary>
-            Gets the size, in bytes, of the private key
-            </summary>
-        </member>
-        <member name="P:PQnet.ISignature.SignatureBytes">
-            <summary>
-            Gets the size, in bytes, of the signature
-            </summary>
-        </member>
-        <member name="P:PQnet.ISignature.Name">
-            <summary>
-            Gets name of the algorithm
-            </summary>
-        </member>
-        <member name="M:PQnet.ISignature.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
-            <summary>
-            Generates a pair. Throws if an error occurs
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
-        </member>
-        <member name="M:PQnet.ISignature.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
-            <summary>
-            Generates a key pair.
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <param name="error">Receives any error that occurred, or <c>null</c></param>
-            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.ISignature.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
-            <summary>
-            Generates a key pair.
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
-            <param name="error">Receives any error that occurred, or <c>null</c></param>
-            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
-            <summary>
-            Generate a pure signature
-            </summary>
-            <param name="message">The message to sign</param>
-            <param name="private_key">The private key to use for signing</param>
-            <param name="signature">Receives the signature</param>
-            <remarks>Uses an empty context string (ctx)</remarks>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@)">
-            <summary>
-            Generate a pure signature
-            </summary>
-            <param name="message">The message to sign</param>
-            <param name="private_key">The private key to use for signing</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="signature">Receives the signature</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
-            <summary>
-            Generate a pure signature
-            </summary>
-            <param name="message">The message to sign</param>
-            <param name="private_key">The private key to use for signing</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="signature">Receives the signature</param>
-            <param name="error">Receives an error string on failure</param>
-            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.ISignature.SignHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
-            <summary>
-            Generate a signature for a digest ("pre-hash signature")
-            </summary>
-            <param name="digest">The message digest to sign</param>
-            <param name="private_key">The private key to use for signing</param>
-            <param name="ph">The hash function used to the create the message digest</param>
-            <param name="signature">Receives the signature</param>
-            <remarks>Uses an empty context string (ctx)</remarks>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
-            <summary>
-            Generate a signature for a digest ("pre-hash signature")
-            </summary>
-            <param name="digest">The message digest to sign</param>
-            <param name="private_key">The private key to use for signing</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="ph">The hash function used to the create the message digest</param>
-            <param name="signature">Receives the signature</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@,System.String@)">
-            <summary>
-            Generate a signature for a digest ("pre-hash signature")
-            </summary>
-            <param name="digest">The message digest to sign</param>
-            <param name="private_key">The private key to use for signing</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="ph">The hash function used to the create the message digest</param>
-            <param name="signature">Receives the signature</param>
-            <param name="error">Receives an error string on failure</param>
-            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.ISignature.Verify(System.Byte[],System.Byte[],System.Byte[])">
-            <summary>
-            Verify a pure signature
-            </summary>
-            <param name="message">The message to authenticate</param>
-            <param name="public_key">The public key to use for verification</param>
-            <param name="signature">The message signature</param>
-            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
-            <summary>
-            Verify a pure signature
-            </summary>
-            <param name="message">The message to authenticate</param>
-            <param name="public_key">The public key to use for verification</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="signature">The message signature</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
-            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.ISignature.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.String@)">
-            <summary>
-            Verify a pure signature
-            </summary>
-            <param name="message">The message to authenticate</param>
-            <param name="public_key">The public key to use for verification</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="signature">The message signature</param>
-            <param name="error">Receives an error string on failure</param>
-            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.ISignature.VerifyHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
-            <summary>
-            Verify a digest ("pre-hash") signature
-            </summary>
-            <param name="digest">The message digest to authenticate</param>
-            <param name="public_key">The public key to use for verification</param>
-            <param name="ph">The hash function used to the create the message digest</param>
-            <param name="signature">The message signature</param>
-            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">The public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
-            <summary>
-            Verify a digest ("pre-hash") signature
-            </summary>
-            <param name="digest">The message digest to authenticate</param>
-            <param name="public_key">The public key to use for verification</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="ph">The hash function used to the create the message digest</param>
-            <param name="signature">The message signature</param>
-            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.ISignature.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[],System.String@)">
-            <summary>
-            Verify a digest ("pre-hash") signature
-            </summary>
-            <param name="digest">The message digest to authenticate</param>
-            <param name="public_key">The public key to use for verification</param>
-            <param name="ctx">The context string, or <c>null</c></param>
-            <param name="ph">The hash function used to the create the message digest</param>
-            <param name="signature">The message signature</param>
-            <param name="error">Receives an error string on failure</param>
-            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
-        </member>
-        <member name="T:PQnet.PreHashFunction">
-            <summary>
-            Pre-Hash Functions
-             FIPS 204 Section 5.4.1
-             FIPS 205 Section 10.2.2 
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA224">
-            <summary>
-            SHA-224
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA256">
-            <summary>
-            SHA-512
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA384">
-            <summary>
-            SHA-256
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA512">
-            <summary>
-            SHA-512
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA3_224">
-            <summary>
-            SHA3-224
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA3_256">
-            <summary>
-            SHA3-512
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA3_384">
-            <summary>
-            SHA3-256
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHA3_512">
-            <summary>
-            SHA3-512
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHAKE128">
-            <summary>
-            SHAKE-128
-            </summary>
-        </member>
-        <member name="F:PQnet.PreHashFunction.SHAKE256">
-            <summary>
-            SHAKE-256
-            </summary>
+        <member name="M:PQnet.Digest.Sha256.mgf1_256(System.Byte[],System.Int32,System.Byte[],System.Int32)">
+            mgf1 function based on the SHA-256 hash function
+            Note that inlen should be sufficiently small that it still allows for
+            an array to be allocated on the stack. Typically 'in' is merely a seed.
+            Outputs outlen number of bytes
         </member>
         <member name="T:PQnet.Digest.KeccakBaseX4">
             <summary>
@@ -899,6 +564,204 @@
             <param name="outlen">The desired length of the hash</param>
             <returns>The SHAKE-256 hash for <paramref name="input"/></returns>
         </member>
+        <member name="T:PQnet.MlKemBase">
+            <summary>
+            Base class for ML-KEM key encapsulation algorithms.
+            </summary>
+            <summary>
+            Base class for ML-KEM key encapsulation algorithms.
+            </summary>
+        </member>
+        <member name="M:PQnet.MlKemBase.crypto_kem_keypair(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            
+            </summary>
+            <param name="pk"></param>
+            <param name="sk"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="ct"></param>
+            <param name="ss"></param>
+            <param name="pk"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="ss"></param>
+            <param name="ct"></param>
+            <param name="sk"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PQnet.MlKemBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Generates a ML-KEM key pair. Throws if an error occurs
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
+        </member>
+        <member name="M:PQnet.MlKemBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Generates a ML-KEM key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.MlKemBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
+            <summary>
+            Generates a ML-KEM key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="seed">Optional seed ('d' || 'z') bytes for generation, or <c>null</c>.</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+            <remarks>
+            If a seed is provided, it must be of 2 *<see cref="P:PQnet.MlKemBase.SeedBytes"/> bytes length.
+            </remarks>
+        </member>
+        <member name="M:PQnet.MlKemBase.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
+            </summary>
+            <param name="public_key">The public (encapsulation) key to use</param>
+            <param name="shared_secret_key">Receives the shared secret key</param>
+            <param name="ciphertext">Receives the ciphertet</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">The public (encapsulation) key length did not match the required <see cref="P:PQnet.MlKemBase.PublicKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.MlKemBase.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
+            </summary>
+            <param name="public_key">The public (encapsulation) key to use</param>
+            <param name="shared_secret_key">Receives the shared secret key</param>
+            <param name="ciphertext">Receives the ciphertet</param>
+            <param name="error">Receives an error description, or <c>null</c></param>
+            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.MlKemBase.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
+            </summary>
+            <param name="private_key">The private (decapsulation) key to use</param>
+            <param name="ciphertext">The ciphertext</param>
+            <param name="shared_secret_key">Receives the shared_secret key</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">The private (decapsulation) key length did not match the required <see cref="P:PQnet.MlKemBase.PrivateKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.MlKemBase.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
+            </summary>
+            <param name="private_key">The private (decapsulation) key to use</param>
+            <param name="ciphertext">The ciphertext</param>
+            <param name="shared_secret_key">Receives the shared_secret key</param>
+            <param name="error">Receives an error description, or <c>null</c></param>
+            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.MlKemBase.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PQnet.MlKemBase"/> class.
+            </summary>
+            <param name="k"></param>
+            <param name="eta_1"></param>
+            <param name="eta_2"></param>
+            <param name="poly_compressed_bytes"></param>
+            <param name="polyvec_compressed_bytes"></param>
+        </member>
+        <member name="P:PQnet.MlKemBase.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.MlKemBase.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.MlKemBase.PrivateKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the private key
+            </summary>
+        </member>
+        <member name="P:PQnet.MlKemBase.PublicKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the public key
+            </summary>
+        </member>
+        <member name="P:PQnet.MlKemBase.CiphertextBytes">
+            <summary>
+            Gets the size, in bytes, of the ciphertext
+            </summary>
+        </member>
+        <member name="P:PQnet.MlKemBase.SeedBytes">
+            <summary>
+            Gets the size, in bytes, of the seed used for key generation
+            </summary>
+        </member>
+        <member name="T:PQnet.MlKem1024">
+            <summary>
+            Implements the ML-KEM-1024 encapsulation scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.MlKem1024.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.MlKem1024"/> class.
+            </summary>
+        </member>
+        <member name="P:PQnet.MlKem1024.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.MlKem1024.Name">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.MlKem512">
+            <summary>
+            Implements the ML-KEM-512 encapsulation scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.MlKem512.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.MlKem512"/> class.
+            </summary>
+        </member>
+        <member name="P:PQnet.MlKem512.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.MlKem512.Name">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.MlKem768">
+            <summary>
+            Implements the ML-KEM-768 encapsulation scheme.
+            </summary>
+        </member>
+        <member name="M:PQnet.MlKem768.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:PQnet.MlKem768"/> class.
+            </summary>
+        </member>
+        <member name="P:PQnet.MlKem768.NistSecurityCategory">
+            <inheritdoc/>
+        </member>
+        <member name="P:PQnet.MlKem768.Name">
+            <inheritdoc/>
+        </member>
+        <member name="T:PQnet.Rng">
+            <summary>
+            Cryptographically strong random number generator
+            </summary>
+        </member>
+        <member name="M:PQnet.Rng.randombytes(System.Byte[]@,System.Int32)">
+            <summary>
+            Generates a random byte array
+            </summary>
+            <param name="out_buffer">The buffer to receive the random bytes</param>
+            <param name="outlen">The number of bytes to generate</param>
+        </member>
         <member name="T:PQnet.MlDsa44">
             <summary>
             Implements the ML-DSA-44 signature scheme.
@@ -1387,318 +1250,6 @@
             <param name="pk">Public key</param>
             <returns><c>true</c> if the signature is valid, <c>false</c> otherwise</returns>
             <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
-        </member>
-        <member name="T:PQnet.MlKemBase">
-            <summary>
-            Base class for ML-KEM key encapsulation algorithms.
-            </summary>
-            <summary>
-            Base class for ML-KEM key encapsulation algorithms.
-            </summary>
-        </member>
-        <member name="M:PQnet.MlKemBase.crypto_kem_keypair(System.Byte[]@,System.Byte[]@)">
-            <summary>
-            
-            </summary>
-            <param name="pk"></param>
-            <param name="sk"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PQnet.MlKemBase.crypto_kem_enc(System.Byte[]@,System.Byte[]@,System.Byte[])">
-            <summary>
-            
-            </summary>
-            <param name="ct"></param>
-            <param name="ss"></param>
-            <param name="pk"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PQnet.MlKemBase.crypto_kem_dec(System.Byte[]@,System.Byte[],System.Byte[])">
-            <summary>
-            
-            </summary>
-            <param name="ss"></param>
-            <param name="ct"></param>
-            <param name="sk"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PQnet.MlKemBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
-            <summary>
-            Generates a ML-KEM key pair. Throws if an error occurs
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
-        </member>
-        <member name="M:PQnet.MlKemBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
-            <summary>
-            Generates a ML-KEM key pair.
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <param name="error">Receives any error that occurred, or <c>null</c></param>
-            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.MlKemBase.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
-            <summary>
-            Generates a ML-KEM key pair.
-            </summary>
-            <param name="public_key">Receives the public key</param>
-            <param name="private_key">Receives the private key</param>
-            <param name="seed">Optional seed ('d' || 'z') bytes for generation, or <c>null</c>.</param>
-            <param name="error">Receives any error that occurred, or <c>null</c></param>
-            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
-            <remarks>
-            If a seed is provided, it must be of 2 *<see cref="P:PQnet.MlKemBase.SeedBytes"/> bytes length.
-            </remarks>
-        </member>
-        <member name="M:PQnet.MlKemBase.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@)">
-            <summary>
-            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
-            </summary>
-            <param name="public_key">The public (encapsulation) key to use</param>
-            <param name="shared_secret_key">Receives the shared secret key</param>
-            <param name="ciphertext">Receives the ciphertet</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">The public (encapsulation) key length did not match the required <see cref="P:PQnet.MlKemBase.PublicKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.MlKemBase.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@,System.String@)">
-            <summary>
-            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
-            </summary>
-            <param name="public_key">The public (encapsulation) key to use</param>
-            <param name="shared_secret_key">Receives the shared secret key</param>
-            <param name="ciphertext">Receives the ciphertet</param>
-            <param name="error">Receives an error description, or <c>null</c></param>
-            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.MlKemBase.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@)">
-            <summary>
-            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
-            </summary>
-            <param name="private_key">The private (decapsulation) key to use</param>
-            <param name="ciphertext">The ciphertext</param>
-            <param name="shared_secret_key">Receives the shared_secret key</param>
-            <exception cref="T:System.Security.Cryptography.CryptographicException">The private (decapsulation) key length did not match the required <see cref="P:PQnet.MlKemBase.PrivateKeyBytes"/></exception>
-        </member>
-        <member name="M:PQnet.MlKemBase.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
-            <summary>
-            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
-            </summary>
-            <param name="private_key">The private (decapsulation) key to use</param>
-            <param name="ciphertext">The ciphertext</param>
-            <param name="shared_secret_key">Receives the shared_secret key</param>
-            <param name="error">Receives an error description, or <c>null</c></param>
-            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
-        </member>
-        <member name="M:PQnet.MlKemBase.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:PQnet.MlKemBase"/> class.
-            </summary>
-            <param name="k"></param>
-            <param name="eta_1"></param>
-            <param name="eta_2"></param>
-            <param name="poly_compressed_bytes"></param>
-            <param name="polyvec_compressed_bytes"></param>
-        </member>
-        <member name="P:PQnet.MlKemBase.NistSecurityCategory">
-            <inheritdoc/>
-        </member>
-        <member name="P:PQnet.MlKemBase.Name">
-            <inheritdoc/>
-        </member>
-        <member name="P:PQnet.MlKemBase.PrivateKeyBytes">
-            <summary>
-            Gets the size, in bytes, of the private key
-            </summary>
-        </member>
-        <member name="P:PQnet.MlKemBase.PublicKeyBytes">
-            <summary>
-            Gets the size, in bytes, of the public key
-            </summary>
-        </member>
-        <member name="P:PQnet.MlKemBase.CiphertextBytes">
-            <summary>
-            Gets the size, in bytes, of the ciphertext
-            </summary>
-        </member>
-        <member name="P:PQnet.MlKemBase.SeedBytes">
-            <summary>
-            Gets the size, in bytes, of the seed used for key generation
-            </summary>
-        </member>
-        <member name="T:PQnet.MlKem1024">
-            <summary>
-            Implements the ML-KEM-1024 encapsulation scheme.
-            </summary>
-        </member>
-        <member name="M:PQnet.MlKem1024.#ctor">
-            <summary>
-            Creates a new instance of the <see cref="T:PQnet.MlKem1024"/> class.
-            </summary>
-        </member>
-        <member name="P:PQnet.MlKem1024.NistSecurityCategory">
-            <inheritdoc/>
-        </member>
-        <member name="P:PQnet.MlKem1024.Name">
-            <inheritdoc/>
-        </member>
-        <member name="T:PQnet.MlKem512">
-            <summary>
-            Implements the ML-KEM-512 encapsulation scheme.
-            </summary>
-        </member>
-        <member name="M:PQnet.MlKem512.#ctor">
-            <summary>
-            Creates a new instance of the <see cref="T:PQnet.MlKem512"/> class.
-            </summary>
-        </member>
-        <member name="P:PQnet.MlKem512.NistSecurityCategory">
-            <inheritdoc/>
-        </member>
-        <member name="P:PQnet.MlKem512.Name">
-            <inheritdoc/>
-        </member>
-        <member name="T:PQnet.MlKem768">
-            <summary>
-            Implements the ML-KEM-768 encapsulation scheme.
-            </summary>
-        </member>
-        <member name="M:PQnet.MlKem768.#ctor">
-            <summary>
-            Creates a new instance of the <see cref="T:PQnet.MlKem768"/> class.
-            </summary>
-        </member>
-        <member name="P:PQnet.MlKem768.NistSecurityCategory">
-            <inheritdoc/>
-        </member>
-        <member name="P:PQnet.MlKem768.Name">
-            <inheritdoc/>
-        </member>
-        <member name="T:PQnet.NamespaceDoc">
-            <summary>
-            The <c>PQnet</c> namespace contains classes and methods for post-quantum cryptographic algorithms.
-            </summary>
-        </member>
-        <member name="T:PQnet.PQC">
-            <summary>
-            Provides access to various post-quantum cryptographic algorithms.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.MlKem512">
-            <summary>
-            Gets a ML-KEM-512 encapsulation scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.MlKem768">
-            <summary>
-            Gets a ML-KEM-768 encapsulation scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.MlKem1024">
-            <summary>
-            Gets a ML-KEM-1024 encapsulation scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.MlDsa44">
-            <summary>
-            Gets a ML-DSA-44 signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.MlDsa65">
-            <summary>
-            Gets a ML-DSA-65 signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.MlDsa87">
-            <summary>
-            Gets a ML-DSA-87 signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaShake_128f">
-            <summary>
-            Gets a SLH-DSA-SHAKE-128f signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaShake_128s">
-            <summary>
-            Gets a SLH-DSA-SHAKE-128s signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaShake_192f">
-            <summary>
-            Gets a SLH-DSA-SHAKE-192f signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaShake_192s">
-            <summary>
-            Gets a SLH-DSA-SHAKE-192s signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaShake_256f">
-            <summary>
-            Gets a SLH-DSA-SHAKE-256f signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaShake_256s">
-            <summary>
-            Gets a SLH-DSA-SHAKE-256s signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaSha2_128f">
-            <summary>
-            Gets a SLH-DSA-SHAKE-128f signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaSha2_128s">
-            <summary>
-            Gets a SLH-DSA-SHAKE-128s signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaSha2_192f">
-            <summary>
-            Gets a SLH-DSA-SHAKE-192f signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaSha2_192s">
-            <summary>
-            Gets a SLH-DSA-SHAKE-192s signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaSha2_256f">
-            <summary>
-            Gets a SLH-DSA-SHAKE-256f signature scheme object.
-            </summary>
-        </member>
-        <member name="P:PQnet.PQC.SlhDsaSha2_256s">
-            <summary>
-            Gets a SLH-DSA-SHAKE-256s signature scheme object.
-            </summary>
-        </member>
-        <member name="M:PQnet.PQC.GetSignatureAlgorithmInstance(System.String)">
-            <summary>
-            Return a signature scheme object.
-            </summary>
-            <param name="name">The name of the signature algorithm</param>
-            <returns>An <see cref="T:PQnet.ISignature"/> representing the algorithm <paramref name="name"/></returns>
-        </member>
-        <member name="M:PQnet.PQC.GetEncapsulationAlgorithmInstance(System.String)">
-            <summary>
-            Return a encapsulation scheme object.
-            </summary>
-            <param name="name">The name of the encapsulation algorithm</param>
-            <returns>An <see cref="T:PQnet.IEncapsulate"/> representing the algorithm <paramref name="name"/></returns>
-        </member>
-        <member name="T:PQnet.Rng">
-            <summary>
-            Cryptographically strong random number generator
-            </summary>
-        </member>
-        <member name="M:PQnet.Rng.randombytes(System.Byte[]@,System.Int32)">
-            <summary>
-            Generates a random byte array
-            </summary>
-            <param name="out_buffer">The buffer to receive the random bytes</param>
-            <param name="outlen">The number of bytes to generate</param>
         </member>
         <member name="T:PQnet.AddressType">
             <summary>
@@ -2873,6 +2424,461 @@
             <param name="b"></param>
             <param name="offset"></param>
             <param name="i"></param>
+        </member>
+        <member name="T:PQnet.IEncapsulate">
+            <summary>
+            Interface for signature algorithms
+            </summary>
+        </member>
+        <member name="P:PQnet.IEncapsulate.PublicKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the public key
+            </summary>
+        </member>
+        <member name="P:PQnet.IEncapsulate.PrivateKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the private key
+            </summary>
+        </member>
+        <member name="P:PQnet.IEncapsulate.CiphertextBytes">
+            <summary>
+            Gets the size, in bytes, of the ciphertext
+            </summary>
+        </member>
+        <member name="P:PQnet.IEncapsulate.Name">
+            <summary>
+            Gets name of the algorithm
+            </summary>
+        </member>
+        <member name="M:PQnet.IEncapsulate.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Generates a pair. Throws if an error occurs
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
+        </member>
+        <member name="M:PQnet.IEncapsulate.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Generates a key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.IEncapsulate.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
+            <summary>
+            Generates a key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.IEncapsulate.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
+            </summary>
+            <param name="public_key">The public (encapsulation) key to use</param>
+            <param name="shared_secret_key">Receives the shared secret key</param>
+            <param name="ciphertext">Receives the ciphertet</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">The public (encapsulation) key length did not match the required <see cref="P:PQnet.IEncapsulate.PublicKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.IEncapsulate.Encapsulate(System.Byte[],System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Use the public (encapsulation) key to generate a shared secret key and an associated ciphertext.
+            </summary>
+            <param name="public_key">The public (encapsulation) key to use</param>
+            <param name="shared_secret_key">Receives the shared secret key</param>
+            <param name="ciphertext">Receives the ciphertet</param>
+            <param name="error">Receives an error description, or <c>null</c></param>
+            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.IEncapsulate.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
+            </summary>
+            <param name="private_key">The private (decapsulation) key to use</param>
+            <param name="ciphertext">The ciphertext</param>
+            <param name="shared_secret_key">Receives the shared_secret key</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">The private (decapsulation) key length did not match the required <see cref="P:PQnet.IEncapsulate.PrivateKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.IEncapsulate.Decapsulate(System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Use the private (decapsulation) key to produce a shared secret key from a ciphertext
+            </summary>
+            <param name="private_key">The private (decapsulation) key to use</param>
+            <param name="ciphertext">The ciphertext</param>
+            <param name="shared_secret_key">Receives the shared_secret key</param>
+            <param name="error">Receives an error description, or <c>null</c></param>
+            <returns><c>true</c> on success, <c>false</c> otherwise</returns>
+        </member>
+        <member name="T:PQnet.ISecurityCategory">
+            <summary>
+            Interface for cryptographic algorithms to indicate the NIST security category.
+            </summary>
+        </member>
+        <member name="P:PQnet.ISecurityCategory.NistSecurityCategory">
+            <summary>
+            Gets the NIST security category of the cryptographic algorithm.
+            </summary>
+        </member>
+        <member name="T:PQnet.ISignature">
+            <summary>
+            Interface for signature algorithms
+            </summary>
+        </member>
+        <member name="P:PQnet.ISignature.PublicKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the public key
+            </summary>
+        </member>
+        <member name="P:PQnet.ISignature.PrivateKeyBytes">
+            <summary>
+            Gets the size, in bytes, of the private key
+            </summary>
+        </member>
+        <member name="P:PQnet.ISignature.SignatureBytes">
+            <summary>
+            Gets the size, in bytes, of the signature
+            </summary>
+        </member>
+        <member name="P:PQnet.ISignature.Name">
+            <summary>
+            Gets name of the algorithm
+            </summary>
+        </member>
+        <member name="M:PQnet.ISignature.GenerateKeyPair(System.Byte[]@,System.Byte[]@)">
+            <summary>
+            Generates a pair. Throws if an error occurs
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException"></exception>
+        </member>
+        <member name="M:PQnet.ISignature.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.String@)">
+            <summary>
+            Generates a key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ISignature.GenerateKeyPair(System.Byte[]@,System.Byte[]@,System.Byte[],System.String@)">
+            <summary>
+            Generates a key pair.
+            </summary>
+            <param name="public_key">Receives the public key</param>
+            <param name="private_key">Receives the private key</param>
+            <param name="seed">Optional seed bytes for generation, or <c>null</c>.</param>
+            <param name="error">Receives any error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Generate a pure signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="signature">Receives the signature</param>
+            <remarks>Uses an empty context string (ctx)</remarks>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@)">
+            <summary>
+            Generate a pure signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">Receives the signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Generate a pure signature
+            </summary>
+            <param name="message">The message to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">Receives the signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ISignature.SignHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
+            <summary>
+            Generate a signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <remarks>Uses an empty context string (ctx)</remarks>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@)">
+            <summary>
+            Generate a signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or private key length did not match the required <see cref="P:PQnet.ISignature.PrivateKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.SignHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[]@,System.String@)">
+            <summary>
+            Generate a signature for a digest ("pre-hash signature")
+            </summary>
+            <param name="digest">The message digest to sign</param>
+            <param name="private_key">The private key to use for signing</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">Receives the signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the message was successfully signed, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ISignature.Verify(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Verify a pure signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Verify a pure signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">The message signature</param>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ISignature.Verify(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.String@)">
+            <summary>
+            Verify a pure signature
+            </summary>
+            <param name="message">The message to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="signature">The message signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:PQnet.ISignature.VerifyHash(System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            Verify a digest ("pre-hash") signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">The public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[])">
+            <summary>
+            Verify a digest ("pre-hash") signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Context was larger than 255 bytes, or the public key length did not match the required <see cref="P:PQnet.ISignature.PublicKeyBytes"/></exception>
+        </member>
+        <member name="M:PQnet.ISignature.VerifyHash(System.Byte[],System.Byte[],System.Byte[],PQnet.PreHashFunction,System.Byte[],System.String@)">
+            <summary>
+            Verify a digest ("pre-hash") signature
+            </summary>
+            <param name="digest">The message digest to authenticate</param>
+            <param name="public_key">The public key to use for verification</param>
+            <param name="ctx">The context string, or <c>null</c></param>
+            <param name="ph">The hash function used to the create the message digest</param>
+            <param name="signature">The message signature</param>
+            <param name="error">Receives an error string on failure</param>
+            <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
+        </member>
+        <member name="T:PQnet.PreHashFunction">
+            <summary>
+            Pre-Hash Functions
+             FIPS 204 Section 5.4.1
+             FIPS 205 Section 10.2.2 
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA224">
+            <summary>
+            SHA-224
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA256">
+            <summary>
+            SHA-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA384">
+            <summary>
+            SHA-256
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA512">
+            <summary>
+            SHA-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_224">
+            <summary>
+            SHA3-224
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_256">
+            <summary>
+            SHA3-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_384">
+            <summary>
+            SHA3-256
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA3_512">
+            <summary>
+            SHA3-512
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHAKE128">
+            <summary>
+            SHAKE-128
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHAKE256">
+            <summary>
+            SHAKE-256
+            </summary>
+        </member>
+        <member name="T:PQnet.NamespaceDoc">
+            <summary>
+            The <c>PQnet</c> namespace contains classes and methods for post-quantum cryptographic algorithms.
+            </summary>
+        </member>
+        <member name="T:PQnet.PQC">
+            <summary>
+            Provides access to various post-quantum cryptographic algorithms.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlKem512">
+            <summary>
+            Gets a ML-KEM-512 encapsulation scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlKem768">
+            <summary>
+            Gets a ML-KEM-768 encapsulation scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlKem1024">
+            <summary>
+            Gets a ML-KEM-1024 encapsulation scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlDsa44">
+            <summary>
+            Gets a ML-DSA-44 signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlDsa65">
+            <summary>
+            Gets a ML-DSA-65 signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.MlDsa87">
+            <summary>
+            Gets a ML-DSA-87 signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_128f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_128s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_192f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_192s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_256f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaShake_256s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_128f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_128s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-128s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_192f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_192s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-192s signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_256f">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256f signature scheme object.
+            </summary>
+        </member>
+        <member name="P:PQnet.PQC.SlhDsaSha2_256s">
+            <summary>
+            Gets a SLH-DSA-SHAKE-256s signature scheme object.
+            </summary>
+        </member>
+        <member name="M:PQnet.PQC.GetSignatureAlgorithmInstance(System.String)">
+            <summary>
+            Return a signature scheme object.
+            </summary>
+            <param name="name">The name of the signature algorithm</param>
+            <returns>An <see cref="T:PQnet.ISignature"/> representing the algorithm <paramref name="name"/></returns>
+        </member>
+        <member name="M:PQnet.PQC.GetEncapsulationAlgorithmInstance(System.String)">
+            <summary>
+            Return a encapsulation scheme object.
+            </summary>
+            <param name="name">The name of the encapsulation algorithm</param>
+            <returns>An <see cref="T:PQnet.IEncapsulate"/> representing the algorithm <paramref name="name"/></returns>
         </member>
     </members>
 </doc>

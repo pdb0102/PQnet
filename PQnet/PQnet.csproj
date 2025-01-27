@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Compile Remove="Digest\Fips202.cs" />
+	<Compile Remove="Algorithms\Digest\Fips202.cs" />
   </ItemGroup>
   <ItemGroup>
 	<InternalsVisibleTo Include="PQnet.test" />
@@ -37,15 +37,19 @@
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
 	</None>
-	<None Include="Digest\Fips202.cs" />
+	<None Include="Algorithms\Digest\Fips202.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-	<Compile Remove="Digest\ShakeX4\**" />	
-	<Compile Remove="Digest\Sha256Avx.cs" />	
+	<Compile Remove="Algorithms\Digest\ShakeX4\**" />	
+	<Compile Remove="Algorithms\Digest\Sha256X4\**" />	
   </ItemGroup>
 
   <ItemGroup>
 	<PackageReference Include="System.Memory" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Algorithms\Symmetric\" />
   </ItemGroup>
 </Project>

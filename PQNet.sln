@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PQnet.test", "PQnet.test\PQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PQnet", "PQnet\PQnet.csproj", "{BEB44E1F-515F-4B32-A6F2-D7843528A910}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{6ABD9933-0990-4D7D-B716-C5F467F6096A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{BEB44E1F-515F-4B32-A6F2-D7843528A910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEB44E1F-515F-4B32-A6F2-D7843528A910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEB44E1F-515F-4B32-A6F2-D7843528A910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ABD9933-0990-4D7D-B716-C5F467F6096A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ABD9933-0990-4D7D-B716-C5F467F6096A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ABD9933-0990-4D7D-B716-C5F467F6096A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ABD9933-0990-4D7D-B716-C5F467F6096A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
