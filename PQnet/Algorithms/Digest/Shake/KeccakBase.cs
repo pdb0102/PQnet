@@ -21,6 +21,7 @@
 // SOFTWARE.
 //
 
+using System;
 using System.Diagnostics;
 
 namespace PQnet.Digest {
@@ -434,6 +435,7 @@ namespace PQnet.Digest {
 		/// <returns>The new position in current block</returns>
 		public virtual int Squeeze(byte[] out_buf, int out_buf_pos, int outlen) {
 			int i;
+			int end;
 
 			Debug.Assert(out_buf.Length >= outlen);
 
@@ -442,7 +444,11 @@ namespace PQnet.Digest {
 					StatePermute();
 					pos = 0;
 				}
-				for (i = pos; i < rate && i < pos + outlen; i++) {
+				end = rate;
+				if (end > pos + outlen) {
+					end = pos + outlen;
+				}
+				for (i = pos; i < end; i++) {
 					out_buf[out_buf_pos++] = (byte)(state[i / 8] >> (8 * (i % 8)));
 				}
 				outlen -= i - pos;
@@ -462,9 +468,13 @@ namespace PQnet.Digest {
 			int offset;
 			int i;
 
+#if !NET48
+			Array.Clear(state);
+#else
 			for (i = 0; i < 25; i++) {
 				state[i] = 0;
 			}
+#endif
 
 			offset = 0;
 			while (inlen >= rate) {
@@ -476,10 +486,10 @@ namespace PQnet.Digest {
 			}
 
 			for (i = 0; i < inlen; i++) {
-				state[i / 8] ^= (ulong)in_buf[offset++] << (8 * (i % 8));
+				state[i / 8] ^= (ulong)in_buf[offset++] << ((i % 8) << 3);   // optimize this
 			}
 
-			state[i / 8] ^= (ulong)prefix << (8 * (i % 8));
+			state[i / 8] ^= (ulong)prefix << ((i % 8) << 3);
 			state[(rate - 1) / 8] ^= 1UL << 63;
 
 			pos = rate;
