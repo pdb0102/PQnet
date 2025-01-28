@@ -49,7 +49,7 @@ namespace PQnet.Digest {
 			Vector256<ulong> Ema, Eme, Emi, Emo, Emu;
 			Vector256<ulong> Esa, Ese, Esi, Eso, Esu;
 
-#if DEBUG
+#if DEBUGSTATE
 			ulong[] dumped_state;
 
 			DumpState(0, out dumped_state);

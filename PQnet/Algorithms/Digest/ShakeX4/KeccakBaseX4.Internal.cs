@@ -22,7 +22,6 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.Intrinsics;
 
 namespace PQnet.Digest {
@@ -43,7 +42,7 @@ namespace PQnet.Digest {
 		private byte suffix;
 		internal Vector256<ulong>[] state;  // internal for testing
 
-#if DEBUG
+#if DEBUGSTATE
 		internal List<ulong[]> states0 = new List<ulong[]>();
 		internal List<ulong[]> states1 = new List<ulong[]>();
 		internal List<ulong[]> states2 = new List<ulong[]>();
@@ -62,7 +61,7 @@ namespace PQnet.Digest {
 			for (int i = 0; i < 25; i++) {
 				state[i] = Vector256<ulong>.Zero;
 			}
-#if DEBUG
+#if DEBUGSTATE
 			states0 = new List<ulong[]>();
 			states1 = new List<ulong[]>();
 			states2 = new List<ulong[]>();
@@ -273,7 +272,7 @@ namespace PQnet.Digest {
 			return result;
 		}
 
-#if DEBUG
+#if DEBUGSTATE
 		internal void DumpState(int lane, out ulong[] states) {
 			states = new ulong[25];
 

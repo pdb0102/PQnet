@@ -21,8 +21,6 @@
 // SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace PQnet.Digest {
@@ -83,7 +81,7 @@ namespace PQnet.Digest {
 		/// </summary>
 		protected ulong[] state;
 
-#if DEBUG
+#if DEBUGSTATE
 		internal List<ulong[]> states = new List<ulong[]>();
 #endif
 
@@ -126,7 +124,7 @@ namespace PQnet.Digest {
 			ulong Eka, Eke, Eki, Eko, Eku;
 			ulong Ema, Eme, Emi, Emo, Emu;
 			ulong Esa, Ese, Esi, Eso, Esu;
-#if DEBUG
+#if DEBUGSTATE
 			DumpState(out ulong[] dump_state);
 			states.Add(dump_state);
 #endif
@@ -545,7 +543,7 @@ namespace PQnet.Digest {
 			Squeeze(out_buf, 0, outlen);
 		}
 
-#if DEBUG
+#if DEBUGSTATE
 		internal void DumpState(out ulong[] dump_states) {
 			dump_states = new ulong[25];
 
