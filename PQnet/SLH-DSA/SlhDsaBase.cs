@@ -893,7 +893,7 @@ namespace PQnet {
 			}
 
 			m_prime = new byte[m.Length + ctx.Length + 2];
-			m_prime[0] = 1;
+			m_prime[0] = 0;
 			m_prime[1] = (byte)ctx.Length;
 			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
 			Array.Copy(m, 0, m_prime, ctx.Length + 2, m.Length);
@@ -1033,7 +1033,7 @@ namespace PQnet {
 			}
 
 			m_prime = new byte[ctx.Length + m.Length + 2];
-			m_prime[0] = 1;
+			m_prime[0] = 0;
 			m_prime[1] = (byte)ctx.Length;
 			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
 			Array.Copy(m, 0, m_prime, ctx.Length + 2, m.Length);
