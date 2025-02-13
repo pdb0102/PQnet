@@ -893,7 +893,7 @@ namespace PQnet {
 			}
 
 			m_prime = new byte[m.Length + ctx.Length + 2];
-			m_prime[0] = 1;
+			m_prime[0] = 0;
 			m_prime[1] = (byte)ctx.Length;
 			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
 			Array.Copy(m, 0, m_prime, ctx.Length + 2, m.Length);
@@ -988,7 +988,7 @@ namespace PQnet {
 
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake256.HashData(m, 256);
+					ph_m = Shake128.HashData(m, 256);
 					break;
 
 				case PreHashFunction.SHAKE256:
@@ -1033,7 +1033,7 @@ namespace PQnet {
 			}
 
 			m_prime = new byte[ctx.Length + m.Length + 2];
-			m_prime[0] = 1;
+			m_prime[0] = 0;
 			m_prime[1] = (byte)ctx.Length;
 			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
 			Array.Copy(m, 0, m_prime, ctx.Length + 2, m.Length);
@@ -1085,7 +1085,7 @@ namespace PQnet {
 					break;
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake256.HashData(m, 256);
+					ph_m = Shake128.HashData(m, 256);
 					break;
 				case PreHashFunction.SHAKE256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
