@@ -49,6 +49,16 @@ namespace PQnet {
 		SHA512,
 
 		/// <summary>
+		/// SHA-512/224
+		/// </summary>
+		SHA512_224,
+
+		/// <summary>
+		/// SHA-512/256
+		/// </summary>
+		SHA512_256,
+
+		/// <summary>
 		/// SHA3-224
 		/// </summary>
 		SHA3_224,

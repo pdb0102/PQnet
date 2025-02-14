@@ -902,6 +902,34 @@ namespace PQnet {
 		}
 
 		/// <summary>
+		/// FIPS 205 Algorithm 22 - Generates a pure SLH-DSA signature - Internal version for ACVP testing with randomness
+		/// </summary>
+		/// <param name="m">Message</param>
+		/// <param name="ctx">Context string</param>
+		/// <param name="sk">Private key</param>
+		/// <param name="addrnd">Additional randomness, or <c>null</c></param>
+		/// <returns>SLH-DSA signature SIG</returns>
+		/// <exception cref="ArgumentException"><paramref name="ctx"/> is longer than 255 bytes</exception>
+		internal byte[] slh_sign(byte[] m, byte[] ctx, byte[] sk, byte[] addrnd) {
+			byte[] m_prime;
+
+			if (ctx == null) {
+				ctx = Array.Empty<byte>();
+			}
+			if (ctx.Length > 255) {
+				throw new ArgumentException("Context too long");
+			}
+
+			m_prime = new byte[m.Length + ctx.Length + 2];
+			m_prime[0] = 0;
+			m_prime[1] = (byte)ctx.Length;
+			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
+			Array.Copy(m, 0, m_prime, ctx.Length + 2, m.Length);
+
+			return slh_sign_internal(m_prime, sk, addrnd);
+		}
+
+		/// <summary>
 		/// FIPS 205 Algorithm 23 - Generates a pre-hash SLH-DSA signature
 		/// </summary>
 		/// <param name="m">Message</param>
@@ -931,7 +959,8 @@ namespace PQnet {
 
 			switch (ph) {
 				case PreHashFunction.SHA224:
-					throw new NotImplementedException("Not yet implemented");
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x04 };
+					throw new NotImplementedException("SHA224 Not yet implemented");
 
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
@@ -965,6 +994,14 @@ namespace PQnet {
 					}
 #endif
 					break;
+
+				case PreHashFunction.SHA512_224:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x05 };
+					throw new NotImplementedException("SHA512_224 Not yet implemented");
+
+				case PreHashFunction.SHA512_256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x06 };
+					throw new NotImplementedException("SHA512_256 Not yet implemented");
 
 				case PreHashFunction.SHA3_224:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x07 };

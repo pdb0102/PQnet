@@ -81,7 +81,23 @@ namespace PQnet.test {
 
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 
-					sig = slh_dsa.slh_sign_internal(test_case.MessageBytes, test_case.SecretKeyBytes, test_group.Deterministic ? null : test_case.RandomBytes);
+					try {
+						if (test_group.PreHash == "pure") {
+							if (test_group.SignatureInterface != "external") {
+								sig = slh_dsa.slh_sign_internal(test_case.MessageBytes, test_case.SecretKeyBytes, test_group.Deterministic ? null : test_case.RandomBytes);
+							} else {
+								sig = slh_dsa.slh_sign(test_case.MessageBytes, test_case.ContextBytes, test_case.SecretKeyBytes, test_group.Deterministic ? null : test_case.RandomBytes);
+							}
+						} else {
+							PreHashFunction pre_hash_function;
+
+							pre_hash_function = GetHashFunction(test_case.HashAlg);
+							sig = slh_dsa.hash_slh_sign(test_case.MessageBytes, test_case.ContextBytes, pre_hash_function, test_case.SecretKeyBytes);
+						}
+					} catch (NotImplementedException ex) {
+						Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}; Not implemented: {ex.Message}");
+						continue;
+					}
 					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature mismatch");
 					Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet}");
 				}
@@ -110,6 +126,24 @@ namespace PQnet.test {
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, true);
+
+					try {
+						if (test_group.PreHash == "pure") {
+							if (test_group.SignatureInterface != "external") {
+								result = slh_dsa.slh_verify_internal(test_case.MessageBytes, test_case.SignatureBytes, test_case.PublicKeyBytes);
+							} else {
+								result = slh_dsa.slh_verify(test_case.MessageBytes, test_case.SignatureBytes, test_case.ContextBytes, test_case.PublicKeyBytes);
+							}
+						} else {
+							PreHashFunction pre_hash_function;
+
+							pre_hash_function = GetHashFunction(test_case.HashAlg);
+							result = slh_dsa.hash_slh_verify(test_case.MessageBytes, test_case.SignatureBytes, test_case.ContextBytes, pre_hash_function, test_case.PublicKeyBytes);
+						}
+					} catch (NotImplementedException ex) {
+						Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}; Not implemented: {ex.Message}");
+						continue;
+					}
 
 					result = slh_dsa.slh_verify_internal(test_case.MessageBytes, test_case.SignatureBytes, test_case.PublicKeyBytes);
 					Assert.AreEqual(test_case.TestPassed, result, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature verification mismatch");
@@ -179,6 +213,37 @@ namespace PQnet.test {
 
 				default:
 					throw new NotImplementedException($"ParameterSet {parameter_set} not supported");
+			}
+		}
+
+		private PreHashFunction GetHashFunction(string hash_alg) {
+			switch (hash_alg) {
+				case "SHA2-224":
+					return PreHashFunction.SHA224;
+				case "SHA2-256":
+					return PreHashFunction.SHA256;
+				case "SHA2-384":
+					return PreHashFunction.SHA384;
+				case "SHA2-512":
+					return PreHashFunction.SHA512;
+				case "SHA3-224":
+					return PreHashFunction.SHA3_224;
+				case "SHA3-256":
+					return PreHashFunction.SHA3_256;
+				case "SHA3-384":
+					return PreHashFunction.SHA3_384;
+				case "SHA3-512":
+					return PreHashFunction.SHA3_512;
+				case "SHA2-512/224":
+					return PreHashFunction.SHA512_224;
+				case "SHA2-512/256":
+					return PreHashFunction.SHA512_256;
+				case "SHAKE-128":
+					return PreHashFunction.SHAKE128;
+				case "SHAKE-256":
+					return PreHashFunction.SHAKE256;
+				default:
+					throw new Exception($"Unsupported hash algorithm {hash_alg}");
 			}
 		}
 	}

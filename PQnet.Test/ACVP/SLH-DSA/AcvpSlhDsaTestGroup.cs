@@ -54,6 +54,18 @@ namespace PQnet.test.AVCP {
 		public bool Deterministic { get; set; }
 
 		/// <summary>
+		/// The signature interface used
+		/// </summary>
+		[DataMember(Name = "signatureInterface")]
+		public string SignatureInterface { get; set; }
+
+		/// <summary>
+		/// Pre-Hash or pure algorithm
+		/// </summary>
+		[DataMember(Name = "preHash")]
+		public string PreHash { get; set; }
+
+		/// <summary>
 		/// The public key
 		/// </summary>
 		[DataMember(Name = "pk")]
