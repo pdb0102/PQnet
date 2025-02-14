@@ -396,12 +396,12 @@ namespace PQnet {
 
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake256.HashData(m, 256);
+					ph_m = Shake256.HashData(m, 256 / 8);
 					break;
 
 				case PreHashFunction.SHAKE256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
-					ph_m = Shake256.HashData(m, 512);
+					ph_m = Shake256.HashData(m, 512 / 8);
 					break;
 
 				default:
@@ -621,11 +621,11 @@ namespace PQnet {
 					break;
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake256.HashData(m, 256);
+					ph_m = Shake256.HashData(m, 256 / 8);
 					break;
 				case PreHashFunction.SHAKE256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
-					ph_m = Shake256.HashData(m, 512);
+					ph_m = Shake256.HashData(m, 512 / 8);
 					break;
 				default:
 					throw new ArgumentException($"Invalid hash function '{ph}'");
