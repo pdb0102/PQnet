@@ -315,6 +315,16 @@
             SHA-512
             </summary>
         </member>
+        <member name="F:PQnet.PreHashFunction.SHA512_224">
+            <summary>
+            SHA-512/224
+            </summary>
+        </member>
+        <member name="F:PQnet.PreHashFunction.SHA512_256">
+            <summary>
+            SHA-512/256
+            </summary>
+        </member>
         <member name="F:PQnet.PreHashFunction.SHA3_224">
             <summary>
             SHA3-224
@@ -2518,6 +2528,17 @@
             <param name="m">Message</param>
             <param name="ctx">Context string</param>
             <param name="sk">Private key</param>
+            <returns>SLH-DSA signature SIG</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes</exception>
+        </member>
+        <member name="M:PQnet.SlhDsaBase.slh_sign(System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            FIPS 205 Algorithm 22 - Generates a pure SLH-DSA signature - Internal version for ACVP testing with randomness
+            </summary>
+            <param name="m">Message</param>
+            <param name="ctx">Context string</param>
+            <param name="sk">Private key</param>
+            <param name="addrnd">Additional randomness, or <c>null</c></param>
             <returns>SLH-DSA signature SIG</returns>
             <exception cref="T:System.ArgumentException"><paramref name="ctx"/> is longer than 255 bytes</exception>
         </member>
