@@ -1025,12 +1025,12 @@ namespace PQnet {
 
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake128.HashData(m, 256);
+					ph_m = Shake128.HashData(m, 256 / 8);
 					break;
 
 				case PreHashFunction.SHAKE256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
-					ph_m = Shake256.HashData(m, 512);
+					ph_m = Shake256.HashData(m, 512 / 8);
 					break;
 
 				default:
@@ -1100,6 +1100,10 @@ namespace PQnet {
 			}
 
 			switch (ph) {
+				case PreHashFunction.SHA224:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x04 };
+					throw new NotImplementedException("SHA224 Not yet implemented");
+
 				case PreHashFunction.SHA256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
 #if !NET48
@@ -1110,6 +1114,18 @@ namespace PQnet {
 					}
 #endif
 					break;
+
+				case PreHashFunction.SHA384:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02 };
+#if !NET48
+					ph_m = System.Security.Cryptography.SHA384.HashData(m);
+#else
+					using (System.Security.Cryptography.SHA384Cng SHA = new System.Security.Cryptography.SHA384Cng()) {
+						ph_m = SHA.ComputeHash(m);
+					}
+#endif
+					break;
+
 				case PreHashFunction.SHA512:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
 #if !NET48
@@ -1120,13 +1136,43 @@ namespace PQnet {
 					}
 #endif
 					break;
+
+				case PreHashFunction.SHA512_224:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x05 };
+					throw new NotImplementedException("SHA512_224 Not yet implemented");
+
+				case PreHashFunction.SHA512_256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x06 };
+					throw new NotImplementedException("SHA512_256 Not yet implemented");
+
+				case PreHashFunction.SHA3_224:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x07 };
+					ph_m = Sha3_224.ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA3_256:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x08 };
+					ph_m = Sha3_256.ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA3_384:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x09 };
+					ph_m = Sha3_384.ComputeHash(m);
+					break;
+
+				case PreHashFunction.SHA3_512:
+					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0a };
+					ph_m = Sha3_512.ComputeHash(m);
+					break;
+
 				case PreHashFunction.SHAKE128:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake128.HashData(m, 256);
+					ph_m = Shake128.HashData(m, 256 / 8);
 					break;
+
 				case PreHashFunction.SHAKE256:
 					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
-					ph_m = Shake256.HashData(m, 512);
+					ph_m = Shake256.HashData(m, 512 / 8);
 					break;
 				default:
 					throw new ArgumentException($"Invalid hash function '{ph}'");

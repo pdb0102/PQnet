@@ -82,7 +82,7 @@ namespace PQnet.test {
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, test_group.Deterministic);
 
 					try {
-						if (test_group.PreHash == "pure") {
+						if (test_group.PreHash != "preHash") {
 							if (test_group.SignatureInterface != "external") {
 								sig = slh_dsa.slh_sign_internal(test_case.MessageBytes, test_case.SecretKeyBytes, test_group.Deterministic ? null : test_case.RandomBytes);
 							} else {
@@ -98,7 +98,7 @@ namespace PQnet.test {
 						Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}; Not implemented: {ex.Message}");
 						continue;
 					}
-					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature mismatch");
+					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: [PH: {test_group.PreHash}, IF: {test_group.SignatureInterface}] Signature mismatch");
 					Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet}");
 				}
 			}
@@ -128,7 +128,7 @@ namespace PQnet.test {
 					slh_dsa = GetAlgorithm(test_vectors.TestGroups[i].ParameterSet, true);
 
 					try {
-						if (test_group.PreHash == "pure") {
+						if (test_group.PreHash != "preHash") {
 							if (test_group.SignatureInterface != "external") {
 								result = slh_dsa.slh_verify_internal(test_case.MessageBytes, test_case.SignatureBytes, test_case.PublicKeyBytes);
 							} else {
@@ -145,9 +145,11 @@ namespace PQnet.test {
 						continue;
 					}
 
-					result = slh_dsa.slh_verify_internal(test_case.MessageBytes, test_case.SignatureBytes, test_case.PublicKeyBytes);
 					Assert.AreEqual(test_case.TestPassed, result, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: Signature verification mismatch");
-					Console.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet}");
+					if (test_case.TestPassed != result) {
+						Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: [PH: {test_group.PreHash}, IF: {test_group.SignatureInterface}, Hash: {test_case.HashAlg}] Signature verification mismatch expected {test_case.TestPassed} != {result}");
+					} else
+						Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet} Signature verification expected {test_case.TestPassed} == {result}");
 				}
 			}
 		}
