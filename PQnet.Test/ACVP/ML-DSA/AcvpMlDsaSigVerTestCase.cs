@@ -36,6 +36,50 @@ namespace PQnet.test.AVCP {
 		public int TcId { get; set; }
 
 		/// <summary>
+		/// The context used to generate the signature
+		/// </summary>
+		[DataMember(Name = "context")]
+		public string Context { get; set; }
+
+		/// <summary>
+		/// <see cref="Context"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] ContextBytes {
+			get {
+				if (Context == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(Context, out _);
+			}
+		}
+
+		/// <summary>
+		/// The hash algorithm for Pre-Hash signatures
+		/// </summary>
+		[DataMember(Name = "hashAlg")]
+		public string HashAlg { get; set; }
+
+		/// <summary>
+		/// The hash algorithm for Pre-Hash signatures
+		/// </summary>
+		[DataMember(Name = "mu")]
+		public string Mu { get; set; }
+
+		/// <summary>
+		/// <see cref="Mu"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] MuBytes {
+			get {
+				if (Mu == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(Mu, out _);
+			}
+		}
+
+		/// <summary>
 		/// The message used to verify with the signature
 		/// </summary>
 		[DataMember(Name = "message")]
@@ -51,6 +95,25 @@ namespace PQnet.test.AVCP {
 					return null;
 				}
 				return Utilities.HexToBytes(Message, out _);
+			}
+		}
+
+		/// <summary>
+		/// The public key
+		/// </summary>
+		[DataMember(Name = "pk")]
+		public string PublicKey { get; set; }
+
+		/// <summary>
+		/// <see cref="PublicKey"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] PublicKeyBytes {
+			get {
+				if (PublicKey == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(PublicKey, out _);
 			}
 		}
 

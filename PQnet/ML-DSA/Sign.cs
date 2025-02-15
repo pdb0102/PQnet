@@ -25,6 +25,7 @@
 
 using System;
 using System.Diagnostics;
+
 //using System.Security.Cryptography;
 
 using PQnet.Digest;
@@ -156,6 +157,10 @@ namespace PQnet {
 			Shake256 shake256;
 
 			Debug.Assert(rnd.Length == RndBytes);
+
+			if (pre == null) {
+				pre = Array.Empty<byte>();
+			}
 
 			cp = new Poly(N);
 			mat = new PolyVecL[K];
@@ -298,10 +303,46 @@ namespace PQnet {
 				pre[2 + i] = ctx[i];
 			}
 
-			if (Deterministic) {
+			if (!Deterministic) {
 				Rng.randombytes(out rnd, RndBytes);
 			} else {
 				rnd = new byte[RndBytes];
+			}
+
+			ml_sign_internal(out sig, m, pre, rnd, sk);
+			return 0;
+		}
+
+		/*************************************************
+		* Name:        crypto_sign_signature
+		*
+		* Description: Computes signature.
+		*
+		* Arguments:   - uint8_t *sig:   pointer to output signature (of length CRYPTO_BYTES)
+		*              - size_t *siglen: pointer to output length of signature
+		*              - uint8_t *m:     pointer to message to be signed
+		*              - size_t mlen:    length of message
+		*              - uint8_t *ctx:   pointer to contex string
+		*              - size_t ctxlen:  length of contex string
+		*              - uint8_t *sk:    pointer to bit-packed secret key
+		*
+		* Returns 0 (success) or -1 (context string too long)
+		**************************************************/
+		internal int ml_sign(out byte[] sig, byte[] m, byte[] ctx, byte[] sk, byte[] rnd) {
+			int i;
+			byte[] pre;
+
+			if (ctx.Length > 255) {
+				sig = null;
+				return -1;
+			}
+			pre = new byte[ctx.Length + 2];
+
+			/* Prepare pre = (0, ctxlen, ctx) */
+			pre[0] = 0;
+			pre[1] = (byte)ctx.Length;
+			for (i = 0; i < ctx.Length; i++) {
+				pre[2 + i] = ctx[i];
 			}
 
 			ml_sign_internal(out sig, m, pre, rnd, sk);
@@ -337,76 +378,42 @@ namespace PQnet {
 				addrnd = null_rnd;
 			}
 
-			switch (ph) {
-				case PreHashFunction.SHA224:
-					throw new NotImplementedException("Not yet implemented");
+			PreHashUtility.GetPHm(ph, m, out oid, out ph_m);
 
-				case PreHashFunction.SHA256:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
-#if !NET48
-					ph_m = System.Security.Cryptography.SHA256.HashData(m);
-#else
-					using (System.Security.Cryptography.SHA256Cng SHA = new System.Security.Cryptography.SHA256Cng()) {
-						ph_m = SHA.ComputeHash(m);
-					}
-#endif
-					break;
+			m_prime = new byte[ctx.Length + oid.Length + ph_m.Length + 2];
+			m_prime[0] = 1;
+			m_prime[1] = (byte)ctx.Length;
+			Array.Copy(ctx, 0, m_prime, 2, ctx.Length);
+			Array.Copy(oid, 0, m_prime, ctx.Length + 2, oid.Length);
+			Array.Copy(ph_m, 0, m_prime, ctx.Length + oid.Length + 2, ph_m.Length);
+			ml_sign_internal(out sig, m_prime, empty_ctx, addrnd, sk);
+			return sig;
+		}
 
-				case PreHashFunction.SHA384:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02 };
-#if !NET48
-					ph_m = System.Security.Cryptography.SHA384.HashData(m);
-#else
-					using (System.Security.Cryptography.SHA384Cng SHA = new System.Security.Cryptography.SHA384Cng()) {
-						ph_m = SHA.ComputeHash(m);
-					}
-#endif
-					break;
+		/// <summary>
+		/// FIPS 204 Algorithm 4 - Generates a pre-hash ML-DSA signature - Internal version for ACVP testing with randomness
+		/// </summary>
+		/// <param name="m">Message</param>
+		/// <param name="ctx">Context string</param>
+		/// <param name="ph">Pre-hash function</param>
+		/// <param name="sk">Private key</param>
+		/// <param name="addrnd">Additional randomness, or <c>null</c></param>
+		/// <returns>SLH-DSA signature SIG</returns>
+		/// <exception cref="ArgumentException"><paramref name="ctx"/> is longer than 255 bytes, or <paramref name="ph"/> is not supported</exception>
+		internal byte[] hash_ml_sign(byte[] sk, byte[] m, byte[] ctx, PreHashFunction ph, byte[] addrnd) {
+			byte[] m_prime;
+			byte[] ph_m;
+			byte[] oid;
+			byte[] sig;
 
-				case PreHashFunction.SHA512:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
-#if !NET48
-					ph_m = System.Security.Cryptography.SHA512.HashData(m);
-#else
-					using (System.Security.Cryptography.SHA512Cng SHA = new System.Security.Cryptography.SHA512Cng()) {
-						ph_m = SHA.ComputeHash(m);
-					}
-#endif
-					break;
-
-				case PreHashFunction.SHA3_224:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x07 };
-					ph_m = Sha3_224.ComputeHash(m);
-					break;
-
-				case PreHashFunction.SHA3_256:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x08 };
-					ph_m = Sha3_256.ComputeHash(m);
-					break;
-
-				case PreHashFunction.SHA3_384:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x09 };
-					ph_m = Sha3_384.ComputeHash(m);
-					break;
-
-				case PreHashFunction.SHA3_512:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0a };
-					ph_m = Sha3_512.ComputeHash(m);
-					break;
-
-				case PreHashFunction.SHAKE128:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake256.HashData(m, 256 / 8);
-					break;
-
-				case PreHashFunction.SHAKE256:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
-					ph_m = Shake256.HashData(m, 512 / 8);
-					break;
-
-				default:
-					throw new ArgumentException($"Invalid hash function '{ph}'");
+			if (ctx == null) {
+				ctx = empty_ctx;
 			}
+			if (ctx.Length > 255) {
+				throw new ArgumentException("Context too long");
+			}
+
+			PreHashUtility.GetPHm(ph, m, out oid, out ph_m);
 
 			m_prime = new byte[ctx.Length + oid.Length + ph_m.Length + 2];
 			m_prime[0] = 1;
@@ -503,6 +510,10 @@ namespace PQnet {
 				return -1;
 			}
 
+			if (pre == null) {
+				pre = Array.Empty<byte>();
+			}
+
 			unpack_pk(rho, t1, pk);
 			if (unpack_sig(c, z, h, sig) != 0) {
 				return -1;
@@ -582,8 +593,9 @@ namespace PQnet {
 
 			pre[0] = 0;
 			pre[1] = (byte)ctx.Length;
-			for (i = 0; i < ctx.Length; i++)
+			for (i = 0; i < ctx.Length; i++) {
 				pre[2 + i] = ctx[i];
+			}
 
 			return ml_verify_internal(sig, m, pre, pk);
 		}
@@ -610,26 +622,7 @@ namespace PQnet {
 				throw new ArgumentException("Context too long");
 			}
 
-			switch (ph) {
-				case PreHashFunction.SHA256:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
-					ph_m = System.Security.Cryptography.SHA256.Create().ComputeHash(m);
-					break;
-				case PreHashFunction.SHA512:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
-					ph_m = System.Security.Cryptography.SHA512.Create().ComputeHash(m);
-					break;
-				case PreHashFunction.SHAKE128:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0B };
-					ph_m = Shake256.HashData(m, 256 / 8);
-					break;
-				case PreHashFunction.SHAKE256:
-					oid = new byte[] { 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x0C };
-					ph_m = Shake256.HashData(m, 512 / 8);
-					break;
-				default:
-					throw new ArgumentException($"Invalid hash function '{ph}'");
-			}
+			PreHashUtility.GetPHm(ph, m, out oid, out ph_m);
 
 			m_prime = new byte[ctx.Length + oid.Length + ph_m.Length + 2];
 			m_prime[0] = 1;
@@ -639,7 +632,6 @@ namespace PQnet {
 			Array.Copy(ph_m, 0, m_prime, ctx.Length + oid.Length + 2, ph_m.Length);
 			return ml_verify_internal(sig, m_prime, Array.Empty<byte>(), pk) == 0;
 		}
-
 
 		/*************************************************
 		* Name:        crypto_sign_open

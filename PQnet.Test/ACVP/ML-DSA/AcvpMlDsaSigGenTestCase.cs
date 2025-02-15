@@ -36,6 +36,31 @@ namespace PQnet.test.AVCP {
 		public int TcId { get; set; }
 
 		/// <summary>
+		/// The context used to generate the signature
+		/// </summary>
+		[DataMember(Name = "context")]
+		public string Context { get; set; }
+
+		/// <summary>
+		/// <see cref="Context"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] ContextBytes {
+			get {
+				if (Context == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(Context, out _);
+			}
+		}
+
+		/// <summary>
+		/// The hash algorithm for Pre-Hash signatures
+		/// </summary>
+		[DataMember(Name = "hashAlg")]
+		public string HashAlg { get; set; }
+
+		/// <summary>
 		/// The message used to generate the signature
 		/// </summary>
 		[DataMember(Name = "message")]

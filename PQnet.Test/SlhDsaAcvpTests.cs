@@ -92,7 +92,7 @@ namespace PQnet.test {
 							PreHashFunction pre_hash_function;
 
 							pre_hash_function = GetHashFunction(test_case.HashAlg);
-							sig = slh_dsa.hash_slh_sign(test_case.MessageBytes, test_case.ContextBytes, pre_hash_function, test_case.SecretKeyBytes);
+							sig = slh_dsa.hash_slh_sign(test_case.MessageBytes, test_case.ContextBytes, pre_hash_function, test_case.SecretKeyBytes, test_group.Deterministic ? null : test_case.RandomBytes);
 						}
 					} catch (NotImplementedException ex) {
 						Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}; Not implemented: {ex.Message}");
@@ -149,7 +149,7 @@ namespace PQnet.test {
 					if (test_case.TestPassed != result) {
 						Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_vectors.TestGroups[i].ParameterSet}: [PH: {test_group.PreHash}, IF: {test_group.SignatureInterface}, Hash: {test_case.HashAlg}] Signature verification mismatch expected {test_case.TestPassed} != {result}");
 					} else
-						Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet} Signature verification expected {test_case.TestPassed} == {result}");
+						Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: Parameter Set: {test_vectors.TestGroups[i].ParameterSet} Signature verification as expected {test_case.TestPassed}");
 				}
 			}
 		}
