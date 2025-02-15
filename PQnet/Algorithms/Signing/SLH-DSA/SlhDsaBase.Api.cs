@@ -224,7 +224,7 @@ namespace PQnet {
 		/// <param name="signature">The message signature</param>
 		/// <returns><c>true</c> if the signature is valid and the message authentic, <c>false</c> otherwise</returns>
 		public bool Verify(byte[] message, byte[] public_key, byte[] signature) {
-			return slh_verify(signature, message, null, public_key);
+			return slh_verify(message, signature, null, public_key);
 		}
 
 		/// <summary>

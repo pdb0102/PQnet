@@ -189,7 +189,7 @@ namespace PQnet {
 				return false;
 			}
 
-			if (ml_keygen(out public_key, out private_key)) {
+			if (ml_keygen(out public_key, out private_key, seed)) {
 				error = null;
 				return true;
 			}

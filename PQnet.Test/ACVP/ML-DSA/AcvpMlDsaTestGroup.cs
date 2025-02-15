@@ -36,6 +36,12 @@ namespace PQnet.test.AVCP {
 		public int TgId { get; set; }
 
 		/// <summary>
+		/// Indicator whether external Mu is used or message/prefix is used
+		/// </summary>
+		[DataMember(Name = "externalMu")]
+		public bool ExternalMu { get; set; }
+
+		/// <summary>
 		/// The test operation performed
 		/// </summary>
 		[DataMember(Name = "testType")]
@@ -54,23 +60,16 @@ namespace PQnet.test.AVCP {
 		public bool Deterministic { get; set; }
 
 		/// <summary>
-		/// The public key
+		/// The signature interface used
 		/// </summary>
-		[DataMember(Name = "pk")]
-		public string PublicKey { get; set; }
+		[DataMember(Name = "signatureInterface")]
+		public string SignatureInterface { get; set; }
 
 		/// <summary>
-		/// <see cref="PublicKey"/> as a byte array
+		/// Pre-Hash or pure algorithm
 		/// </summary>
-		[IgnoreDataMember]
-		public byte[] PublicKeyBytes {
-			get {
-				if (PublicKey == null) {
-					return null;
-				}
-				return Utilities.HexToBytes(PublicKey, out _);
-			}
-		}
+		[DataMember(Name = "preHash")]
+		public string PreHash { get; set; }
 
 		/// <summary>
 		/// List of individual test vector JSON objects 

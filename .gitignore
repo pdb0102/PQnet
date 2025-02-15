@@ -3,6 +3,7 @@
 *.sdf
 *.opensdf
 *.csproj.user
+*.DotSettings.user
 *.suo
 *.vshost.exe
 *.wixproj.user
