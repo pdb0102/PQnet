@@ -86,8 +86,7 @@ namespace PQnet.test {
 								if (!test_group.ExternalMu) {
 									mldsa.ml_sign_internal(out sig, test_case.MessageBytes, test_case.ContextBytes, test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
 								} else {
-									Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}; ExternalMu not implemented");
-									continue;
+									mldsa.ml_sign_internal(out sig, test_case.MuBytes, test_group.Deterministic ? null_rnd : test_case.RandomBytes, test_case.SecretKeyBytes);
 								}
 							} else {
 								if (test_group.Deterministic) {
@@ -143,9 +142,7 @@ namespace PQnet.test {
 								if (!test_group.ExternalMu) {
 									ret = mldsa.ml_verify_internal(test_case.SignatureBytes, test_case.MessageBytes, test_case.ContextBytes, test_case.PublicKeyBytes);
 								} else {
-									Debug.WriteLine($"TestGroup {test_group.TgId}, TestCase {test_case.TcId}; ExternalMu not implemented");
-									continue;
-									//ret = mldsa.ml_external_mu_verify_internal(test_case.SignatureBytes, test_case.MuBytes, test_case.PublicKeyBytes);
+									ret = mldsa.ml_verify_internal(test_case.SignatureBytes, test_case.MuBytes, test_case.PublicKeyBytes);
 								}
 							} else {
 								ret = mldsa.ml_verify(test_case.SignatureBytes, test_case.MessageBytes, test_case.ContextBytes, test_case.PublicKeyBytes);

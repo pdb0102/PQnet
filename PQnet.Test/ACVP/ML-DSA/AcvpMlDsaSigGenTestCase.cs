@@ -61,6 +61,25 @@ namespace PQnet.test.AVCP {
 		public string HashAlg { get; set; }
 
 		/// <summary>
+		/// The External Mu
+		/// </summary>
+		[DataMember(Name = "mu")]
+		public string Mu { get; set; }
+
+		/// <summary>
+		/// <see cref="Mu"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] MuBytes {
+			get {
+				if (Mu == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(Mu, out _);
+			}
+		}
+
+		/// <summary>
 		/// The message used to generate the signature
 		/// </summary>
 		[DataMember(Name = "message")]

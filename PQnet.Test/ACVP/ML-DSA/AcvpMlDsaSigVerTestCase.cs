@@ -61,7 +61,7 @@ namespace PQnet.test.AVCP {
 		public string HashAlg { get; set; }
 
 		/// <summary>
-		/// The hash algorithm for Pre-Hash signatures
+		/// The External Mu
 		/// </summary>
 		[DataMember(Name = "mu")]
 		public string Mu { get; set; }
