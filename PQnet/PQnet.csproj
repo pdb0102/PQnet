@@ -42,7 +42,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
 	<Compile Remove="Algorithms\Digest\ShakeX4\**" />	
-	<Compile Remove="Algorithms\Digest\Sha256X4\**" />	
+	<Compile Remove="Algorithms\Digest\Sha2X4\**" />	
   </ItemGroup>
 
   <ItemGroup>
