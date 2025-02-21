@@ -955,7 +955,7 @@ namespace PQnet {
 				addrnd = null;
 			}
 
-			PreHashUtility.GetPHm(ph, m, out ph_m, out oid);
+			PreHashUtility.GetPHm(ph, m, out oid, out ph_m);
 
 			m_prime = new byte[ctx.Length + oid.Length + ph_m.Length + 2];
 			m_prime[0] = 1;
