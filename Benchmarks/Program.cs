@@ -21,105 +21,51 @@
 // SOFTWARE.
 //
 
-using System.Diagnostics;
 using System.Text;
 
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Running;
+
 namespace PQnet.Benchmarks {
+	[RPlotExporter]
+	[SimpleJob(RuntimeMoniker.Net481)]
+	[SimpleJob(RuntimeMoniker.Net90)]
+	public class NativeVsPQNet {
+		private byte[] test_data;
+
+		[GlobalSetup]
+		public void Setup() {
+			test_data = Encoding.UTF8.GetBytes("test");
+		}
+
+		[Benchmark]
+		public byte[] NativeSha256() {
+#if !NET48
+			return System.Security.Cryptography.SHA256.HashData(test_data);
+#else
+			return System.Security.Cryptography.SHA256.Create().ComputeHash(test_data);
+#endif
+		}
+
+		[Benchmark]
+		public byte[] PQNetSha256() {
+			byte[] out_buf = new byte[32];
+			PQnet.Digest.Sha256.sha256(out_buf, test_data, test_data.Length);
+			return out_buf;
+		}
+	}
+
 	internal class Program {
-		private static byte[] hash_data = Encoding.ASCII.GetBytes("01234567890123456789012345678901");
 
-		private static void Measure(string test_name, Action action, int count = 300000) {
-			Stopwatch stopwatch;
-
-			// First run we throw away to warm up the JIT
-			stopwatch = Stopwatch.StartNew();
-			action();
-
-			stopwatch.Reset();
-			for (int i = 0; i < count; i++) {
-				stopwatch.Start();
-				action();
-				stopwatch.Stop();
-			}
-
-			Console.WriteLine($"{test_name}: {stopwatch.ElapsedMilliseconds / count}ms [{stopwatch.ElapsedTicks / count} ticks]");
-		}
-
-		private static void Compare(string test_name, Func<byte[]> native_action, Func<byte[]> pqnet_action, int count = 3000) {
-			byte[] action_result;
-			byte[] expected_result;
-			Stopwatch stopwatch;
-			long native_ms = 0;
-			long pqnet_ms = 0;
-			long native_ticks = 0;
-			long pqnet_ticks = 0;
-
-			stopwatch = Stopwatch.StartNew();
-
-			// First run we throw away to warm up the JIT
-			expected_result = native_action();
-			action_result = pqnet_action();
-
-			if (action_result.Length != action_result.Length) {
-				Console.WriteLine($"{test_name}: Length mismatch");
-				return;
-			}
-			for (int x = 0; x < action_result.Length; x++) {
-				if (action_result[x] != action_result[x]) {
-					Console.WriteLine($"{test_name}: Mismatch");
-					return;
-				}
-			}
-
-			stopwatch.Reset();
-			for (int i = 0; i < count; i++) {
-				stopwatch.Start();
-				native_action();
-				stopwatch.Stop();
-			}
-			native_ms = stopwatch.ElapsedMilliseconds;
-			native_ticks = stopwatch.ElapsedTicks;
-
-			stopwatch.Reset();
-			for (int i = 0; i < count; i++) {
-				stopwatch.Start();
-				pqnet_action();
-				stopwatch.Stop();
-			}
-			pqnet_ms = stopwatch.ElapsedMilliseconds;
-			pqnet_ticks = stopwatch.ElapsedTicks;
-
-			if (native_ticks >= pqnet_ticks) {
-				Console.WriteLine($"{test_name} [x{count:N0}]: PQNet is {(native_ms - pqnet_ms)}ms faster [{(native_ticks - pqnet_ticks):N0} ticks faster]");
-			} else {
-				Console.WriteLine($"{test_name} [x{count:N0}]: Native is {(pqnet_ms - native_ms)}ms faster [{(pqnet_ticks - native_ticks):N0} ticks faster]");
-			}
-		}
-
+		static void Main(string[] args) => BenchmarkSwitcher.FromAssemblies(new[] { typeof(NativeVsPQNet).Assembly }).Run(args);
+#if not
 		static void Main(string[] args) {
-			byte[] expected;
+			Summary summary;
 
-			Measure("Native SHA-256", () => { System.Security.Cryptography.SHA256.HashData(hash_data); });
-			Measure("PQNet SHA-256", () => { byte[] out_buf; out_buf = new byte[32]; PQnet.Digest.Sha256.sha256(out_buf, hash_data, hash_data.Length); });
 
-			expected = System.Security.Cryptography.SHA256.HashData(hash_data);
-			Compare("SHA2-256", () => { return System.Security.Cryptography.SHA256.HashData(hash_data); }, () => { byte[] out_buf; out_buf = new byte[32]; PQnet.Digest.Sha256.sha256(out_buf, hash_data, hash_data.Length); return out_buf; });
-
-			expected = System.Security.Cryptography.SHA256.HashData(hash_data);
-			Compare("SHA2-512", () => { return System.Security.Cryptography.SHA512.HashData(hash_data); }, () => { byte[] out_buf; out_buf = new byte[64]; PQnet.Digest.Sha512.sha512(out_buf, hash_data, hash_data.Length); return out_buf; });
-
-			if (System.Security.Cryptography.Shake128.IsSupported) {
-				Console.WriteLine("Shake128 is supported by .Net");
-
-				Compare("SHAKE-128", () => { return System.Security.Cryptography.Shake128.HashData(hash_data, 64); }, () => { return PQnet.Digest.Shake128.HashData(hash_data, 64); });
-			}
-
-			if (System.Security.Cryptography.Shake256.IsSupported) {
-				Console.WriteLine("Shake256 is supported by .Net");
-
-				Compare("SHAKE-256", () => { return System.Security.Cryptography.Shake256.HashData(hash_data, 64); }, () => { return PQnet.Digest.Shake256.HashData(hash_data, 64); });
-			}
+			summary = BenchmarkRunner.Run<NativeVsPQNet>();
 		}
-
+#endif
 	}
 }
