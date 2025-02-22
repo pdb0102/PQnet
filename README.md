@@ -79,9 +79,6 @@ Getting started:
   - ML-KEM
 
 ## ToDo:
-  - Create a .Net Framework version
-  - Find/verify test vectors for pre-hash methods, those are as of yet untested
-  - Add AVCP tests for Shake and SHA2
   - Use intrinsics to create AVX2 SHA2 version
   - Measure performance and optimize code
   - Maybe create NuGet package
