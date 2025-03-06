@@ -156,6 +156,15 @@
             <param name="error">Receives any error that occurred, or <c>null</c></param>
             <returns><c>true</c> if the key pair was successfully generated, <c>false</c> otherwise</returns>
         </member>
+        <member name="M:PQnet.ISignature.DerivePublicFromPrivateKey(System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Derive the public key from a private key
+            </summary>
+            <param name="private_key">The private key</param>
+            <param name="public_key">Receives the public key</param>
+            <param name="error">Receives an error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key was successfully returned, <c>false</c> otherwise</returns>
+        </member>
         <member name="M:PQnet.ISignature.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
             <summary>
             Generate a pure signature
@@ -1076,6 +1085,15 @@
             <remarks>
             If <paramref name="seed"/> is provided, it must be exactly <see cref="F:PQnet.MlDsaBase.SeedBytes"/> bytes long.
             </remarks>
+        </member>
+        <member name="M:PQnet.MlDsaBase.DerivePublicFromPrivateKey(System.Byte[],System.Byte[]@,System.String@)">
+            <summary>
+            Derive the ML-DSA public key from a private key
+            </summary>
+            <param name="private_key">The private key</param>
+            <param name="public_key">Receives the public key</param>
+            <param name="error">Receives an error that occurred, or <c>null</c></param>
+            <returns><c>true</c> if the key was successfully returned, <c>false</c> otherwise</returns>
         </member>
         <member name="M:PQnet.MlDsaBase.Sign(System.Byte[],System.Byte[],System.Byte[]@)">
             <summary>
@@ -2166,7 +2184,7 @@
         </member>
         <member name="M:PQnet.SlhDsaBase.DerivePublicFromPrivateKey(System.Byte[],System.Byte[]@,System.String@)">
             <summary>
-            Derive an SLH-DSA public key from a private key
+            Derive the SLH-DSA public key from a private key
             </summary>
             <param name="private_key">The private key</param>
             <param name="public_key">Receives the public key</param>

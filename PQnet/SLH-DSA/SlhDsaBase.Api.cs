@@ -88,7 +88,7 @@ namespace PQnet {
 		}
 
 		/// <summary>
-		/// Derive an SLH-DSA public key from a private key
+		/// Derive the SLH-DSA public key from a private key
 		/// </summary>
 		/// <param name="private_key">The private key</param>
 		/// <param name="public_key">Receives the public key</param>

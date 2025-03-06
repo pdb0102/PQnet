@@ -76,6 +76,15 @@ namespace PQnet {
 		bool GenerateKeyPair(out byte[] public_key, out byte[] private_key, byte[] seed, out string error);
 
 		/// <summary>
+		/// Derive the public key from a private key
+		/// </summary>
+		/// <param name="private_key">The private key</param>
+		/// <param name="public_key">Receives the public key</param>
+		/// <param name="error">Receives an error that occurred, or <c>null</c></param>
+		/// <returns><c>true</c> if the key was successfully returned, <c>false</c> otherwise</returns>
+		bool DerivePublicFromPrivateKey(byte[] private_key, out byte[] public_key, out string error);
+
+		/// <summary>
 		/// Generate a pure signature
 		/// </summary>
 		/// <param name="message">The message to sign</param>
