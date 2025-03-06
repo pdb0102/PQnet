@@ -119,6 +119,53 @@ namespace PQnet {
 			return true;
 		}
 
+		internal bool ml_derive_public(byte[] sk, out byte[] pk) {
+			byte[] tr;
+			byte[] rho;
+			byte[] key;
+			PolyVecL[] mat;
+			PolyVecL s1, s1hat;
+			PolyVecK s2, t1, t0;
+
+			mat = new PolyVecL[K];
+			for (int i = 0; i < K; i++) {
+				mat[i] = new PolyVecL(L, N);
+			}
+
+			rho = new byte[(2 * SeedBytes) + CrhBytes];
+			tr = new byte[TrBytes];
+			key = new byte[SeedBytes];
+			t0 = new PolyVecK(K, N);
+			s1 = new PolyVecL(L, N);
+			s2 = new PolyVecK(K, N);
+
+			/* unpack the private key */
+			unpack_sk(rho, tr, key, t0, s1, s2, sk);
+
+			/* Expand matrix */
+			polyvec_matrix_expand(mat, rho);
+
+			/* Matrix-vector multiplication */
+			t0 = new PolyVecK(K, N);
+			t1 = new PolyVecK(K, N);
+			s1hat = s1.Clone();
+			polyvecl_ntt(s1hat);
+			polyvec_matrix_pointwise_montgomery(t1, mat, s1hat);
+			polyveck_reduce(t1);
+			polyveck_invntt_tomont(t1);
+
+			/* Add error vector s2 */
+			polyveck_add(t1, t1, s2);
+
+			/* Extract t1 and write public key */
+			polyveck_caddq(t1);
+			polyveck_power2round(t1, t0, t1);
+			pk = new byte[PublicKeyBytes];
+			pack_pk(pk, rho, t1);
+
+			return true;
+		}
+
 		/*************************************************
 		* Name:        crypto_sign_signature_internal
 		*

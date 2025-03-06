@@ -47,6 +47,7 @@ namespace PQnet.test {
 			ISignature signature;
 			byte[] private_key;
 			byte[] public_key;
+			byte[] derived_public_key;
 			byte[] signature_bytes;
 			byte[] message;
 			string error;
@@ -65,6 +66,10 @@ namespace PQnet.test {
 			Assert.IsNotNull(private_key, $"Private key is null for '{algorithm}' algorithm");
 			Assert.AreEqual(signature.PrivateKeyBytes, private_key.Length, $"Private key length is incorrect for '{algorithm}' algorithm");
 			Assert.AreEqual(signature.PublicKeyBytes, public_key.Length, $"Public key length is incorrect for '{algorithm}' algorithm");
+
+			success = signature.DerivePublicFromPrivateKey(private_key, out derived_public_key, out error);
+			Assert.IsTrue(success, $"Failed to derive public key from private key for '{algorithm}' algorithm: {error}");
+			CollectionAssert.AreEqual(public_key, derived_public_key, $"Derived public key does not match original public key for '{algorithm}' algorithm");
 
 			success = signature.Sign(message, private_key, null, out signature_bytes, out error);
 			Assert.IsTrue(success, $"Failed to sign message for '{algorithm}' algorithm: {error}");
