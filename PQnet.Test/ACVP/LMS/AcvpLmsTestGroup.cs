@@ -73,6 +73,44 @@ namespace PQnet.test.AVCP {
 		}
 
 		/// <summary>
+		/// The seed used to generate keys (for sigGen tests)
+		/// </summary>
+		[DataMember(Name = "seed")]
+		public string Seed { get; set; }
+
+		/// <summary>
+		/// <see cref="Seed"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] SeedBytes {
+			get {
+				if (Seed == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(Seed, out _);
+			}
+		}
+
+		/// <summary>
+		/// The I value (16-byte identifier) for sigGen tests
+		/// </summary>
+		[DataMember(Name = "i")]
+		public string I { get; set; }
+
+		/// <summary>
+		/// <see cref="I"/> as a byte array
+		/// </summary>
+		[IgnoreDataMember]
+		public byte[] IBytes {
+			get {
+				if (I == null) {
+					return null;
+				}
+				return Utilities.HexToBytes(I, out _);
+			}
+		}
+
+		/// <summary>
 		/// List of individual test vector JSON objects
 		/// </summary>
 		[DataMember(Name = "tests")]

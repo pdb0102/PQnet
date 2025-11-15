@@ -55,6 +55,12 @@ namespace PQnet.test.AVCP {
 		}
 
 		/// <summary>
+		/// The leaf index (q) to use for signing
+		/// </summary>
+		[DataMember(Name = "q")]
+		public uint Q { get; set; }
+
+		/// <summary>
 		/// The private key used for signing
 		/// </summary>
 		[DataMember(Name = "privateKey")]
