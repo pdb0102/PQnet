@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2024 Peter Dennis Bartok
+// Copyright (c) 2025 Peter Dennis Bartok
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -82,7 +82,7 @@ namespace PQnet {
 
 			u = ((8 * n) + (w - 1)) / w;
 #if !NET48
-			ls = (int)Math.Floor(Math.Log2((8 * n * ((1 << w) - 1)) / w));
+			ls = (int)Math.Floor(Math.Log2(8 * n * ((1 << w) - 1) / w));
 #else
 			ls = (int)Math.Floor(Math.Log((8 * n * ((1 << w) - 1)) / w, 2));
 #endif
@@ -246,7 +246,7 @@ namespace PQnet {
 			LmsUtility.u32str(q, input, I.Length);
 
 			for (i = 0; i < p; i++) {
-				a = (int)LmsUtility.coef(Q_with_cksm, i, w);
+				a = LmsUtility.coef(Q_with_cksm, i, w);
 				Array.Copy(x[i], 0, tmp, 0, n);
 
 				// Apply hash chain 'a' times
@@ -333,7 +333,7 @@ namespace PQnet {
 			sig_offset = 4 + n;
 
 			for (i = 0; i < p; i++) {
-				a = (int)LmsUtility.coef(Q_with_cksm, i, w);
+				a = LmsUtility.coef(Q_with_cksm, i, w);
 				Array.Copy(signature, sig_offset, tmp, 0, n);
 
 				// Apply hash chain from a to 2^w - 1

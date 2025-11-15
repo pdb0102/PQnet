@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2024 Peter Dennis Bartok
+// Copyright (c) 2025 Peter Dennis Bartok
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
-using System;
 
 namespace PQnet {
 	/// <summary>
@@ -96,7 +94,7 @@ namespace PQnet {
 				sum = sum + (uint)(max - coef(s, i, w));
 			}
 
-			return sum << (w - (((n * 8) % w)));
+			return sum << (w - (n * 8 % w));
 		}
 
 		/// <summary>
@@ -110,7 +108,7 @@ namespace PQnet {
 		public static byte coef(byte[] s, int i, int w) {
 			byte result;
 
-			result = (byte)((s[(i * w) / 8] >> (8 - ((i * w) % 8) - w)) & ((1 << w) - 1));
+			result = (byte)((s[i * w / 8] >> (8 - (i * w % 8) - w)) & ((1 << w) - 1));
 			return result;
 		}
 	}
