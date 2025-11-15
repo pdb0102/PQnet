@@ -67,8 +67,14 @@ namespace PQnet.test {
 		public void TestAvcpSigGen() {
 			AcvpLmsTestVectors<AcvpLmsSigGenTestCase> test_vectors;
 			ILmsHashAlgorithm hash;
+			byte[] pk;
+			byte[] sk;
+			byte[] modified_sk;
 			byte[] sig;
 			byte[] updated_sk;
+			uint lms_typecode;
+			uint ots_typecode;
+			int n;
 
 			test_vectors = AcvpLms.LoadSigGenVectors("LMS.sigGen.prompt.json", "LMS.sigGen.expectedResults.json");
 
@@ -76,18 +82,31 @@ namespace PQnet.test {
 				AcvpLmsTestGroup<AcvpLmsSigGenTestCase> test_group;
 
 				test_group = test_vectors.TestGroups[i];
+				hash = GetHashAlgorithm(test_group.LmsMode);
+				lms_typecode = GetLmsTypeCode(test_group.LmsMode);
+				ots_typecode = GetOtsTypeCode(test_group.LmOtsMode);
+				n = hash.OutputLength;
+
+				// Generate keypair once per test group using the group's seed and I
+				Lms.GenerateKeyPair(hash, lms_typecode, ots_typecode, test_group.IBytes, test_group.SeedBytes, out pk, out sk);
 
 				for (int j = 0; j < test_vectors.TestGroups[i].Tests.Count; j++) {
 					AcvpLmsSigGenTestCase test_case;
 
 					test_case = test_vectors.TestGroups[i].Tests[j];
 
-					hash = GetHashAlgorithm(test_group.LmsMode);
+					// Create a modified private key with the specific q value from the test case
+					modified_sk = new byte[sk.Length];
+					Array.Copy(sk, modified_sk, sk.Length);
 
-					sig = Lms.Sign(hash, test_case.PrivateKeyBytes, test_case.MessageBytes, out updated_sk);
+					// The q value is stored at offset 24 + n in the private key
+					LmsUtility.u32str(test_case.Q, modified_sk, 24 + n);
+
+					// Sign the message with the modified private key
+					sig = Lms.Sign(hash, modified_sk, test_case.MessageBytes, out updated_sk);
 
 					CollectionAssert.AreEqual(test_case.SignatureBytes, sig, $"TestGroup {test_group.TgId}, TestCase {test_case.TcId}, {test_group.LmsMode}/{test_group.LmOtsMode}: Signature mismatch");
-					Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: LMS Mode: {test_group.LmsMode}, OTS Mode: {test_group.LmOtsMode}");
+					Debug.WriteLine($"Passed - TestGroup {test_group.TgId}, TestCase {test_case.TcId}: LMS Mode: {test_group.LmsMode}, OTS Mode: {test_group.LmOtsMode}, q: {test_case.Q}");
 				}
 			}
 		}
