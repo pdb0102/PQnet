@@ -425,5 +425,330 @@ namespace PQnet.test {
 			is_valid = lms_h5.Verify(public_key_h5, signature_h10, message);
 			Assert.IsFalse(is_valid, "H10 signature should not verify with H5 public key");
 		}
+
+		// RFC 8554 - SHA-256/M32 - H25 tests
+		[TestMethod]
+		public void TestLmsSha256M32H25_BasicRoundtrip() {
+			LmsSha256M32H25 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsSha256M32H25();
+			message = Encoding.UTF8.GetBytes("Testing LMS H25");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for H25");
+			Assert.AreEqual(25, lms.TreeHeight, "H25 tree height should be 25");
+		}
+
+		// RFC 9858 - SHA-256/M24 tests
+		[TestMethod]
+		public void TestLmsSha256M24H5_BasicRoundtrip() {
+			LmsSha256M24H5 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsSha256M24H5();
+			message = Encoding.UTF8.GetBytes("Testing SHA-256/192 M24-H5");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHA-256/192 M24-H5");
+		}
+
+		[TestMethod]
+		public void TestLmsSha256M24H10_BasicRoundtrip() {
+			LmsSha256M24H10 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsSha256M24H10();
+			message = Encoding.UTF8.GetBytes("Testing SHA-256/192 M24-H10");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHA-256/192 M24-H10");
+		}
+
+		[TestMethod]
+		public void TestLmsSha256M24H15_BasicRoundtrip() {
+			LmsSha256M24H15 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsSha256M24H15();
+			message = Encoding.UTF8.GetBytes("Testing SHA-256/192 M24-H15");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHA-256/192 M24-H15");
+		}
+
+		[TestMethod]
+		public void TestLmsSha256M24H20_BasicRoundtrip() {
+			LmsSha256M24H20 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsSha256M24H20();
+			message = Encoding.UTF8.GetBytes("Testing SHA-256/192 M24-H20");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHA-256/192 M24-H20");
+		}
+
+		[TestMethod]
+		public void TestLmsSha256M24H25_BasicRoundtrip() {
+			LmsSha256M24H25 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsSha256M24H25();
+			message = Encoding.UTF8.GetBytes("Testing SHA-256/192 M24-H25");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHA-256/192 M24-H25");
+		}
+
+		// RFC 9858 - SHAKE256/M32 tests
+		[TestMethod]
+		public void TestLmsShakeM32H5_BasicRoundtrip() {
+			LmsShakeM32H5 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM32H5();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/256 M32-H5");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/256 M32-H5");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM32H10_BasicRoundtrip() {
+			LmsShakeM32H10 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM32H10();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/256 M32-H10");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/256 M32-H10");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM32H15_BasicRoundtrip() {
+			LmsShakeM32H15 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM32H15();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/256 M32-H15");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/256 M32-H15");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM32H20_BasicRoundtrip() {
+			LmsShakeM32H20 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM32H20();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/256 M32-H20");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/256 M32-H20");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM32H25_BasicRoundtrip() {
+			LmsShakeM32H25 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM32H25();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/256 M32-H25");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/256 M32-H25");
+		}
+
+		// RFC 9858 - SHAKE256/M24 tests
+		[TestMethod]
+		public void TestLmsShakeM24H5_BasicRoundtrip() {
+			LmsShakeM24H5 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM24H5();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/192 M24-H5");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/192 M24-H5");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM24H10_BasicRoundtrip() {
+			LmsShakeM24H10 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM24H10();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/192 M24-H10");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/192 M24-H10");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM24H15_BasicRoundtrip() {
+			LmsShakeM24H15 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM24H15();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/192 M24-H15");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/192 M24-H15");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM24H20_BasicRoundtrip() {
+			LmsShakeM24H20 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM24H20();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/192 M24-H20");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/192 M24-H20");
+		}
+
+		[TestMethod]
+		public void TestLmsShakeM24H25_BasicRoundtrip() {
+			LmsShakeM24H25 lms;
+			byte[] public_key;
+			byte[] private_key;
+			byte[] message;
+			byte[] signature;
+			byte[] updated_private_key;
+			bool is_valid;
+
+			lms = new LmsShakeM24H25();
+			message = Encoding.UTF8.GetBytes("Testing SHAKE256/192 M24-H25");
+
+			lms.GenerateKeyPair(out public_key, out private_key);
+			signature = lms.Sign(private_key, message, out updated_private_key);
+			is_valid = lms.Verify(public_key, signature, message);
+
+			Assert.IsTrue(is_valid, "Signature verification should succeed for SHAKE256/192 M24-H25");
+		}
 	}
 }

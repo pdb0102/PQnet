@@ -35,6 +35,27 @@ namespace PQnet {
 		public const uint LMS_SHA256_M32_H20 = 8;
 		public const uint LMS_SHA256_M32_H25 = 9;
 
+		// LMS type constants (RFC 9858 - SHA-256/192)
+		public const uint LMS_SHA256_M24_H5 = 10;
+		public const uint LMS_SHA256_M24_H10 = 11;
+		public const uint LMS_SHA256_M24_H15 = 12;
+		public const uint LMS_SHA256_M24_H20 = 13;
+		public const uint LMS_SHA256_M24_H25 = 14;
+
+		// LMS type constants (RFC 9858 - SHAKE256/256)
+		public const uint LMS_SHAKE_M32_H5 = 15;
+		public const uint LMS_SHAKE_M32_H10 = 16;
+		public const uint LMS_SHAKE_M32_H15 = 17;
+		public const uint LMS_SHAKE_M32_H20 = 18;
+		public const uint LMS_SHAKE_M32_H25 = 19;
+
+		// LMS type constants (RFC 9858 - SHAKE256/192)
+		public const uint LMS_SHAKE_M24_H5 = 20;
+		public const uint LMS_SHAKE_M24_H10 = 21;
+		public const uint LMS_SHAKE_M24_H15 = 22;
+		public const uint LMS_SHAKE_M24_H20 = 23;
+		public const uint LMS_SHAKE_M24_H25 = 24;
+
 		/// <summary>
 		/// Gets the tree height for a given LMS type
 		/// </summary>
@@ -45,18 +66,33 @@ namespace PQnet {
 
 			switch (typecode) {
 				case LMS_SHA256_M32_H5:
+				case LMS_SHA256_M24_H5:
+				case LMS_SHAKE_M32_H5:
+				case LMS_SHAKE_M24_H5:
 					h = 5;
 					break;
 				case LMS_SHA256_M32_H10:
+				case LMS_SHA256_M24_H10:
+				case LMS_SHAKE_M32_H10:
+				case LMS_SHAKE_M24_H10:
 					h = 10;
 					break;
 				case LMS_SHA256_M32_H15:
+				case LMS_SHA256_M24_H15:
+				case LMS_SHAKE_M32_H15:
+				case LMS_SHAKE_M24_H15:
 					h = 15;
 					break;
 				case LMS_SHA256_M32_H20:
+				case LMS_SHA256_M24_H20:
+				case LMS_SHAKE_M32_H20:
+				case LMS_SHAKE_M24_H20:
 					h = 20;
 					break;
 				case LMS_SHA256_M32_H25:
+				case LMS_SHA256_M24_H25:
+				case LMS_SHAKE_M32_H25:
+				case LMS_SHAKE_M24_H25:
 					h = 25;
 					break;
 				default:

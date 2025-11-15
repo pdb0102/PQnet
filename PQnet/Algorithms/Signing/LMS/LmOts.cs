@@ -34,6 +34,24 @@ namespace PQnet {
 		public const uint LMOTS_SHA256_N32_W4 = 3;
 		public const uint LMOTS_SHA256_N32_W8 = 4;
 
+		// LM-OTS type constants (RFC 9858 - SHA-256/192)
+		public const uint LMOTS_SHA256_N24_W1 = 5;
+		public const uint LMOTS_SHA256_N24_W2 = 6;
+		public const uint LMOTS_SHA256_N24_W4 = 7;
+		public const uint LMOTS_SHA256_N24_W8 = 8;
+
+		// LM-OTS type constants (RFC 9858 - SHAKE256/256)
+		public const uint LMOTS_SHAKE_N32_W1 = 9;
+		public const uint LMOTS_SHAKE_N32_W2 = 10;
+		public const uint LMOTS_SHAKE_N32_W4 = 11;
+		public const uint LMOTS_SHAKE_N32_W8 = 12;
+
+		// LM-OTS type constants (RFC 9858 - SHAKE256/192)
+		public const uint LMOTS_SHAKE_N24_W1 = 13;
+		public const uint LMOTS_SHAKE_N24_W2 = 14;
+		public const uint LMOTS_SHAKE_N24_W4 = 15;
+		public const uint LMOTS_SHAKE_N24_W8 = 16;
+
 		// D_PBLC constant for hash function domain separation
 		private const ushort D_PBLC = 0x8080;
 
@@ -50,15 +68,27 @@ namespace PQnet {
 
 			switch (typecode) {
 				case LMOTS_SHA256_N32_W1:
+				case LMOTS_SHA256_N24_W1:
+				case LMOTS_SHAKE_N32_W1:
+				case LMOTS_SHAKE_N24_W1:
 					w = 1;
 					break;
 				case LMOTS_SHA256_N32_W2:
+				case LMOTS_SHA256_N24_W2:
+				case LMOTS_SHAKE_N32_W2:
+				case LMOTS_SHAKE_N24_W2:
 					w = 2;
 					break;
 				case LMOTS_SHA256_N32_W4:
+				case LMOTS_SHA256_N24_W4:
+				case LMOTS_SHAKE_N32_W4:
+				case LMOTS_SHAKE_N24_W4:
 					w = 4;
 					break;
 				case LMOTS_SHA256_N32_W8:
+				case LMOTS_SHA256_N24_W8:
+				case LMOTS_SHAKE_N32_W8:
+				case LMOTS_SHAKE_N24_W8:
 					w = 8;
 					break;
 				default:
