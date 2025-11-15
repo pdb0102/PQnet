@@ -121,8 +121,17 @@ namespace PQnet.test {
 		}
 
 		private static ILmsHashAlgorithm GetHashAlgorithm(string lms_mode) {
-			if (lms_mode.Contains("SHA256")) {
+			if (lms_mode.Contains("SHAKE") && lms_mode.Contains("M32")) {
+				return new Shake256N32LmsHash();
+			}
+			if (lms_mode.Contains("SHAKE") && lms_mode.Contains("M24")) {
+				return new Shake256N24LmsHash();
+			}
+			if (lms_mode.Contains("SHA256") && lms_mode.Contains("M32")) {
 				return new Sha256LmsHash();
+			}
+			if (lms_mode.Contains("SHA256") && lms_mode.Contains("M24")) {
+				return new Sha256N24LmsHash();
 			}
 			throw new NotImplementedException($"Hash algorithm for {lms_mode} not implemented");
 		}
@@ -140,11 +149,35 @@ namespace PQnet.test {
 				case "LMS_SHA256_M32_H25":
 					return Lms.LMS_SHA256_M32_H25;
 				case "LMS_SHA256_M24_H5":
+					return Lms.LMS_SHA256_M24_H5;
 				case "LMS_SHA256_M24_H10":
+					return Lms.LMS_SHA256_M24_H10;
 				case "LMS_SHA256_M24_H15":
+					return Lms.LMS_SHA256_M24_H15;
 				case "LMS_SHA256_M24_H20":
+					return Lms.LMS_SHA256_M24_H20;
 				case "LMS_SHA256_M24_H25":
-					throw new NotImplementedException($"LMS mode {lms_mode} (M24) not implemented - only M32 supported");
+					return Lms.LMS_SHA256_M24_H25;
+				case "LMS_SHAKE_M32_H5":
+					return Lms.LMS_SHAKE_M32_H5;
+				case "LMS_SHAKE_M32_H10":
+					return Lms.LMS_SHAKE_M32_H10;
+				case "LMS_SHAKE_M32_H15":
+					return Lms.LMS_SHAKE_M32_H15;
+				case "LMS_SHAKE_M32_H20":
+					return Lms.LMS_SHAKE_M32_H20;
+				case "LMS_SHAKE_M32_H25":
+					return Lms.LMS_SHAKE_M32_H25;
+				case "LMS_SHAKE_M24_H5":
+					return Lms.LMS_SHAKE_M24_H5;
+				case "LMS_SHAKE_M24_H10":
+					return Lms.LMS_SHAKE_M24_H10;
+				case "LMS_SHAKE_M24_H15":
+					return Lms.LMS_SHAKE_M24_H15;
+				case "LMS_SHAKE_M24_H20":
+					return Lms.LMS_SHAKE_M24_H20;
+				case "LMS_SHAKE_M24_H25":
+					return Lms.LMS_SHAKE_M24_H25;
 				default:
 					throw new ArgumentException($"Unknown LMS mode: {lms_mode}");
 			}
@@ -161,10 +194,29 @@ namespace PQnet.test {
 				case "LMOTS_SHA256_N32_W8":
 					return LmOts.LMOTS_SHA256_N32_W8;
 				case "LMOTS_SHA256_N24_W1":
+					return LmOts.LMOTS_SHA256_N24_W1;
 				case "LMOTS_SHA256_N24_W2":
+					return LmOts.LMOTS_SHA256_N24_W2;
 				case "LMOTS_SHA256_N24_W4":
+					return LmOts.LMOTS_SHA256_N24_W4;
 				case "LMOTS_SHA256_N24_W8":
-					throw new NotImplementedException($"OTS mode {ots_mode} (N24) not implemented - only N32 supported");
+					return LmOts.LMOTS_SHA256_N24_W8;
+				case "LMOTS_SHAKE_N32_W1":
+					return LmOts.LMOTS_SHAKE_N32_W1;
+				case "LMOTS_SHAKE_N32_W2":
+					return LmOts.LMOTS_SHAKE_N32_W2;
+				case "LMOTS_SHAKE_N32_W4":
+					return LmOts.LMOTS_SHAKE_N32_W4;
+				case "LMOTS_SHAKE_N32_W8":
+					return LmOts.LMOTS_SHAKE_N32_W8;
+				case "LMOTS_SHAKE_N24_W1":
+					return LmOts.LMOTS_SHAKE_N24_W1;
+				case "LMOTS_SHAKE_N24_W2":
+					return LmOts.LMOTS_SHAKE_N24_W2;
+				case "LMOTS_SHAKE_N24_W4":
+					return LmOts.LMOTS_SHAKE_N24_W4;
+				case "LMOTS_SHAKE_N24_W8":
+					return LmOts.LMOTS_SHAKE_N24_W8;
 				default:
 					throw new ArgumentException($"Unknown OTS mode: {ots_mode}");
 			}
