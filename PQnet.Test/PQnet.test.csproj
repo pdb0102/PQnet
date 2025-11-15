@@ -45,6 +45,12 @@
     <None Remove="Vectors\SLH-DSA\sigGen\prompt.json" />
     <None Remove="Vectors\SLH-DSA\sigVer\expectedResults.json" />
     <None Remove="Vectors\SLH-DSA\sigVer\prompt.json" />
+    <None Remove="Vectors\LMS\keyGen\expectedResults.json" />
+    <None Remove="Vectors\LMS\keyGen\prompt.json" />
+    <None Remove="Vectors\LMS\sigGen\expectedResults.json" />
+    <None Remove="Vectors\LMS\sigGen\prompt.json" />
+    <None Remove="Vectors\LMS\sigVer\expectedResults.json" />
+    <None Remove="Vectors\LMS\sigVer\prompt.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,6 +95,12 @@
     <EmbeddedResource Include="Vectors\SLH-DSA\sigGen\prompt.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\sigVer\expectedResults.json" />
     <EmbeddedResource Include="Vectors\SLH-DSA\sigVer\prompt.json" />
+    <EmbeddedResource Include="Vectors\LMS\keyGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\LMS\keyGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\LMS\sigGen\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\LMS\sigGen\prompt.json" />
+    <EmbeddedResource Include="Vectors\LMS\sigVer\expectedResults.json" />
+    <EmbeddedResource Include="Vectors\LMS\sigVer\prompt.json" />
   </ItemGroup>
 
   <ItemGroup>
